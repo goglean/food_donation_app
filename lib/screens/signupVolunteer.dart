@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_donating_app/screens/home.dart';
+import 'package:food_donating_app/screens/loginpage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,6 +23,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
   String? _zipcode = "";
   String? _isParticipant = "";
   String? _state = "Alabama";
+  String _userType = "volunteer";
   TextEditingController _cityController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -55,6 +58,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
           'City': _city,
           "Zipcode": _zipcode,
           'Address': _address,
+          'User Type': _userType,
         });
         final snackBar = SnackBar(content: Text('You Are Registered!'));
 
@@ -489,6 +493,10 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                               _addressController.clear();
                               _phoneNoController.clear();
                               _zipcodeController.clear();
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Home()));
                             });
 
                             // _nameController.clear();
@@ -504,6 +512,47 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                           ),
                         ),
                       ),
+                      TextButton(
+                          onPressed: () {
+                            setState(() {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage()));
+                            });
+                          },
+                          child: RichText(
+                            text: TextSpan(
+                              text: "Already have an account? ",
+                              style: GoogleFonts.roboto(color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: 'Login!',
+                                    style: GoogleFonts.roboto(
+                                        color: Theme.of(context).primaryColor)),
+                              ],
+                            ),
+                          )),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.65,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        //color: Colors.blue,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Thank you for your interest in fighting hunger and ending waste!",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.roboto(
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.02,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),

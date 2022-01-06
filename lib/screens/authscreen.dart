@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/signupDonor.dart';
+
 import 'package:food_donating_app/screens/signupVolunteer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -213,11 +214,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                       pressAttention = !pressAttention;
                                       _userType = "donor";
                                     }),
-                                // onPressed: () {
-                                //   setState(() {
-                                //     _userType = "donor";
-                                //   });
-                                // },
                                 child: Text(
                                   "Donor",
                                   style: GoogleFonts.roboto(
