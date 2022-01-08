@@ -76,6 +76,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
         final snackBar = SnackBar(content: Text('You Are Registered!'));
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Navigator.of(context).pop();
       } catch (e) {
         print('error' + e.toString());
       }
@@ -88,6 +89,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {

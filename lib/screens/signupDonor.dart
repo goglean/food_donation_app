@@ -139,6 +139,7 @@ class _SignupDonorState extends State<SignupDonor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),

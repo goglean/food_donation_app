@@ -16,7 +16,7 @@ class _DonateItemPageState extends State<DonateItemPage> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_rounded,
+            Icons.arrow_back,
             color: Colors.black,
           ),
           onPressed: () {
@@ -31,7 +31,7 @@ class _DonateItemPageState extends State<DonateItemPage> {
           ),
         ),
       ),
-      body:DonateItemsForm(),
+      body: DonateItemsForm(),
     );
   }
 }

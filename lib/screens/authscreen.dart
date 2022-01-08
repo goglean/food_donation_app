@@ -6,8 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:food_donating_app/resources/string.dart' as Resources;
 
 import 'loginpage.dart';
-//import 'package:url_launcher/link.dart';
-//import 'package:url_launcher/url_launcher.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
