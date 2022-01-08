@@ -87,6 +87,7 @@ class _SignupDonorState extends State<SignupDonor> {
         final snackBar = SnackBar(content: Text('You Are Registered!'));
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Navigator.of(context).pop();
       } catch (e) {
         print('error' + e.toString());
       }
@@ -139,8 +140,8 @@ class _SignupDonorState extends State<SignupDonor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
