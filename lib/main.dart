@@ -12,9 +12,15 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  var _userType = "";
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,28 +31,25 @@ class MyApp extends StatelessWidget {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, usersnapshot) {
-          Widget pageState = Home();
           if (usersnapshot.hasData) {
-            var _userType = "";
             try {
               FirebaseFirestore.instance
                   .collection('users')
                   .doc((FirebaseAuth.instance.currentUser)?.uid)
                   .get()
                   .then((value) {
-                _userType = value.data()!['User Type'].toString();
-                print("hello $_userType");
-                if (_userType == "volunteer") {
-                  pageState = Home();
-                } else {
-                  pageState = HomeDonor();
-                }
+                setState(() {
+                  _userType = value.data()!['User Type'].toString();
+                });
               });
             } catch (e) {
               print("error" + e.toString());
             }
-
-            return pageState;
+            print("hello $_userType");
+            if (_userType == "volunteer") {
+              return Home();
+            } else
+              return HomeDonor();
           } else
             return AuthScreen();
         },
