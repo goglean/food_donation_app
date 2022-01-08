@@ -69,6 +69,21 @@ class _SignupDonorState extends State<SignupDonor> {
           'Cuisine': _cuisine,
           'Donor Type': _donorType
         });
+        await firestore.collection('users').doc(uid).set({
+          'Name': _name,
+          'email': _email,
+          'password': _password,
+          'Contact Person': _contactPerson,
+          'State': _state,
+          'Phone Number': _phoneNo,
+          'City': _city,
+          "Zipcode": _zipcode,
+          'Address': _address,
+          'User Type': _userType,
+          'Cuisine': _cuisine,
+          'Donor Type': _donorType
+        });
+
         final snackBar = SnackBar(content: Text('You Are Registered!'));
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -660,10 +675,10 @@ class _SignupDonorState extends State<SignupDonor> {
                               _phoneNoController.clear();
                               _zipcodeController.clear();
                               _contactPersonController.clear();
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HomeDonor()));
+                              //   Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //           builder: (context) => HomeDonor()));
                             });
                           },
                           child: Text(

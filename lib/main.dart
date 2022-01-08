@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, usersnapshot) {
+          Widget pageState = Home();
           if (usersnapshot.hasData) {
             var _userType = "";
             try {
@@ -34,12 +35,18 @@ class MyApp extends StatelessWidget {
                   .get()
                   .then((value) {
                 _userType = value.data()!['User Type'].toString();
+                print("hello $_userType");
+                if (_userType == "volunteer") {
+                  pageState = Home();
+                } else {
+                  pageState = HomeDonor();
+                }
               });
-              if (!_userType.isEmpty) return Home();
             } catch (e) {
               print("error" + e.toString());
             }
-            return HomeDonor();
+
+            return pageState;
           } else
             return AuthScreen();
         },

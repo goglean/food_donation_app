@@ -33,7 +33,7 @@ class _LoginFormState extends State<LoginForm> {
       _formkey.currentState?.save();
 
       await submitForm(_email, _password).then((userType) {
-        userType = _userType;
+        _userType = userType;
         print('auth $_userType');
       });
       //print('auth $_userType');
@@ -60,8 +60,8 @@ class _LoginFormState extends State<LoginForm> {
 
       //Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
     } catch (err) {
-      // Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => HomeDonor()));
+      //Navigator.push(
+      //   context, MaterialPageRoute(builder: (context) => HomeDonor()));
       print("error           " + err.toString());
     }
     return userType;
@@ -171,7 +171,7 @@ class _LoginFormState extends State<LoginForm> {
                           //       MaterialPageRoute(
                           //           builder: (context) => HomeDonor()));
                           // }
-                          // Navigator.of(context).pop();
+                          Navigator.of(context).pop();
                           emailController.clear();
                           passwordController.clear();
                         },

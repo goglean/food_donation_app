@@ -1,6 +1,6 @@
 # food_donating_app
 
-A new Flutter project.
+A new Flutter project for food donation app.
 
 ## Getting Started
 
@@ -8,8 +8,8 @@ This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- [Wireframe](https://marvelapp.com/prototype/2d1iaj96/screen/84394657)
+
 
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
