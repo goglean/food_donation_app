@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/signupDonor.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'package:food_donating_app/screens/signupVolunteer.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:food_donating_app/resources/string.dart' as Resources;
 
 import 'loginpage.dart';
 //import 'package:url_launcher/link.dart';
@@ -86,15 +87,16 @@ class _AuthScreenState extends State<AuthScreen> {
                 //   height: MediaQuery.of(context).size.height * 0.01,
                 // ),
                 Container(
-                    // color: Colors.pink,
-                    height: MediaQuery.of(context).size.height * 0.15,
-                    child: Text(
-                      "Go Glean is a registered nonprofit that provides a web based \" marketplace \" allowing excess food to be donated from the food to be donated from the food service industry to qualified charities that work with the needy.",
-                      style: GoogleFonts.roboto(
-                        fontSize: MediaQuery.of(context).size.height * 0.02,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )),
+                  // color: Colors.pink,
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: Text(
+                    "Go Glean is a registered nonprofit that provides a web based \" marketplace \" allowing excess food to be donated from the food to be donated from the food service industry to qualified charities that work with the needy.",
+                    style: GoogleFonts.roboto(
+                      fontSize: MediaQuery.of(context).size.height * 0.02,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
                 // SizedBox(
                 //   height: MediaQuery.of(context).size.height * 0.005,
                 // ),
@@ -134,16 +136,14 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                             IconButton(
                               icon: const Icon(Icons.brightness_1),
-                              onPressed: () {},
-                              // onPressed: () async {
-                              //   const url =
-                              //       'https://pub.dev/packages/flutter_signin_button';
-                              //   if (await canLaunch(url)) {
-                              //     await launch(url);
-                              //   } else {
-                              //     throw 'Could not launch $url';
-                              //   }
-                              // }
+                              onPressed: () async {
+                                const url = Resources.WEBSITE_NAME;
+                                if (await canLaunch(url)) {
+                                  await launch(url);
+                                } else {
+                                  throw 'Could not launch $url';
+                                }
+                              },
                             ),
                           ],
                         ),
