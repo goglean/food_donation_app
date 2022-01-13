@@ -34,7 +34,7 @@ class _LoginFormState extends State<LoginForm> {
 
       await submitForm(_email, _password).then((userType) {
         _userType = userType;
-        print('auth $_userType');
+        // print('auth $_userType');
       });
       //print('auth $_userType');
     }
@@ -55,14 +55,14 @@ class _LoginFormState extends State<LoginForm> {
           .then((value) {
         userType = value.data()!['User Type'].toString();
 
-        print('au $userType');
+        // print('au $userType');
       });
 
       //Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
     } catch (err) {
       //Navigator.push(
       //   context, MaterialPageRoute(builder: (context) => HomeDonor()));
-      print("error           " + err.toString());
+      // print("error           " + err.toString());
     }
     return userType;
   }

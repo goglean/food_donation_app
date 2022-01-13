@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/myPickups.dart';
 import 'package:food_donating_app/screens/profileVolunteer.dart';
+import 'package:food_donating_app/widget/map.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatefulWidget {
@@ -25,7 +26,7 @@ class _HomeState extends State<Home> {
       setState(() {
         _userName = value.data()!['Name'].toString();
         _userName = _userName.toUpperCase();
-        print('$_userName');
+        // print('$_userName');
       });
     });
   }
@@ -48,7 +49,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Theme.of(context).primaryColor,
         title: Text("HOME"),
       ),
-      body: Container(),
+      body: MapSample(),
       drawer: Drawer(
         child: ListView(
           // Important: Remove any padding from the ListView.

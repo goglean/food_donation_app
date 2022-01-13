@@ -89,10 +89,10 @@ class _SignupDonorState extends State<SignupDonor> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         Navigator.of(context).pop();
       } catch (e) {
-        print('error' + e.toString());
+        // print('error' + e.toString());
       }
     } else {
-      print('else');
+      // print('else');
     }
   }
 
@@ -102,12 +102,12 @@ class _SignupDonorState extends State<SignupDonor> {
         .doc('cuisines')
         .get()
         .then((value) {
-      print("hello");
+      // print("hello");
       for (int i = 1; i <= value.data()!.length; i++) {
         cuisine.add(value.data()![i.toString()].toString());
         // print(cuisine[i]);
       }
-      print(cuisine);
+      // print(cuisine);
     });
   }
 
@@ -117,12 +117,12 @@ class _SignupDonorState extends State<SignupDonor> {
         .doc('Type of donors')
         .get()
         .then((value) {
-      print("hello");
+      // print("hello");
       for (int i = 1; i <= value.data()!.length; i++) {
         donorType.add(value.data()![i.toString()].toString());
         // print(cuisine[i]);
       }
-      print(donorType);
+      // print(donorType);
     });
   }
 
