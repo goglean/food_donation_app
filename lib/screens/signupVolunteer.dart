@@ -111,6 +111,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                     children: [
                       SizedBox(height: 10),
                       TextFormField(
+                        cursorColor: Theme.of(context).primaryColor,
                         controller: _nameController,
                         keyboardType: TextInputType.emailAddress,
                         key: ValueKey('name'),
@@ -145,6 +146,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                         height: 5,
                       ),
                       TextFormField(
+                        cursorColor: Theme.of(context).primaryColor,
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         key: ValueKey('email'),
@@ -179,6 +181,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                         height: 5,
                       ),
                       TextFormField(
+                        cursorColor: Theme.of(context).primaryColor,
                         controller: _passwordController,
                         obscureText: true,
                         keyboardType: TextInputType.emailAddress,
@@ -214,6 +217,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                         height: 5,
                       ),
                       TextFormField(
+                        cursorColor: Theme.of(context).primaryColor,
                         controller: _phoneNoController,
                         keyboardType: TextInputType.phone,
                         key: ValueKey('phoneNo'),
@@ -248,6 +252,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                         height: 5,
                       ),
                       TextFormField(
+                        cursorColor: Theme.of(context).primaryColor,
                         controller: _addressController,
                         keyboardType: TextInputType.emailAddress,
                         key: ValueKey('address'),
@@ -287,6 +292,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                           Container(
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: TextFormField(
+                              cursorColor: Theme.of(context).primaryColor,
                               controller: _zipcodeController,
                               keyboardType: TextInputType.emailAddress,
                               key: ValueKey('zipcode'),
@@ -325,6 +331,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                           Container(
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: TextFormField(
+                              cursorColor: Theme.of(context).primaryColor,
                               controller: _cityController,
                               keyboardType: TextInputType.emailAddress,
                               key: ValueKey('city'),

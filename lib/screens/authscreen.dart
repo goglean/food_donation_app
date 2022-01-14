@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:food_donating_app/screens/signupVolunteer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:food_donating_app/resources/string.dart' as Resources;
+//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'loginpage.dart';
 
@@ -46,8 +47,6 @@ class _AuthScreenState extends State<AuthScreen> {
                             color: Colors.black),
                       ),
                       Container(
-                        // color: Colors.yellow,
-                        //width: MediaQuery.of(context).size.width * 0.4,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -85,7 +84,6 @@ class _AuthScreenState extends State<AuthScreen> {
                 //   height: MediaQuery.of(context).size.height * 0.01,
                 // ),
                 Container(
-                  // color: Colors.pink,
                   height: MediaQuery.of(context).size.height * 0.15,
                   child: Text(
                     "Go Glean is a registered nonprofit that provides a web based \" marketplace \" allowing excess food to be donated from the food to be donated from the food service industry to qualified charities that work with the needy.",

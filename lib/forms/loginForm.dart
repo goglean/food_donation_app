@@ -57,21 +57,17 @@ class _LoginFormState extends State<LoginForm> {
 
         // print('au $userType');
       });
-
-      //Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
     } catch (err) {
+
       //Navigator.push(
       //   context, MaterialPageRoute(builder: (context) => HomeDonor()));
       // print("error           " + err.toString());
+
+      print("error " + err.toString());
+
     }
     return userType;
   }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   startAuthentication();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +82,7 @@ class _LoginFormState extends State<LoginForm> {
               child: Column(
                 children: [
                   TextFormField(
+                    cursorColor: Theme.of(context).primaryColor,
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                     key: ValueKey('email'),
@@ -119,6 +116,7 @@ class _LoginFormState extends State<LoginForm> {
                     height: 5,
                   ),
                   TextFormField(
+                    cursorColor: Theme.of(context).primaryColor,
                     controller: passwordController,
                     keyboardType: TextInputType.emailAddress,
                     obscureText: true,
