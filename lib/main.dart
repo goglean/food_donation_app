@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
             } catch (e) {
               print("error" + e.toString());
             }
-            print("hello $_userType");
+            // print("hello $_userType");
             if (_userType == "volunteer") {
               return Home();
             } else

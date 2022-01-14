@@ -78,10 +78,10 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         Navigator.of(context).pop();
       } catch (e) {
-        print('error' + e.toString());
+        // print('error' + e.toString());
       }
     } else {
-      print('else');
+      // print('else');
     }
   }
 
