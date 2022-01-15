@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_donating_app/screens/home.dart';
-import 'package:food_donating_app/screens/homeDonor.dart';
 import 'package:food_donating_app/screens/loginpage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -162,6 +160,7 @@ class _SignupDonorState extends State<SignupDonor> {
                   child: Column(
                     children: [
                       TextFormField(
+                        cursorColor: Theme.of(context).primaryColor,
                         controller: _nameController,
                         keyboardType: TextInputType.emailAddress,
                         key: ValueKey('name'),
@@ -196,6 +195,7 @@ class _SignupDonorState extends State<SignupDonor> {
                         height: 5,
                       ),
                       TextFormField(
+                        cursorColor: Theme.of(context).primaryColor,
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         key: ValueKey('email'),
@@ -230,6 +230,7 @@ class _SignupDonorState extends State<SignupDonor> {
                         height: 5,
                       ),
                       TextFormField(
+                        cursorColor: Theme.of(context).primaryColor,
                         controller: _passwordController,
                         obscureText: true,
                         keyboardType: TextInputType.emailAddress,
@@ -268,6 +269,7 @@ class _SignupDonorState extends State<SignupDonor> {
                         height: 5,
                       ),
                       TextFormField(
+                        cursorColor: Theme.of(context).primaryColor,
                         controller: _contactPersonController,
                         keyboardType: TextInputType.emailAddress,
                         key: ValueKey('Contact Person'),
@@ -299,6 +301,7 @@ class _SignupDonorState extends State<SignupDonor> {
                         ),
                       ),
                       TextFormField(
+                        cursorColor: Theme.of(context).primaryColor,
                         controller: _phoneNoController,
                         keyboardType: TextInputType.phone,
                         key: ValueKey('phoneNo'),
@@ -333,6 +336,7 @@ class _SignupDonorState extends State<SignupDonor> {
                         height: 5,
                       ),
                       TextFormField(
+                        cursorColor: Theme.of(context).primaryColor,
                         controller: _addressController,
                         keyboardType: TextInputType.emailAddress,
                         key: ValueKey('address'),
@@ -372,6 +376,7 @@ class _SignupDonorState extends State<SignupDonor> {
                           Container(
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: TextFormField(
+                              cursorColor: Theme.of(context).primaryColor,
                               controller: _zipcodeController,
                               keyboardType: TextInputType.emailAddress,
                               key: ValueKey('zipcode'),
@@ -410,6 +415,7 @@ class _SignupDonorState extends State<SignupDonor> {
                           Container(
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: TextFormField(
+                              cursorColor: Theme.of(context).primaryColor,
                               controller: _cityController,
                               keyboardType: TextInputType.emailAddress,
                               key: ValueKey('city'),
