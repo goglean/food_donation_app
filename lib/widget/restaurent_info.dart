@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:food_donating_app/shared/loading.dart';
-import 'package:food_donating_app/widget/map_service.dart';
 import 'package:food_donating_app/widget/restaurents.dart';
-import 'package:provider/src/provider.dart';
 
 class RestaurentInfo extends StatefulWidget {
-  const RestaurentInfo({Key? key}) : super(key: key);
+  final Restaurent? curRestaurent;
+
+  const RestaurentInfo(this.curRestaurent);
 
   @override
   _RestaurentInfoState createState() => _RestaurentInfoState();
@@ -14,23 +13,56 @@ class RestaurentInfo extends StatefulWidget {
 class _RestaurentInfoState extends State<RestaurentInfo> {
   @override
   Widget build(BuildContext context) {
-    final restaurentInfo = context.watch<Restaurent>();
-
-    return StreamBuilder<Restaurent>(
-      stream: MapService(restaurentId: restaurentInfo.uniId).restaurentData,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          print('${snapshot.data!.name}');
-          print('${snapshot.data!.posLat}');
-          print('${snapshot.data!.posLng}');
-          print('${snapshot.data!.uniId}');
-          print('objectdnfsdflbfkgblgkabaiblefkubalgbakj00');
-          print('\n\n\n\n\n\n\n\n\n\n\n\n');
-          return Text('data');
-        } else {
-          return Loading();
-        }
-      },
+    return Wrap(
+      children: [
+        Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  color: widget.curRestaurent!.isClaimed
+                      ? Colors.red[400]
+                      : Colors.green[400],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 8, 0, 8),
+                  child: Text(
+                    widget.curRestaurent!.isClaimed ? 'CLAIMED' : 'UNCLAIMED',
+                    // style: TextStyle(
+                    //   backgroundColor: widget.curRestaurent!.isClaimed
+                    //       ? Colors.red[600]
+                    //       : Colors.green[600],
+                    // ),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.ac_unit),
+              title: Text(
+                widget.curRestaurent!.name,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54,
+                ),
+              ),
+              subtitle: Text(
+                '${widget.curRestaurent!.openTime} - ${widget.curRestaurent!.closeTime}\ndistance',
+              ),
+            )
+          ],
+        ),
+        SizedBox(height: 150),
+      ],
     );
   }
 }
