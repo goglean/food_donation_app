@@ -218,7 +218,7 @@ class _DonateItemPageState extends State<DonateItemPage> {
         ),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text(
-          "Step 1: Donation Items",
+          "1: Donation Items",
           style: GoogleFonts.roboto(
             color: Theme.of(context).primaryColor,
           ),

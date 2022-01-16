@@ -17,10 +17,10 @@ class _loginpageState extends State<signinpage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           'SignIn',
-          style: TextStyle(color: Colors.orange),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: Center(
@@ -34,7 +34,7 @@ class _loginpageState extends State<signinpage> {
                   child: Text(
                     'SignIn',
                     style: TextStyle(
-                        color: Colors.orange,
+                        color: Theme.of(context).primaryColor,
                         fontSize: 20,
                         fontWeight: FontWeight.w500),
                   )),
@@ -93,7 +93,7 @@ class _loginpageState extends State<signinpage> {
                   height: 50,
                   width: 20,
                   decoration: BoxDecoration(
-                      color: Colors.orange,
+                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(20)),
                   child: TextButton(
                       onPressed: () {
@@ -115,8 +115,8 @@ class _loginpageState extends State<signinpage> {
                                 msg: 'User not verified',
                                 gravity: ToastGravity.BOTTOM,
                                 fontSize: 18,
-                                backgroundColor: Colors.white,
-                                textColor: Colors.black);
+                                backgroundColor: Theme.of(context).primaryColor,
+                                textColor: Colors.white);
                           }
                         });
                       },
