@@ -1,5 +1,5 @@
 import 'dart:async';
-// import 'package:geolocator/geolocator.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_donating_app/shared/loading.dart';
@@ -24,42 +24,44 @@ class _RestaurentMapState extends State<RestaurentMap> {
   ///
   /// When the location services are not enabled or permissions
   /// are denied the `Future` will return an error.
-  // Future<Position> _determinePosition() async {
-  //   bool serviceEnabled;
-  //   LocationPermission permission;
+  Future<Position> _determinePosition() async {
+    //   bool serviceEnabled;
+    LocationPermission permission;
 
-  //   // Test if location services are enabled.
-  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!serviceEnabled) {
-  //     // Location services are not enabled don't continue
-  //     // accessing the position and request users of the
-  //     // App to enable the location services.
-  //     return Future.error('Location services are disabled.');
-  //   }
+    //   // Test if location services are enabled.
+    //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    //   if (!serviceEnabled) {
+    //     // Location services are not enabled don't continue
+    //     // accessing the position and request users of the
+    //     // App to enable the location services.
+    //     return Future.error('Location services are disabled.');
+    //   }
 
-  //   permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       // Permissions are denied, next time you could try
-  //       // requesting permissions again (this is also where
-  //       // Android's shouldShowRequestPermissionRationale
-  //       // returned true. According to Android guidelines
-  //       // your App should show an explanatory UI now.
-  //       return Future.error('Location permissions are denied');
-  //     }
-  //   }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    } else {
+      print('Location not avaiable');
+    }
 
-  //   if (permission == LocationPermission.deniedForever) {
-  //     // Permissions are denied forever, handle appropriately.
-  //     return Future.error(
-  //         'Location permissions are permanently denied, we cannot request permissions.');
-  //   }
+    //   if (permission == LocationPermission.deniedForever) {
+    //     // Permissions are denied forever, handle appropriately.
+    //     return Future.error(
+    //         'Location permissions are permanently denied, we cannot request permissions.');
+    //   }
 
-  //   // When we reach here, permissions are granted and we can
-  //   // continue accessing the position of the device.
-  //   return await Geolocator.getCurrentPosition();
-  // }
+    //   // When we reach here, permissions are granted and we can
+    //   // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
 
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -134,31 +136,30 @@ class _RestaurentMapState extends State<RestaurentMap> {
       // print(restaurentData.isClaimed);
     }
 
-    // void curLocation() async {
-    //   Position curPos = await _determinePosition();
-    //   bool isLocationServiceEnabled =
-    //       await Geolocator.isLocationServiceEnabled();
-    //   if (isLocationServiceEnabled) {
-    //     setState(() {
-    //       curCameraPos = CameraPosition(
-    //         target: LatLng(curPos.latitude, curPos.longitude),
-    //         zoom: 14.4746,
-    //       );
-    //     });
-    //   }
-    // }
+    Future<int> curLocation() async {
+      Position curPos = await _determinePosition();
+      bool isLocationServiceEnabled =
+          await Geolocator.isLocationServiceEnabled();
+      if (isLocationServiceEnabled) {
+        print('${curPos.longitude} - ${curPos.latitude}');
+        print('\n\n\n\n\n\n\n\n\n\n');
+        // setState(() {
+        //   curCameraPos = CameraPosition(
+        //     target: LatLng(curPos.latitude, curPos.longitude),
+        //     zoom: 14.4746,
+        //   );
+        // });
+      }
+      return 0;
+    }
 
     // curLocation();
 
     void _showRestaurentPanel(String restaurentId) {
       showModalBottomSheet(
         context: context,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(25),
-            topRight: Radius.circular(25),
-          ),
-        ),
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
         builder: (context) {
           getRestaurentInfo(restaurentId);
           if (curRestaurent != null) {
@@ -183,8 +184,9 @@ class _RestaurentMapState extends State<RestaurentMap> {
           double.parse(restaurent[i].posLng),
         ),
         // onTap: () => _showRestaurentPanel,
-        onTap: () {
+        onTap: () async {
           _showRestaurentPanel(restaurent[i].uniId);
+          // await curLocation();
         },
       ));
     }

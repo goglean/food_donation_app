@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food_donating_app/widget/charity.dart';
 import 'package:food_donating_app/widget/restaurents.dart';
 
 class MapService {
-  final String? restaurentId;
-  MapService({this.restaurentId});
+  final String? uniqueId;
+  MapService({this.uniqueId});
 
   final CollectionReference restaurentCollection =
       FirebaseFirestore.instance.collection('restaurent');
+
+  final CollectionReference charityCollection =
+      FirebaseFirestore.instance.collection('charity');
 
   Restaurent _restaurentDataFromSnapshot(DocumentSnapshot snapshot) {
     return Restaurent(
@@ -21,13 +25,12 @@ class MapService {
   }
 
   Stream<Restaurent> get restaurentData => restaurentCollection
-      .doc(restaurentId)
+      .doc(uniqueId)
       .snapshots()
       .map(_restaurentDataFromSnapshot);
 
-  Future<Restaurent> getRestaurentDataFromFirebase(String restaurentId) async {
-    DocumentSnapshot snapshot =
-        await restaurentCollection.doc(restaurentId).get();
+  Future<Restaurent> getRestaurentDataFromFirebase(String uniqueId) async {
+    DocumentSnapshot snapshot = await restaurentCollection.doc(uniqueId).get();
     var data = snapshot.data() as Map;
     return Restaurent(
       name: data['name'],
@@ -47,6 +50,23 @@ class MapService {
       return true;
     else
       false;
+  }
+
+  List<Charity> _charityListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return Charity(
+        name: doc['name'] ?? '',
+        posLat: doc['posLat'] ?? '',
+        posLng: doc['posLng'] ?? '',
+        uniId: doc['uniId'] ?? '',
+        openTime: doc['openTime'] ?? '',
+        closeTime: doc['closeTime'] ?? '',
+      );
+    }).toList();
+  }
+
+  Stream<List<Charity>> get charities {
+    return charityCollection.snapshots().map(_charityListFromSnapshot);
   }
 
   List<Restaurent> _restaurentListFromSnapshot(QuerySnapshot snapshot) {
