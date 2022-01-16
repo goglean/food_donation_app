@@ -20,7 +20,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var _userType = "";
+  var _userType = "a";
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
