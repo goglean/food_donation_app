@@ -505,7 +505,12 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            setState(() {
+                            FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                                email: _emailController.text,
+                                password: _passwordController.text)
+                            .then((value) => FirebaseAuth.instance.currentUser
+                                ?.sendEmailVerification().then((value) => setState(() {
                               submitForm();
                               _cityController.clear();
                               _addressController.clear();
@@ -519,7 +524,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                               //     context,
                               //     MaterialPageRoute(
                               //         builder: (context) => Home()));
-                            });
+                            })));
                           },
                           child: Text(
                             "Submit",

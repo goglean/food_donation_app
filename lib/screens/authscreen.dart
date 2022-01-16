@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_donating_app/screens/login.dart';
 import 'package:food_donating_app/screens/signupDonor.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:food_donating_app/screens/signupVolunteer.dart';
@@ -10,7 +11,6 @@ import 'loginpage.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
-
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
@@ -19,6 +19,24 @@ class _AuthScreenState extends State<AuthScreen> {
   String _userType = "volunteer";
   bool pressAttention = true;
   bool press = false;
+    void mailLaunch(command) async {
+    if (await canLaunch(command)) {
+      await launch(command);
+    } else {
+      print('Could not launch $command');
+    }
+  }
+  final Uri params = Uri(
+  scheme: 'mailto',
+  path: 'prajeeth347@gmail.com',
+);
+void test() async{
+var url = params.toString();
+if (await canLaunch(url)) {
+  await launch(url);
+} else {
+  throw 'Could not launch $url';
+}}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,13 +139,24 @@ class _AuthScreenState extends State<AuthScreen> {
                             IconButton(
                               icon: const Icon(Icons.email),
                               onPressed: () {
-                                setState(() {});
+                                
+                                test();
+                               // setState(() {});
                               },
                             ),
                             IconButton(
                               icon: const Icon(Icons.facebook),
-                              onPressed: () {
-                                setState(() {});
+                              onPressed: () async{
+                                var url = "https://www.instagram.com/p/CTjjmI3j91k1Ke-ahvLOQWjdMYzoO0mpDEaIHw0/?utm_medium=copy_link";
+
+if (await canLaunch(url)) {
+  await launch(
+    url,
+    universalLinksOnly: true,
+  );
+} else {
+  throw 'There was a problem to open the url: $url';
+}
                               },
                             ),
                             IconButton(
@@ -239,7 +268,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => LoginPage()));
+                                        builder: (context) => signinpage()));
                               }),
                           child: Text(
                             "LOGIN",
