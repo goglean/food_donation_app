@@ -20,10 +20,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var _userType = "a";
+  var _userType = "";
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primaryColor: Color(0xFFFF6E40),
@@ -54,6 +58,6 @@ class _MyAppState extends State<MyApp> {
             return AuthScreen();
         },
       ),
-    );
+    ));
   }
 }

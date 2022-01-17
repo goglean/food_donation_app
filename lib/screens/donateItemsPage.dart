@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_donating_app/screens/pickupDetails.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 
 class CartItem {
@@ -218,7 +217,7 @@ class _DonateItemPageState extends State<DonateItemPage> {
         ),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text(
-          "Step 1: Donation Items",
+          "1: Donation Items",
           style: GoogleFonts.roboto(
             color: Theme.of(context).primaryColor,
           ),
