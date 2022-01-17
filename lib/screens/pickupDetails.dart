@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -11,7 +12,16 @@ class PickupDetails extends StatefulWidget {
 }
 
 class _PickupDetailsState extends State<PickupDetails> {
-  String _selectedGender = 'Single Date';
+  String _selecteddetails = "";
+  String location = "";
+  String startdate = "";
+  String enddate = "";
+  String starttime = "";
+  String endtime = "";
+  String pickup = "";
+  String lat = "";
+  String long = "";
+  final myController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,10 +68,10 @@ class _PickupDetailsState extends State<PickupDetails> {
                     ListTile(
                 leading: Radio<String>(
                   value: 'Single Date',
-                  groupValue: _selectedGender,
+                  groupValue: _selecteddetails,
                   onChanged: (value) {
                     setState(() {
-                      _selectedGender = value!;
+                      _selecteddetails = value!;
                     });
                   },
                 ),
@@ -70,10 +80,10 @@ class _PickupDetailsState extends State<PickupDetails> {
               ListTile(
                 leading: Radio<String>(
                   value: 'Date Range',
-                  groupValue: _selectedGender,
+                  groupValue: _selecteddetails,
                   onChanged: (value) {
                     setState(() {
-                      _selectedGender = value!;
+                      _selecteddetails = value!;
                     });
                   },
                 ),
@@ -102,7 +112,10 @@ class _PickupDetailsState extends State<PickupDetails> {
 
     return true;
   },
-  onChanged: (val) => print(val),
+  onChanged: (val){
+    print(val);
+    startdate = val;
+  } ,
   validator: (val) {
     print(val);
     return null;
@@ -132,7 +145,10 @@ class _PickupDetailsState extends State<PickupDetails> {
     }
     return true;
   },
-  onChanged: (val) => print(val),
+  onChanged: (val)  {
+    print(val);
+    enddate = val;
+    },
   validator: (val) {
     print(val);
     return null;
@@ -152,22 +168,13 @@ class _PickupDetailsState extends State<PickupDetails> {
                       SizedBox(
                 width: 130,
               child:DateTimePicker(
-  type: DateTimePickerType.date,
-  dateMask: 'd MMM, yyyy',
-  initialValue: DateTime.now().toString(),
-  firstDate: DateTime(2000),
-  lastDate: DateTime(2100),
-  icon: Icon(Icons.event),
-  dateLabelText: 'Date',
-  timeLabelText: "Time",
-  selectableDayPredicate: (date) {
-    if (date.weekday == 6 || date.weekday == 7) {
-      return false;
-    }
-
-    return true;
-  },
-  onChanged: (val) => print(val),
+                initialValue: DateTime.now().hour.toString() + ":" + DateTime.now().minute.toString(),
+  type: DateTimePickerType.time,
+  icon: Icon(Icons.timer),
+  onChanged: (val)  {
+    print(val);
+    starttime = val;
+    },
   validator: (val) {
     print(val);
     return null;
@@ -183,21 +190,13 @@ class _PickupDetailsState extends State<PickupDetails> {
                       SizedBox(
                 width: 130,
               child:DateTimePicker(
-  type: DateTimePickerType.date,
-  dateMask: 'd MMM, yyyy',
-  initialValue: DateTime.now().toString(),
-  firstDate: DateTime(2000),
-  lastDate: DateTime(2100),
-  icon: Icon(Icons.event),
-  dateLabelText: 'Date',
-  timeLabelText: "Time",
-  selectableDayPredicate: (date) {
-    if (date.weekday == 6 || date.weekday == 7) {
-      return false;
-    }
-    return true;
-  },
-  onChanged: (val) => print(val),
+                initialValue: DateTime.now().hour.toString() + ":" + DateTime.now().minute.toString(),
+  type: DateTimePickerType.time,
+  icon: Icon(Icons.timer),
+  onChanged: (val)  {
+    print(val);
+    endtime = val;
+    },
   validator: (val) {
     print(val);
     return null;
@@ -210,6 +209,7 @@ class _PickupDetailsState extends State<PickupDetails> {
               ),
             Padding(padding: EdgeInsets.all(10)
             ),
+            
               Text("Pick-Up(Optional)",style: TextStyle(color: Theme.of(context).primaryColor),),
               Padding(padding: EdgeInsets.all(10),
               child: 
@@ -219,6 +219,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                 padding: EdgeInsets.all(10),
                 child:
               TextField(
+                controller: myController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20)
@@ -237,7 +238,20 @@ class _PickupDetailsState extends State<PickupDetails> {
  color: Theme.of(context).primaryColor, 
  textColor: Colors.white, 
  child: new Text("push"), 
- onPressed: () => {}, 
+ onPressed: ()  {
+   FirebaseFirestore.instance
+                              .collection("pickup_details")
+                              .doc(DateTime.now().toString())
+                              .set({
+                                "days" : _selecteddetails,
+                                "details" : myController.text,
+                                "enddate" : enddate,
+                                "endtime" : endtime,
+                                "startdate": startdate,
+                                "starttime" : starttime
+                          });
+   //print(_selecteddetails + " " + startdate + " " + enddate + " " + starttime + " " + endtime + " " + lat + " " + long + myController.text);
+ }, 
  splashColor: Colors.redAccent,
 ),
           ],)
