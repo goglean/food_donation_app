@@ -29,6 +29,19 @@ class MapService {
       .snapshots()
       .map(_restaurentDataFromSnapshot);
 
+  Future<Charity> getCharityDataFromFirebase(String uniqueId) async {
+    DocumentSnapshot snapshot = await charityCollection.doc(uniqueId).get();
+    var data = snapshot.data() as Map;
+    return Charity(
+      name: data['name'],
+      posLat: data['posLat'],
+      posLng: data['posLng'],
+      uniId: data['uniId'],
+      openTime: data['openTime'],
+      closeTime: data['closeTime'],
+    );
+  }
+
   Future<Restaurent> getRestaurentDataFromFirebase(String uniqueId) async {
     DocumentSnapshot snapshot = await restaurentCollection.doc(uniqueId).get();
     var data = snapshot.data() as Map;

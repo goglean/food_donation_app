@@ -3,6 +3,7 @@ import 'package:food_donating_app/widget/available_pickup_page.dart';
 import 'package:food_donating_app/widget/charity.dart';
 import 'package:food_donating_app/widget/map_service.dart';
 import 'package:food_donating_app/widget/restaurents.dart';
+import 'package:food_donating_app/widget/transition_screen.dart';
 import 'package:provider/provider.dart';
 
 class RestaurentInfo extends StatefulWidget {
@@ -34,11 +35,7 @@ class _RestaurentInfoState extends State<RestaurentInfo> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => StreamProvider<List<Charity?>>.value(
-                    initialData: [],
-                    value: MapService().charities,
-                    child: AvaiablePickups(),
-                  ),
+                  builder: (context) => TransitionScreen(),
                   settings: RouteSettings(
                     arguments: {'res': widget.curRestaurent},
                   ),
