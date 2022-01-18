@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_donating_app/screens/home.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class signinpage extends StatefulWidget {
   @override
@@ -15,12 +16,13 @@ class _loginpageState extends State<signinpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
-          'SignIn',
-          style: TextStyle(color: Colors.white),
+          'Authentication',
+          style: GoogleFonts.roboto(
+              color: Theme.of(context).scaffoldBackgroundColor),
         ),
       ),
       body: Center(
@@ -33,7 +35,7 @@ class _loginpageState extends State<signinpage> {
                   padding: EdgeInsets.all(10),
                   child: Text(
                     'SignIn',
-                    style: TextStyle(
+                    style: GoogleFonts.roboto(
                         color: Theme.of(context).primaryColor,
                         fontSize: 20,
                         fontWeight: FontWeight.w500),
@@ -42,14 +44,20 @@ class _loginpageState extends State<signinpage> {
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(10),
                 child: TextField(
-                  style: TextStyle(color: Colors.black),
+                  cursorColor: Theme.of(context).primaryColor,
+                  style: GoogleFonts.roboto(color: Colors.black),
                   controller: usernamecontroller,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor, width: 1),
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
-                    hintStyle: TextStyle(color: Colors.black),
+                    hintStyle: GoogleFonts.roboto(color: Colors.black),
                     hintText: 'Email ID',
                   ),
                 ),
@@ -58,20 +66,28 @@ class _loginpageState extends State<signinpage> {
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(10),
                 child: TextField(
+                  cursorColor: Theme.of(context).primaryColor,
                   obscureText: _isObscure,
-                  style: TextStyle(color: Colors.black),
+                  style: GoogleFonts.roboto(color: Colors.black),
                   controller: passwordcontroller,
                   keyboardType: TextInputType.streetAddress,
                   textCapitalization: TextCapitalization.sentences,
                   decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor, width: 1),
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
-                    hintStyle: TextStyle(color: Colors.black),
+                    hintStyle: GoogleFonts.roboto(color: Colors.black),
                     hintText: 'Enter Password',
                     suffixIcon: IconButton(
                       icon: Icon(
-                          _isObscure ? Icons.visibility : Icons.visibility_off),
+                        _isObscure ? Icons.visibility : Icons.visibility_off,
+                        color: Theme.of(context).primaryColor,
+                      ),
                       onPressed: () {
                         setState(() {
                           _isObscure = !_isObscure;
@@ -82,11 +98,11 @@ class _loginpageState extends State<signinpage> {
                 ),
               ),
               TextButton(
-                  onPressed: () {
-                   
-                  },
+                  onPressed: () {},
                   child: Text('Forgot Password',
-                      style: TextStyle(color: Colors.blue, fontSize: 15))),
+                      style: GoogleFonts.roboto(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 15))),
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Container(
@@ -122,7 +138,11 @@ class _loginpageState extends State<signinpage> {
                       },
                       child: Text(
                         'Signin',
-                        style: TextStyle(color: Colors.white),
+                        style: GoogleFonts.roboto(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: MediaQuery.of(context).size.height * 0.03,
+                        ),
                       )),
                 ),
               ),
