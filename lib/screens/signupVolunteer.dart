@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/home.dart';
-import 'package:food_donating_app/screens/login.dart';
 import 'package:food_donating_app/screens/loginpage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -49,7 +48,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
             email: _email, password: _password);
         final User user = result.user!;
         String uid = user.uid;
-
+        FirebaseAuth.instance.currentUser?.sendEmailVerification();
         await firestore.collection('users').doc(uid).set({
           'Name': _name,
           'email': _email,
@@ -506,28 +505,21 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            FirebaseAuth.instance
-                                .createUserWithEmailAndPassword(
-                                    email: _emailController.text,
-                                    password: _passwordController.text)
-                                .then((value) => FirebaseAuth
-                                    .instance.currentUser
-                                    ?.sendEmailVerification()
-                                    .then((value) => setState(() {
-                                          submitForm();
-                                          _cityController.clear();
-                                          _addressController.clear();
-                                          _nameController.clear();
-                                          _emailController.clear();
-                                          _passwordController.clear();
-                                          _addressController.clear();
-                                          _phoneNoController.clear();
-                                          _zipcodeController.clear();
-                                          // Navigator.push(
-                                          //     context,
-                                          //     MaterialPageRoute(
-                                          //         builder: (context) => Home()));
-                                        })));
+                            setState(() {
+                              submitForm();
+                              _cityController.clear();
+                              _addressController.clear();
+                              _nameController.clear();
+                              _emailController.clear();
+                              _passwordController.clear();
+                              _addressController.clear();
+                              _phoneNoController.clear();
+                              _zipcodeController.clear();
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => Home()));
+                            });
                           },
                           child: Text(
                             "Submit",
@@ -544,7 +536,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => signinpage()));
+                                      builder: (context) => LoginPage()));
                             });
                           },
                           child: RichText(
