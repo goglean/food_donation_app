@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_donating_app/screens/login.dart';
 import 'package:food_donating_app/screens/loginpage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -672,22 +673,29 @@ class _SignupDonorState extends State<SignupDonor> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            setState(() {
-                              submitForm();
-                              _cityController.clear();
-                              _addressController.clear();
-                              _nameController.clear();
-                              _emailController.clear();
-                              _passwordController.clear();
-                              _addressController.clear();
-                              _phoneNoController.clear();
-                              _zipcodeController.clear();
-                              _contactPersonController.clear();
-                              //   Navigator.push(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //           builder: (context) => HomeDonor()));
-                            });
+                            FirebaseAuth.instance
+                                .createUserWithEmailAndPassword(
+                                    email: _emailController.text,
+                                    password: _passwordController.text)
+                                .then((value) => FirebaseAuth
+                                    .instance.currentUser
+                                    ?.sendEmailVerification()
+                                    .then((value) => setState(() {
+                                          submitForm();
+                                          _cityController.clear();
+                                          _addressController.clear();
+                                          _nameController.clear();
+                                          _emailController.clear();
+                                          _passwordController.clear();
+                                          _addressController.clear();
+                                          _phoneNoController.clear();
+                                          _zipcodeController.clear();
+                                          _contactPersonController.clear();
+                                          /*Navigator.pushReplacement(
+                                     context,
+                                     MaterialPageRoute(
+                                         builder: (context) => LoginPage()));*/
+                                        })));
                           },
                           child: Text(
                             "Submit",
@@ -704,7 +712,7 @@ class _SignupDonorState extends State<SignupDonor> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoginPage()));
+                                      builder: (context) => signinpage()));
                             });
                           },
                           child: RichText(
