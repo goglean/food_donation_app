@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, usersnapshot) {
-          if (usersnapshot.hasData) {
+          if (usersnapshot.hasData && FirebaseAuth.instance.currentUser?.emailVerified == true) {
             try {
               FirebaseFirestore.instance
                   .collection('users')

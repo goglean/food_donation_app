@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_donating_app/screens/home.dart';
+import 'package:food_donating_app/screens/homeDonor.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class signinpage extends StatefulWidget {
@@ -11,6 +13,23 @@ class signinpage extends StatefulWidget {
 
 class _loginpageState extends State<signinpage> {
   bool _isObscure = true;
+  var _userType;
+  usertype(){
+    FirebaseFirestore.instance
+                  .collection('users')
+                  .doc((FirebaseAuth.instance.currentUser)?.uid)
+                  .get()
+                  .then((value) {
+                setState(() {
+                  _userType = value.data()!['User Type'].toString();
+                });
+              });
+        if (_userType == "volunteer") {
+          return Home();
+        } else {
+          return HomeDonor();
+        }
+  }
   final usernamecontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
   @override
@@ -124,7 +143,7 @@ class _loginpageState extends State<signinpage> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => Home(),
+                                  builder: (context) => usertype(),
                                 ));
                           } else {
                             return Fluttertoast.showToast(
