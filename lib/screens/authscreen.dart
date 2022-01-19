@@ -265,7 +265,7 @@ if (await canLaunch(url)) {
                                   color: Theme.of(context).primaryColor)),
                           color: Theme.of(context).primaryColor,
                           onPressed: () => setState(() {
-                                Navigator.pushReplacement(
+                                Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => signinpage()));
