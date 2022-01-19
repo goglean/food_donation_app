@@ -15,6 +15,7 @@ class HomeDonor extends StatefulWidget {
 class _HomeDonorState extends State<HomeDonor> {
   FirebaseAuth auth = FirebaseAuth.instance;
   int _selectedIndex = 0;
+  String heading = "Donate Food";
   List<Widget> _widgetOptions = <Widget>[
     DonatePage(),
     PickupsDonor(),
@@ -25,6 +26,13 @@ class _HomeDonorState extends State<HomeDonor> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      if (index == 0)
+        heading = "Donate Food";
+      else if (index == 1)
+        heading = "My Donations";
+      else if (index == 2)
+        heading = "Help Center";
+      else if (index == 3) heading = "Profile";
     });
   }
 
@@ -33,7 +41,8 @@ class _HomeDonorState extends State<HomeDonor> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text("Home Donor"),
+        title: Text(heading),
+        centerTitle: true,
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -42,19 +51,19 @@ class _HomeDonorState extends State<HomeDonor> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                title: Text('Donate'),
+                label: 'Home',
                 backgroundColor: Color(0xFFFF6E40)),
             BottomNavigationBarItem(
                 icon: Icon(Icons.list),
-                title: Text('Pickups'),
+                label: 'Donations',
                 backgroundColor: Color(0xFFFF6E40)),
             BottomNavigationBarItem(
                 icon: Icon(Icons.help_center),
-                title: Text('Help'),
+                label: 'Help',
                 backgroundColor: Color(0xFFFF6E40)),
             BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                title: Text('Profile'),
+                label: 'Profile',
                 backgroundColor: Color(0xFFFF6E40)),
           ],
           type: BottomNavigationBarType.shifting,

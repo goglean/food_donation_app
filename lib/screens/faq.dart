@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class MyPickups extends StatefulWidget {
-  const MyPickups({Key? key}) : super(key: key);
+class FaqPage extends StatefulWidget {
+  const FaqPage({Key? key}) : super(key: key);
 
   @override
-  _MyPickupsState createState() => _MyPickupsState();
+  _FaqPageState createState() => _FaqPageState();
 }
 
-class _MyPickupsState extends State<MyPickups> {
+class _FaqPageState extends State<FaqPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +20,10 @@ class _MyPickupsState extends State<MyPickups> {
               Navigator.pop(context);
             },
           ),
-          title: Text("My Pickups"),
+          title: Text("FAQ"),
         ),
-        body: Container());
+        body: Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+        ));
   }
 }

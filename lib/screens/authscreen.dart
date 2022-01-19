@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:food_donating_app/screens/signupVolunteer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:food_donating_app/resources/string.dart' as Resources;
-//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'loginpage.dart';
 
@@ -19,24 +19,33 @@ class _AuthScreenState extends State<AuthScreen> {
   String _userType = "volunteer";
   bool pressAttention = true;
   bool press = false;
-    void mailLaunch(command) async {
+  var insta =
+      "https://www.instagram.com/p/CTjjmI3j91k1Ke-ahvLOQWjdMYzoO0mpDEaIHw0/?utm_medium=copy_link";
+  var fb =
+      "https://www.google.com/search?q=flowers&oq=flowers&aqs=chrome..69i57j0i67j0i433i512l2j0i512j46i512j0i433i512j0i512j46i512j0i512.2021j0j7&sourceid=chrome&ie=UTF-8";
+  var twitter = "https://twitter.com/";
+
+  void mailLaunch(command) async {
     if (await canLaunch(command)) {
       await launch(command);
     } else {
       print('Could not launch $command');
     }
   }
+
   final Uri params = Uri(
-  scheme: 'mailto',
-  path: 'prajeeth347@gmail.com',
-);
-void test() async{
-var url = params.toString();
-if (await canLaunch(url)) {
-  await launch(url);
-} else {
-  throw 'Could not launch $url';
-}}
+    scheme: 'mailto',
+    path: 'goglean.info@gmail.com',
+  );
+  void test() async {
+    var url = params.toString();
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,34 +148,45 @@ if (await canLaunch(url)) {
                             IconButton(
                               icon: const Icon(Icons.email),
                               onPressed: () {
-                                
                                 test();
-                               // setState(() {});
+                                // setState(() {});
                               },
                             ),
                             IconButton(
-                              icon: const Icon(Icons.facebook),
-                              onPressed: () async{
-                                var url = "https://www.instagram.com/p/CTjjmI3j91k1Ke-ahvLOQWjdMYzoO0mpDEaIHw0/?utm_medium=copy_link";
-
-if (await canLaunch(url)) {
-  await launch(
-    url,
-    universalLinksOnly: true,
-  );
-} else {
-  throw 'There was a problem to open the url: $url';
-}
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.brightness_1),
+                              icon: const Icon(FontAwesomeIcons.facebook,
+                                  color: Colors.blue),
                               onPressed: () async {
-                                const url = Resources.WEBSITE_NAME;
-                                if (await canLaunch(url)) {
-                                  await launch(url);
+                                if (await canLaunch(fb)) {
+                                  await launch(
+                                    fb,
+                                    universalLinksOnly: true,
+                                  );
                                 } else {
-                                  throw 'Could not launch $url';
+                                  throw 'There was a problem to open the url: $fb';
+                                }
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(FontAwesomeIcons.twitter,
+                                  color: Colors.blue),
+                              onPressed: () async {
+                                //const url = Resources.WEBSITE_NAME;
+                                if (await canLaunch(twitter)) {
+                                  await launch(twitter);
+                                } else {
+                                  throw 'Could not launch $twitter';
+                                }
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(FontAwesomeIcons.instagram,
+                                  color: Colors.pink),
+                              onPressed: () async {
+                                //const url = Resources.WEBSITE_NAME;
+                                if (await canLaunch(insta)) {
+                                  await launch(insta);
+                                } else {
+                                  throw 'Could not launch $insta';
                                 }
                               },
                             ),

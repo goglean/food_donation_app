@@ -223,85 +223,88 @@ class _DonateItemPageState extends State<DonateItemPage> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.15,
-                height: MediaQuery.of(context).size.height * 0.04,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Theme.of(context).primaryColor,
-                ),
-                child: Center(
-                  child: Text(
-                    "Qty",
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.roboto(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: MediaQuery.of(context).size.height * 0.02),
+      body: Padding(
+        padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.15,
+                  height: MediaQuery.of(context).size.height * 0.04,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Theme.of(context).primaryColor,
                   ),
-                ),
-                margin:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.48,
-                height: MediaQuery.of(context).size.height * 0.04,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Theme.of(context).primaryColor,
-                ),
-                child: Center(
-                  child: Text(
-                    "Description",
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.roboto(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: MediaQuery.of(context).size.height * 0.02),
+                  child: Center(
+                    child: Text(
+                      "Qty",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.roboto(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: MediaQuery.of(context).size.height * 0.02),
+                    ),
                   ),
+                  margin:
+                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
                 ),
-                margin:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.27,
-                height: MediaQuery.of(context).size.height * 0.04,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Theme.of(context).primaryColor,
-                ),
-                child: Center(
-                  child: Text(
-                    "Type of units",
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.roboto(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: MediaQuery.of(context).size.height * 0.02),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.48,
+                  height: MediaQuery.of(context).size.height * 0.04,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Theme.of(context).primaryColor,
                   ),
+                  child: Center(
+                    child: Text(
+                      "Description",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.roboto(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: MediaQuery.of(context).size.height * 0.02),
+                    ),
+                  ),
+                  margin:
+                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
                 ),
-                margin:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
-              ),
-            ],
-          ),
-          Expanded(
-            child: ListView.builder(
-                itemCount: cart.length,
-                itemBuilder: (context, index) {
-                  return listViewItem(
-                    cart: cart,
-                    index: index,
-                    callback: refresh,
-                    units: units,
-                  );
-                }),
-          ),
-        ],
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.27,
+                  height: MediaQuery.of(context).size.height * 0.04,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Type of units",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.roboto(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: MediaQuery.of(context).size.height * 0.02),
+                    ),
+                  ),
+                  margin:
+                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+                ),
+              ],
+            ),
+            Expanded(
+              child: ListView.builder(
+                  itemCount: cart.length,
+                  itemBuilder: (context, index) {
+                    return listViewItem(
+                      cart: cart,
+                      index: index,
+                      callback: refresh,
+                      units: units,
+                    );
+                  }),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
