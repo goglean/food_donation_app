@@ -40,6 +40,7 @@ class _HomeDonorState extends State<HomeDonor> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Icon(Icons.home),
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(heading),
         centerTitle: true,

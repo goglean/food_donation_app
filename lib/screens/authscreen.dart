@@ -285,7 +285,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   color: Theme.of(context).primaryColor)),
                           color: Theme.of(context).primaryColor,
                           onPressed: () => setState(() {
-                                Navigator.pushReplacement(
+                                Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => signinpage()));

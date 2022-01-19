@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/home.dart';
+import 'package:food_donating_app/screens/login.dart';
 import 'package:food_donating_app/screens/loginpage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -505,6 +506,24 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                         ),
                         child: TextButton(
                           onPressed: () {
+                            showDialog<String>(
+                              barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          
+          title: const Text('Account Created successfully'),
+          content: const Text('Please verify your mail and login'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () { 
+                Navigator.pop(context, 'OK');
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
                             setState(() {
                               submitForm();
                               _cityController.clear();
@@ -536,7 +555,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoginPage()));
+                                      builder: (context) => signinpage()));
                             });
                           },
                           child: RichText(
