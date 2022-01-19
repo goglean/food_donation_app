@@ -338,17 +338,17 @@ class _PickupDetailsState extends State<PickupDetails> {
                 color: Colors.white),
           ),
           onPressed: () {
-            // FirebaseFirestore.instance
-            //     .collection("pickup_details")
-            //     .doc(DateTime.now().toString())
-            //     .set({
-            //   "days": _selecteddetails,
-            //   "details": myController.text,
-            //   "enddate": enddate,
-            //   "endtime": endtime,
-            //   "startdate": startdate,
-            //   "starttime": starttime
-            //});
+            FirebaseFirestore.instance
+                .collection("pickup_details")
+                .doc(DateTime.now().toString())
+                .set({
+              "days": _selecteddetails,
+              "details": myController.text,
+              "enddate": enddate,
+              "endtime": endtime,
+              "startdate": startdate,
+              "starttime": starttime
+            });
             //print(_selecteddetails + " " + startdate + " " + enddate + " " + starttime + " " + endtime + " " + lat + " " + long + myController.text);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => FinishPickupDetails()));

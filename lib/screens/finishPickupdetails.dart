@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/donateItemsPage.dart';
 import 'package:food_donating_app/screens/donatePage.dart';
+import 'package:food_donating_app/screens/homeDonor.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FinishPickupDetails extends StatefulWidget {
@@ -81,7 +82,7 @@ class _FinishPickupDetailsState extends State<FinishPickupDetails> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => DonatePage()));
+                                    builder: (context) => HomeDonor()));
                           }),
                       child: Text(
                         "Close",

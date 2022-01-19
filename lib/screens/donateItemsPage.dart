@@ -100,7 +100,7 @@ class _listViewItemState extends State<listViewItem> {
           ),
         ),
         Container(
-          width: MediaQuery.of(context).size.width * 0.3,
+          width: MediaQuery.of(context).size.width * 0.28,
           height: MediaQuery.of(context).size.height * 0.08,
           margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
           decoration: BoxDecoration(
@@ -109,7 +109,7 @@ class _listViewItemState extends State<listViewItem> {
               //)
               ),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: _value,
@@ -292,16 +292,19 @@ class _DonateItemPageState extends State<DonateItemPage> {
               ],
             ),
             Expanded(
-              child: ListView.builder(
-                  itemCount: cart.length,
-                  itemBuilder: (context, index) {
-                    return listViewItem(
-                      cart: cart,
-                      index: index,
-                      callback: refresh,
-                      units: units,
-                    );
-                  }),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 2, 0, 5),
+                child: ListView.builder(
+                    itemCount: cart.length,
+                    itemBuilder: (context, index) {
+                      return listViewItem(
+                        cart: cart,
+                        index: index,
+                        callback: refresh,
+                        units: units,
+                      );
+                    }),
+              ),
             ),
           ],
         ),
