@@ -158,6 +158,7 @@ class _HomeState extends State<Home> {
                                 TextButton(
                                     onPressed: () async {
                                       await FirebaseAuth.instance.signOut();
+                                       Navigator.pop(context);
                                       Navigator.pop(context);
                                     },
                                     child: Text(
