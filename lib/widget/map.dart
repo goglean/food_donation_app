@@ -16,7 +16,7 @@ class MapSampleState extends State<MapSample> {
   Widget build(BuildContext context) {
     return StreamProvider<List<Restaurent>?>.value(
       value: MapService().restaurents,
-      initialData: null,
+      initialData: [],
       child: Scaffold(
         body: RestaurentMap(),
       ),
