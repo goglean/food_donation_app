@@ -140,8 +140,6 @@ class _loginpageState extends State<signinpage> {
                           if (FirebaseAuth
                                   .instance.currentUser?.emailVerified ==
                               true) {
-                              usernamecontroller.clear();
-                              passwordcontroller.clear();
                             FirebaseFirestore.instance
                   .collection('users')
                   .doc((FirebaseAuth.instance.currentUser)?.uid)
@@ -153,11 +151,15 @@ class _loginpageState extends State<signinpage> {
                                 context,
                                 MaterialPageRoute(
                                    builder: (context) => Home()));
+                            usernamecontroller.clear();
+                              passwordcontroller.clear();
                       } else {
                         Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                    builder: (context) => HomeDonor()));
+                                   usernamecontroller.clear();
+                              passwordcontroller.clear();
                       }
                     }
                   });} else {
