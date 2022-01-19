@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:food_donating_app/screens/myPickups.dart';
 import 'package:food_donating_app/shared/loading.dart';
 import 'package:food_donating_app/widget/charity.dart';
 import 'package:food_donating_app/widget/map_service.dart';
@@ -121,7 +122,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
               SizedBox(height: 16),
               RaisedButton(
                 textColor: Colors.white,
-                color: Colors.orange[600],
+                color: Theme.of(context).primaryColor,
                 child: Text(
                   'OKAY',
                   style: TextStyle(
@@ -133,6 +134,10 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                 ),
                 onPressed: () {
                   print('object');
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyPickups()));
                 },
               ),
             ],
@@ -348,7 +353,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                             padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
                             child: RaisedButton(
                               textColor: Colors.white,
-                              color: Colors.orange[600],
+                              color: Theme.of(context).primaryColor,
                               child: Text(
                                 'CLAIM',
                                 style: TextStyle(
