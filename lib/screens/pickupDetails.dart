@@ -1,12 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:food_donating_app/screens/finishPickupdetails.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PickupDetails extends StatefulWidget {
-  const PickupDetails({Key? key}) : super(key: key);
+  List quanlist;
+  List desclist;
+  List Unilist;
+  PickupDetails({
+    required this.Unilist,
+    required this.desclist,
+    required this.quanlist
+  });
 
   @override
   _PickupDetailsState createState() => _PickupDetailsState();
@@ -22,6 +30,24 @@ class _PickupDetailsState extends State<PickupDetails> {
   String pickup = "";
   String lat = "";
   String long = "";
+  String resname = "";
+  String address = "";
+  String phoneno = "";
+  String contactperson = "";
+  String city = "";
+  void fetchdetails() {
+    FirebaseFirestore.instance
+                  .collection('users')
+                  .doc((FirebaseAuth.instance.currentUser)?.uid)
+                  .get()
+                  .then((value) {
+                    resname = value.data()!['Name'].toString();
+                    address = value.data()!['Address'].toString();
+                    phoneno = value.data()!['Phone Number'].toString();
+                    contactperson = value.data()!['Contact Person'].toString();
+                    city = value.data()!['City'].toString();
+                  });
+  }
   final myController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -338,6 +364,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                 color: Colors.white),
           ),
           onPressed: () {
+            fetchdetails();
             FirebaseFirestore.instance
                 .collection("pickup_details")
                 .doc(DateTime.now().toString())
@@ -347,11 +374,22 @@ class _PickupDetailsState extends State<PickupDetails> {
               "enddate": enddate,
               "endtime": endtime,
               "startdate": startdate,
-              "starttime": starttime
+              "starttime": starttime,
+              "quantitylist" : widget.quanlist.toList(),
+              "descriptionlist" : widget.desclist.toList(),
+              "unitlist" : widget.Unilist.toList(),
+              "Restaurant Name" : resname,
+              "Address" : address,
+              "Phone Number" : phoneno,
+              "Contact Person" : contactperson,
+              "City" : city
             });
             //print(_selecteddetails + " " + startdate + " " + enddate + " " + starttime + " " + endtime + " " + lat + " " + long + myController.text);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => FinishPickupDetails()));
+            widget.quanlist.clear();
+            widget.desclist.clear();
+            widget.Unilist.clear();
           },
           splashColor: Colors.redAccent,
         ),

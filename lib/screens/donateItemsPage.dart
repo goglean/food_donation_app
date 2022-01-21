@@ -334,8 +334,8 @@ class _DonateItemPageState extends State<DonateItemPage> {
                   side: BorderSide(color: Theme.of(context).primaryColor)),
               color: Theme.of(context).primaryColor,
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PickupDetails()));
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => PickupDetails()));
               },
               child: Text(
                 "Next",
