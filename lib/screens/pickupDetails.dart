@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,10 +25,14 @@ class PickupDetails extends StatefulWidget {
 class _PickupDetailsState extends State<PickupDetails> {
   String _selecteddetails = "";
   String location = "";
-  String startdate = "";
-  String enddate = "";
-  String starttime = "";
-  String endtime = "";
+  String startdate = DateTime.now().toString();
+  String enddate = DateTime.now().toString();
+  String starttime = DateTime.now().hour.toString() +
+                              ":" +
+                              DateTime.now().minute.toString();
+  String endtime = DateTime.now().hour.toString() +
+                              ":" +
+                              DateTime.now().minute.toString();
   String pickup = "";
   String lat = "";
   String long = "";
@@ -41,11 +47,13 @@ class _PickupDetailsState extends State<PickupDetails> {
                   .doc((FirebaseAuth.instance.currentUser)?.uid)
                   .get()
                   .then((value) {
+                    if (value.data()!['email'] == FirebaseAuth.instance.currentUser!.email) {
                     resname = value.data()!['Name'].toString();
                     address = value.data()!['Address'].toString();
                     phoneno = value.data()!['Phone Number'].toString();
                     contactperson = value.data()!['Contact Person'].toString();
-                    city = value.data()!['City'].toString();
+                    city = value.data()!['City'].toString(); 
+                    }
                   });
   }
   final myController = TextEditingController();
@@ -363,9 +371,10 @@ class _PickupDetailsState extends State<PickupDetails> {
                 fontSize: MediaQuery.of(context).size.width * 0.07,
                 color: Colors.white),
           ),
-          onPressed: () {
+          onPressed: () async {
             fetchdetails();
-            FirebaseFirestore.instance
+            Timer(Duration(seconds: 3), () {
+         FirebaseFirestore.instance
                 .collection("pickup_details")
                 .doc(DateTime.now().toString())
                 .set({
@@ -390,6 +399,7 @@ class _PickupDetailsState extends State<PickupDetails> {
             widget.quanlist.clear();
             widget.desclist.clear();
             widget.Unilist.clear();
+});
           },
           splashColor: Colors.redAccent,
         ),

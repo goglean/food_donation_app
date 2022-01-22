@@ -20,22 +20,34 @@ class _listfordonateitemsState extends State<listfordonateitems> {
         child: Row(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width * 0.15,
-              child: Text(_donateitemsState.qtylist[widget.index].toString()),
+               width: MediaQuery.of(context).size.width * 0.15,
+                  height: MediaQuery.of(context).size.height * 0.04,
+              child: Center(child: Text(_donateitemsState.qtylist[widget.index].toString())),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * 0.40,
-              child: Text(_donateitemsState.disclist[widget.index].toString()),
+              width: MediaQuery.of(context).size.width * 0.35,
+                  height: MediaQuery.of(context).size.height * 0.04,
+              child: Center(child: Text(_donateitemsState.disclist[widget.index].toString())),
             ),
             Container(
               width: MediaQuery.of(context).size.width * 0.25,
-              child: Text(_donateitemsState.unitslist[widget.index].toString()),
+                  height: MediaQuery.of(context).size.height * 0.04,
+              child: Center(child: Text(_donateitemsState.unitslist[widget.index].toString())),
             ),
-            IconButton(onPressed: () {
-              _donateitemsState.unitslist.removeAt(widget.index);
-              _donateitemsState.qtylist.removeAt(widget.index);
-              _donateitemsState.disclist.removeAt(widget.index);
-            }, icon: Icon(Icons.delete))
+            Container(
+             width: MediaQuery.of(context).size.width * 0.1,
+                  height: MediaQuery.of(context).size.height * 0.04,
+                  margin:
+                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+              child: Center(
+                child: IconButton(onPressed: () {
+                  _donateitemsState.unitslist.removeAt(widget.index);
+                  _donateitemsState.qtylist.removeAt(widget.index);
+                  _donateitemsState.disclist.removeAt(widget.index);
+                }, icon: Icon(Icons.delete)
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -82,7 +94,7 @@ class _donateitemsState extends State<donateitems> {
             Row(
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.13,
+                  width: MediaQuery.of(context).size.width * 0.15,
                   height: MediaQuery.of(context).size.height * 0.04,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -102,7 +114,7 @@ class _donateitemsState extends State<donateitems> {
                       EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.40,
+                  width: MediaQuery.of(context).size.width * 0.35,
                   height: MediaQuery.of(context).size.height * 0.04,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
