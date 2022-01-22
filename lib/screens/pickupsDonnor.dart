@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_donating_app/screens/donateItemsPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 class PickupsDonor extends StatefulWidget {
   const PickupsDonor({ Key? key }) : super(key: key);
@@ -8,9 +9,16 @@ class PickupsDonor extends StatefulWidget {
 }
 
 class _PickupsDonorState extends State<PickupsDonor> {
-  String _donationType = "volunteer";
+  String _donationType = "Upcoming";
   bool pressAttention = true;
   bool press = false;
+  donationtypes() {
+    if (_donationType == "Upcoming") {
+      return upcomingdonations();
+    } else {
+      return historydonations();
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -84,66 +92,8 @@ class _PickupsDonorState extends State<PickupsDonor> {
                             width: MediaQuery.of(context).size.width * 0.90,
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0,4,0,4),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width *0.75,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Theme.of(context).primaryColor,
-                          )
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10,10,10,10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Today 10:15AM-2:15PM",style: GoogleFonts.roboto(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w500,
-                              decoration: TextDecoration.underline
-                            ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text("2 Boxes Baked Goods",style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            ),
-                            Text("1 Box Assorted Produce (estimated)",style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text("Our pick-up details for the volunteer",style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              decoration: TextDecoration.underline
-                            ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8,8,0,0),
-                              child: Text("Come to the backdoor. Call us when you are near",style: GoogleFonts.roboto(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
+                  donationtypes(),
+                            Container(
                           width: MediaQuery.of(context).size.width * 0.85,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -158,7 +108,10 @@ class _PickupsDonorState extends State<PickupsDonor> {
                       color: Colors.white
                       )
                     ,),
-                    onPressed: () {}),
+                    onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DonateItemPage()))),
                 )
               ],
             ),
@@ -166,5 +119,150 @@ class _PickupsDonorState extends State<PickupsDonor> {
         ),
       ],
     );
+  }
+
+  }
+
+class upcomingdonations extends StatefulWidget {
+  const upcomingdonations({ Key? key }) : super(key: key);
+
+  @override
+  _upcomingdonationsState createState() => _upcomingdonationsState();
+}
+
+class _upcomingdonationsState extends State<upcomingdonations> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+                padding: const EdgeInsets.fromLTRB(0,4,0,4),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width *0.75,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                        )
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10,10,10,10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Today 10:15AM-2:15PM",style: GoogleFonts.roboto(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.underline
+                          ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text("2 Boxes Baked Goods",style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          ),
+                          Text("1 Box Assorted Produce (estimated)",style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text("Our pick-up details for the volunteer",style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.underline
+                          ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(8,8,0,0),
+                            child: Text("Come to the backdoor. Call us when you are near",style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+  }
+}
+
+class historydonations extends StatefulWidget {
+  const historydonations({ Key? key }) : super(key: key);
+
+  @override
+  _historydonationsState createState() => _historydonationsState();
+}
+
+class _historydonationsState extends State<historydonations> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+                padding: const EdgeInsets.fromLTRB(0,4,0,4),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width *0.75,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                        )
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10,10,10,10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Today 10:15AM-2:15PM",style: GoogleFonts.roboto(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.underline
+                          ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text("2 Boxes Baked Goods",style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          ),
+                          Text("1 Box Assorted Produce (estimated)",style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text("Our pick-up details for the volunteer",style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.underline
+                          ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(8,8,0,0),
+                            child: Text("Come to the backdoor. Call us when you are near",style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
   }
 }
