@@ -391,7 +391,8 @@ class _PickupDetailsState extends State<PickupDetails> {
               "Address" : address,
               "Phone Number" : phoneno,
               "Contact Person" : contactperson,
-              "City" : city
+              "City" : city,
+              "Status" : "donated"
             });
             //print(_selecteddetails + " " + startdate + " " + enddate + " " + starttime + " " + endtime + " " + lat + " " + long + myController.text);
             Navigator.push(context,
