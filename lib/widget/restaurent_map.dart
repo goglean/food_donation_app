@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'package:food_donating_app/widget/directionfiles/directions_model.dart';
+import 'package:food_donating_app/widget/directionfiles/directions_repository.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_donating_app/shared/loading.dart';
 import 'package:food_donating_app/widget/map_service.dart';
 import 'package:food_donating_app/widget/restaurent_info.dart';
@@ -116,12 +117,29 @@ class _RestaurentMapState extends State<RestaurentMap> {
     zoom: 14.4746,
   );
 
+  Marker? _origin = null, _destination = null;
+  Directions? _info = null;
+
   @override
   Widget build(BuildContext context) {
     final restaurent = Provider.of<List<Restaurent>?>(context);
     Restaurent? curRestaurent = null;
 
     CameraPosition? curCameraPos = null;
+
+    _destination = Marker(
+      markerId: MarkerId('_kGooglePlex'),
+      infoWindow: InfoWindow(title: 'Google Plex'),
+      icon: BitmapDescriptor.defaultMarker,
+      position: LatLng(37.42796133580664, -122.085749655962),
+    );
+
+    _origin = Marker(
+      markerId: MarkerId('_kLakeMarker'),
+      infoWindow: InfoWindow(title: 'Lake'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      position: LatLng(37.43296265331129, -122.08832357078792),
+    );
 
     void getRestaurentInfo(String restaurentId) async {
       Restaurent restaurentData =
@@ -186,6 +204,13 @@ class _RestaurentMapState extends State<RestaurentMap> {
         // onTap: () => _showRestaurentPanel,
         onTap: () async {
           _showRestaurentPanel(restaurent[i].uniId);
+          // print(_origin!.position.latitude);
+          // print(_destination!.position.longitude);
+          // Get directions
+          final directions = await DirectionsRepository().getDirections(
+              origin: _origin!.position, destination: _destination!.position);
+          print(directions.totalDistance);
+          // setState(() => _info = directions);
           // await curLocation();
         },
       ));
@@ -204,10 +229,17 @@ class _RestaurentMapState extends State<RestaurentMap> {
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
       },
-
-      // polylines: {
-      //   _kPolyline,
-      // },
+      polylines: {
+        if (_info != null)
+          Polyline(
+            polylineId: const PolylineId('overview_polyline'),
+            color: Colors.red,
+            width: 5,
+            points: _info!.polylinePoints!
+                .map((e) => LatLng(e.latitude, e.longitude))
+                .toList(),
+          ),
+      },
       // polygons: {
       //   _kPolygon,
       // },
