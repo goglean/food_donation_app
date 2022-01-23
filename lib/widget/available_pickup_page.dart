@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/myPickups.dart';
 import 'package:food_donating_app/shared/loading.dart';
@@ -12,7 +13,8 @@ import 'package:provider/provider.dart';
 
 class AvaiablePickups extends StatefulWidget {
   final Map dataFromScreen;
-  const AvaiablePickups({required this.dataFromScreen});
+  final Marker? location;
+  const AvaiablePickups({required this.dataFromScreen, this.location});
 
   @override
   State<AvaiablePickups> createState() => _AvaiablePickupsState();
@@ -31,6 +33,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
     final charity = Provider.of<List<Charity>?>(context);
     final dataFromScreen = ModalRoute.of(context)!.settings.arguments as Map;
     Restaurent curRes = dataFromScreen['res'];
+    Marker? location = dataFromScreen['location'];
 
     CameraPosition initialRestaurentPosition = CameraPosition(
       zoom: 12,
@@ -47,7 +50,8 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
           double.parse(curRes.posLat),
           double.parse(curRes.posLng),
         ),
-      )
+      ),
+      if (location != null) location,
     };
 
     for (int i = 0; i < charity!.length; i++) {
@@ -363,7 +367,16 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                               shape: new RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(30.0),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
+                                String curUserUid =
+                                    FirebaseAuth.instance.currentUser!.uid;
+                                MapService(uniqueId: curUserUid)
+                                    .getAndUpdatePickupDetails(
+                                        curCharity, curRes);
+
+                                await MapService(uniqueId: curRes.uniId)
+                                    .updateResClaimedCondition(curRes);
+
                                 openDialogue();
                               },
                             ),
