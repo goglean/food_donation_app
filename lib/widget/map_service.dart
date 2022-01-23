@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food_donating_app/widget/charity.dart';
 import 'package:food_donating_app/widget/restaurents.dart';
 
@@ -11,6 +12,41 @@ class MapService {
 
   final CollectionReference charityCollection =
       FirebaseFirestore.instance.collection('charity');
+
+  final CollectionReference volunteerCollection =
+      FirebaseFirestore.instance.collection('volunteers');
+
+  void getAndUpdatePickupDetails(Charity? curCharity, Restaurent curRes) async {
+    DocumentSnapshot pickUpSnapshot =
+        await volunteerCollection.doc(uniqueId).get();
+    List pickUpList = (pickUpSnapshot.data() as Map)['PickUps'];
+
+    pickUpList.add({
+      'charityOpenTime': curCharity!.openTime,
+      'charityCloseTime': curCharity.closeTime,
+      'from': curRes.name,
+      'to': curCharity.name,
+      'resUid': curRes.uniId,
+      'charityUid': curCharity.uniId,
+    });
+    // for (var i = 0; i < pickUpList.length; i++) {
+    //   print(pickUpList[i].toString());
+    // }
+    // List<String> a = ['s', 'e', 'f'];
+    await volunteerCollection.doc(uniqueId).update({'PickUps': pickUpList});
+  }
+
+  Future updateResClaimedCondition(Restaurent res) async {
+    return await restaurentCollection.doc(uniqueId).set({
+      'name': res.name,
+      'posLat': res.posLat,
+      'posLng': res.posLng,
+      'uniId': res.uniId,
+      'isClaimed': true,
+      'openTime': res.openTime,
+      'closeTime': res.closeTime,
+    });
+  }
 
   Restaurent _restaurentDataFromSnapshot(DocumentSnapshot snapshot) {
     return Restaurent(
