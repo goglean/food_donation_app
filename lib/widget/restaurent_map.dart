@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:food_donating_app/widget/directionfiles/directions_model.dart';
 import 'package:food_donating_app/widget/directionfiles/directions_repository.dart';
+import 'package:food_donating_app/widget/locations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/shared/loading.dart';
@@ -11,8 +12,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class RestaurentMap extends StatefulWidget {
-  const RestaurentMap({Key? key}) : super(key: key);
-
   @override
   _RestaurentMapState createState() => _RestaurentMapState();
 }
@@ -20,6 +19,8 @@ class RestaurentMap extends StatefulWidget {
 class _RestaurentMapState extends State<RestaurentMap> {
   Completer<GoogleMapController> _controller = Completer();
   TextEditingController _searchController = TextEditingController();
+  Set<Marker> restaurentMarker = {};
+  Marker? locationMarker = null;
 
   /// Determine the current position of the device.
   ///
@@ -113,7 +114,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
   );
 
   CameraPosition defaultCameraPos = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+    target: LatLng(13.5566036, 80.0251352),
     zoom: 14.4746,
   );
 
@@ -126,6 +127,16 @@ class _RestaurentMapState extends State<RestaurentMap> {
     Restaurent? curRestaurent = null;
 
     CameraPosition? curCameraPos = null;
+
+    Future<void> _goToCurrentLocation(CameraPosition curLocation) async {
+      final GoogleMapController controller = await _controller.future;
+      controller.animateCamera(CameraUpdate.newCameraPosition(curLocation));
+    }
+
+    Future<void> _goToTheLake() async {
+      final GoogleMapController controller = await _controller.future;
+      controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+    }
 
     _destination = Marker(
       markerId: MarkerId('_kGooglePlex'),
@@ -181,7 +192,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
         builder: (context) {
           getRestaurentInfo(restaurentId);
           if (curRestaurent != null) {
-            return RestaurentInfo(curRestaurent);
+            return RestaurentInfo(curRestaurent, locationMarker);
           } else {
             return Loading();
           }
@@ -191,7 +202,6 @@ class _RestaurentMapState extends State<RestaurentMap> {
       });
     }
 
-    Set<Marker> restaurentMarker = {};
     for (int i = 0; i < restaurent!.length; i++) {
       restaurentMarker.add(Marker(
         markerId: MarkerId(restaurent[i].uniId),
@@ -216,33 +226,77 @@ class _RestaurentMapState extends State<RestaurentMap> {
       ));
     }
 
-    return GoogleMap(
-      mapType: MapType.normal,
-      // markers: {
-      //   _kGooglePlexMarker,
-      //   // _kLakeMarker,
-      // },
-      markers: restaurentMarker,
-      // initialCameraPosition: curCameraPos ?? defaultCameraPos,
+    // for (var item in restaurentMarker) {
+    //   print(item.toString());
+    //   print('\n\n');
+    // }
 
-      initialCameraPosition: defaultCameraPos,
-      onMapCreated: (GoogleMapController controller) {
-        _controller.complete(controller);
-      },
-      polylines: {
-        if (_info != null)
-          Polyline(
-            polylineId: const PolylineId('overview_polyline'),
-            color: Colors.red,
-            width: 5,
-            points: _info!.polylinePoints!
-                .map((e) => LatLng(e.latitude, e.longitude))
-                .toList(),
+    return Stack(
+      children: [
+        GoogleMap(
+          mapType: MapType.normal,
+          // markers: {
+          //   _kGooglePlexMarker,
+          //   // _kLakeMarker,
+          // },
+          markers: restaurentMarker,
+          // initialCameraPosition: curCameraPos ?? defaultCameraPos,
+
+          initialCameraPosition: defaultCameraPos,
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+          polylines: {
+            if (_info != null)
+              Polyline(
+                polylineId: const PolylineId('overview_polyline'),
+                color: Colors.red,
+                width: 5,
+                points: _info!.polylinePoints!
+                    .map((e) => LatLng(e.latitude, e.longitude))
+                    .toList(),
+              ),
+          },
+          // polygons: {
+          //   _kPolygon,
+          // },
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16, bottom: 36),
+          child: Align(
+            alignment: Alignment.bottomLeft,
+            child: FloatingActionButton(
+              onPressed: () async {
+                Position position = await Location().getGeoLocationPosition();
+
+                CameraPosition? cameraPosition = CameraPosition(
+                  target: LatLng(position.latitude, position.longitude),
+                  zoom: 14,
+                );
+
+                print(position.longitude);
+                _goToCurrentLocation(cameraPosition);
+
+                locationMarker = Marker(
+                  markerId: MarkerId('userLocation'),
+                  infoWindow: InfoWindow(title: 'You'),
+                  icon: BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueRed),
+                  position: LatLng(
+                    position.latitude,
+                    position.longitude,
+                  ),
+                );
+
+                setState(() {
+                  restaurentMarker.add(locationMarker!);
+                });
+              },
+              child: const Icon(Icons.pin_drop),
+            ),
           ),
-      },
-      // polygons: {
-      //   _kPolygon,
-      // },
+        ),
+      ],
     );
   }
 
@@ -254,10 +308,5 @@ class _RestaurentMapState extends State<RestaurentMap> {
     controller.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(target: LatLng(lat, lng), zoom: 12),
     ));
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }
