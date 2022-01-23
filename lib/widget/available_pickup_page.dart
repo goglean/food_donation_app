@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/myPickups.dart';
 import 'package:food_donating_app/shared/loading.dart';
@@ -363,7 +364,16 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                               shape: new RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(30.0),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
+                                String curUserUid =
+                                    FirebaseAuth.instance.currentUser!.uid;
+                                MapService(uniqueId: curUserUid)
+                                    .getAndUpdatePickupDetails(
+                                        curCharity, curRes);
+
+                                await MapService(uniqueId: curRes.uniId)
+                                    .updateResClaimedCondition(curRes);
+
                                 openDialogue();
                               },
                             ),

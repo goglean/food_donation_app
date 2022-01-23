@@ -31,6 +31,7 @@ class _RestaurentInfoState extends State<RestaurentInfo> {
         minChildSize: 0.1,
         builder: (_, controller) => InkWell(
           onTap: () {
+            if (widget.curRestaurent!.isClaimed) return;
             Navigator.of(context).pop();
             Navigator.push(
                 context,
