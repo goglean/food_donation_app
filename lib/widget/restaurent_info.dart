@@ -4,12 +4,14 @@ import 'package:food_donating_app/widget/charity.dart';
 import 'package:food_donating_app/widget/map_service.dart';
 import 'package:food_donating_app/widget/restaurents.dart';
 import 'package:food_donating_app/widget/transition_screen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class RestaurentInfo extends StatefulWidget {
   final Restaurent? curRestaurent;
+  final Marker? location;
 
-  const RestaurentInfo(this.curRestaurent);
+  const RestaurentInfo(this.curRestaurent, this.location);
 
   @override
   _RestaurentInfoState createState() => _RestaurentInfoState();
@@ -38,7 +40,10 @@ class _RestaurentInfoState extends State<RestaurentInfo> {
                 MaterialPageRoute(
                   builder: (context) => TransitionScreen(),
                   settings: RouteSettings(
-                    arguments: {'res': widget.curRestaurent},
+                    arguments: {
+                      'res': widget.curRestaurent,
+                      'location': widget.location
+                    },
                   ),
                 ));
           },
