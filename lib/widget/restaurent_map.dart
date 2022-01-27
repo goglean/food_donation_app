@@ -22,22 +22,12 @@ class _RestaurentMapState extends State<RestaurentMap> {
   Set<Marker> restaurentMarker = {};
   Marker? locationMarker = null;
 
-  /// Determine the current position of the device.
-  ///
-  /// When the location services are not enabled or permissions
-  /// are denied the `Future` will return an error.
+  // 0th position show LatLng of current location 1st shows LatLng of tepped restaurent
+  List<LatLng?> directionLineMarker = new List.filled(2, null, growable: false);
+
   Future<Position> _determinePosition() async {
     //   bool serviceEnabled;
     LocationPermission permission;
-
-    //   // Test if location services are enabled.
-    //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    //   if (!serviceEnabled) {
-    //     // Location services are not enabled don't continue
-    //     // accessing the position and request users of the
-    //     // App to enable the location services.
-    //     return Future.error('Location services are disabled.');
-    //   }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
@@ -213,6 +203,8 @@ class _RestaurentMapState extends State<RestaurentMap> {
         ),
         // onTap: () => _showRestaurentPanel,
         onTap: () async {
+          directionLineMarker[1] = LatLng(double.parse(restaurent[i].posLat),
+              double.parse(restaurent[i].posLng));
           _showRestaurentPanel(restaurent[i].uniId);
           // print(_origin!.position.latitude);
           // print(_destination!.position.longitude);
@@ -247,14 +239,13 @@ class _RestaurentMapState extends State<RestaurentMap> {
             _controller.complete(controller);
           },
           polylines: {
-            if (_info != null)
+            if (directionLineMarker[0] != null &&
+                directionLineMarker[1] != null)
               Polyline(
                 polylineId: const PolylineId('overview_polyline'),
-                color: Colors.red,
+                color: Colors.blue,
                 width: 5,
-                points: _info!.polylinePoints!
-                    .map((e) => LatLng(e.latitude, e.longitude))
-                    .toList(),
+                points: [directionLineMarker[0]!, directionLineMarker[1]!],
               ),
           },
           // polygons: {
@@ -290,6 +281,9 @@ class _RestaurentMapState extends State<RestaurentMap> {
 
                 setState(() {
                   restaurentMarker.add(locationMarker!);
+                  directionLineMarker[0] = LatLng(
+                      locationMarker!.position.latitude,
+                      locationMarker!.position.longitude);
                 });
               },
               child: const Icon(Icons.pin_drop),
