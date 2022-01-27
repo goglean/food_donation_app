@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/donateItemsPage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,9 +14,14 @@ class _PickupsDonorState extends State<PickupsDonor> {
   String _donationType = "Upcoming";
   bool pressAttention = true;
   bool press = false;
+  void refresh() {
+    setState(() {});
+  }
   donationtypes() {
     if (_donationType == "Upcoming") {
-      return upcomingdonations();
+      return upcomingdonations(
+        callback: refresh,
+      );
     } else {
       return historydonations();
     }
@@ -91,11 +97,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
         SingleChildScrollView(
           child: Container(
                             width: MediaQuery.of(context).size.width * 0.90,
-            child: Column(
-              children: [
-                  donationtypes(),
-              ],
-            ),
+            child: donationtypes()
           ),
         ),
       ],
@@ -105,31 +107,46 @@ class _PickupsDonorState extends State<PickupsDonor> {
   }
 
 class upcomingdonations extends StatefulWidget {
-  const upcomingdonations({ Key? key }) : super(key: key);
-
+  VoidCallback callback;
+  upcomingdonations({
+    required this.callback
+  });
   @override
   _upcomingdonationsState createState() => _upcomingdonationsState();
 }
 
 class _upcomingdonationsState extends State<upcomingdonations> {
-  final Stream<QuerySnapshot> _upcomingstream =
-      FirebaseFirestore.instance.collection('pickup_details').snapshots();
+  List upcominglist = [];
+  List starttimeslist = [];
+  List endtimeslist = [];
+  List startdateslist = [];
+  List enddateslist = [];
+  List detailslist = [];
+  
+  void upcomlist() {
+  FirebaseFirestore.instance.collection("pickup_details").get().then((querySnapshot) {
+    querySnapshot.docs.forEach((result) {
+      if (result['email'] == FirebaseAuth.instance.currentUser?.email && result['Status'] == "upcoming") {
+        upcominglist.add(result.data());
+        starttimeslist.add(result.data()['starttime'].toString());
+        startdateslist.add(result.data()['startdate'].toString());
+        endtimeslist.add(result.data()['endtime'].toString());
+        enddateslist.add(result.data()['enddate'].toString());
+        detailslist.add(result.data()['details'].toString());
+      }
+    });
+  });
+}
+  @override
+  void initState() {
+    super.initState();
+    upcomlist();
+  }
+  
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _upcomingstream,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-            return Center(child: Text('Something went wrong'));
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(4,20,4,20),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            child : Container(
+    if (upcominglist.length == 0) {
+      return Container(
                       decoration: BoxDecoration(
                           border: Border.all(
                             color: Theme.of(context).primaryColor,
@@ -170,12 +187,73 @@ class _upcomingdonationsState extends State<upcomingdonations> {
                           ],
                         ),
                       ),
-            )
-          ),
-        );
+            );
+    }
+    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: upcominglist.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Column(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            startdateslist[index] + " " + starttimeslist[index] + " - " + enddateslist[index] + " " + endtimeslist[index],
+                                            style: GoogleFonts.roboto(
+                                              decoration: TextDecoration.underline,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w700
+                                            )
+                                          ),
+                                          SizedBox(height: 24),
+                                          Text(
+                                            "Our pick-up details for the volunteer",
+                                            style: GoogleFonts.roboto(
+                                              decoration: TextDecoration.underline,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600
+                                            )
+                                          ),
+                                          SizedBox(height: 8,),
+                                          Text(
+                                            detailslist[index],
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w400
+                                            )
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 16)
+                          ],
+                        );
+                      },
+                    );
       }
-    );
-  }
 }
 
 class historydonations extends StatefulWidget {
@@ -186,25 +264,37 @@ class historydonations extends StatefulWidget {
 }
 
 class _historydonationsState extends State<historydonations> {
-   final Stream<QuerySnapshot> _upcomingstream =
-      FirebaseFirestore.instance.collection('pickup_details').snapshots();
+  List historylist = [];
+  List starttimeslist = [];
+  List endtimeslist = [];
+  List startdateslist = [];
+  List enddateslist = [];
+  List detailslist = [];
+  
+  void upcomlist() {
+  FirebaseFirestore.instance.collection("pickup_details").get().then((querySnapshot) {
+    querySnapshot.docs.forEach((result) {
+      if (result['email'] == FirebaseAuth.instance.currentUser?.email && result['Status'] == "claimed") {
+        historylist.add(result.data());
+        starttimeslist.add(result.data()['starttime'].toString());
+        startdateslist.add(result.data()['startdate'].toString());
+        endtimeslist.add(result.data()['endtime'].toString());
+        enddateslist.add(result.data()['enddate'].toString());
+        detailslist.add(result.data()['details'].toString());
+      }
+    });
+  });
+}
+  @override
+  void initState() {
+    super.initState();
+    upcomlist();
+  }
+  
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _upcomingstream,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-            return Center(child: Text('Something went wrong'));
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-        
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(4,20,4,20),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            child : Container(
+    if (historylist.length == 0) {
+      return Container(
                       decoration: BoxDecoration(
                           border: Border.all(
                             color: Theme.of(context).primaryColor,
@@ -245,10 +335,71 @@ class _historydonationsState extends State<historydonations> {
                           ],
                         ),
                       ),
-            )
-          ),
-        );
+            );
+    }
+    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: historylist.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Column(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            startdateslist[index] + " " + starttimeslist[index] + " - " + enddateslist[index] + " " + endtimeslist[index],
+                                            style: GoogleFonts.roboto(
+                                              decoration: TextDecoration.underline,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w700
+                                            )
+                                          ),
+                                          SizedBox(height: 24),
+                                          Text(
+                                            "Our pick-up details for the volunteer",
+                                            style: GoogleFonts.roboto(
+                                              decoration: TextDecoration.underline,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600
+                                            )
+                                          ),
+                                          SizedBox(height: 8,),
+                                          Text(
+                                            detailslist[index],
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w400
+                                            )
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 16)
+                          ],
+                        );
+                      },
+                    );
       }
-    );
-  }
 }

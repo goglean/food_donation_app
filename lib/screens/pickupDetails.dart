@@ -392,7 +392,8 @@ class _PickupDetailsState extends State<PickupDetails> {
               "Phone Number" : phoneno,
               "Contact Person" : contactperson,
               "City" : city,
-              "Status" : "donated"
+              "Status" : "donated",
+              "email" : FirebaseAuth.instance.currentUser?.email
             });
             //print(_selecteddetails + " " + startdate + " " + enddate + " " + starttime + " " + endtime + " " + lat + " " + long + myController.text);
             Navigator.push(context,
