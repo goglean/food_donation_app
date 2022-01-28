@@ -28,6 +28,9 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
   Charity? curCharity = null;
   String distanceBetweenMarker = '0';
 
+  // 0th position show LatLng of current location 1st shows LatLng of tepped restaurent
+  List<LatLng?> directionLineMarker = new List.filled(2, null, growable: false);
+
   @override
   Widget build(BuildContext context) {
     final charity = Provider.of<List<Charity>?>(context);
@@ -54,6 +57,11 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
       if (location != null) location,
     };
 
+    directionLineMarker[0] = LatLng(
+      double.parse(curRes.posLat),
+      double.parse(curRes.posLng),
+    );
+
     for (int i = 0; i < charity!.length; i++) {
       pickupMarkers.add(Marker(
         markerId: MarkerId(charity[i].uniId),
@@ -64,6 +72,9 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
           double.parse(charity[i].posLng),
         ),
         onTap: () async {
+          directionLineMarker[1] = LatLng(
+              double.parse(charity[i].posLat), double.parse(charity[i].posLng));
+
           if (!charityClicked) {
             setState(() {
               charityClicked = true;
@@ -155,6 +166,16 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
         Expanded(
           flex: 40,
           child: GoogleMap(
+            polylines: {
+              if (directionLineMarker[0] != null &&
+                  directionLineMarker[1] != null)
+                Polyline(
+                  polylineId: const PolylineId('overview_polyline'),
+                  color: Colors.blue,
+                  width: 5,
+                  points: [directionLineMarker[0]!, directionLineMarker[1]!],
+                ),
+            },
             markers: pickupMarkers,
             mapType: MapType.normal,
             initialCameraPosition: initialRestaurentPosition,
