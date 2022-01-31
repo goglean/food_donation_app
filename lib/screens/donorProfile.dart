@@ -17,7 +17,7 @@ class _ProfileDonorState extends State<ProfileDonor> {
         child: Text("logout"),
         onPressed: () async {
           await auth.signOut();
-          // Navigator.pop(context);
+           Navigator.pop(context);
         },
       ),
     );
