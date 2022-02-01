@@ -220,6 +220,10 @@ class _PickupDetailsState extends State<PickupDetails> {
                         )),
                   ],
                 ),
+                IconButton(onPressed: () {
+                  final DocumentReference docRef = FirebaseFirestore.instance.collection("utils").doc("Pz2bdEn7LlTDiG7lMw5i");
+                  docRef.get();
+                }, icon: Icon(Icons.plus_one)),
                 Padding(padding: EdgeInsets.all(20)),
                 Column(
                   children: [
