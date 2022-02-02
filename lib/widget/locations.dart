@@ -2,15 +2,14 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class Location {
-  static String address = "";
-  Future<String> GetAddressFromLatLong(Position position) async {
+  Future<String> GetAddressFromLatLong(String lat, String lng) async {
     List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    print(placemarks);
+        await placemarkFromCoordinates(double.parse(lat), double.parse(lng));
+    // print(placemarks);
     Placemark place = placemarks[0];
-    Location.address =
+    String address =
         '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
-    return Location.address;
+    return address;
   }
 
   Future<Position> getGeoLocationPosition() async {

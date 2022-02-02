@@ -18,8 +18,8 @@ class MapSampleState extends State<MapSample> {
   Widget build(BuildContext context) {
     CameraPosition? location;
 
-    return StreamProvider<List<Restaurent>?>.value(
-      value: MapService().restaurents,
+    return StreamProvider<List<Restaurent2>?>.value(
+      value: MapService().pickupRestaurents,
       initialData: [],
       child: Scaffold(
         body: RestaurentMap(),

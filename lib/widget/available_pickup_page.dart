@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/myPickups.dart';
 import 'package:food_donating_app/shared/loading.dart';
 import 'package:food_donating_app/widget/charity.dart';
+import 'package:food_donating_app/widget/locations.dart';
 import 'package:food_donating_app/widget/map_service.dart';
 import 'package:food_donating_app/widget/restaurents.dart';
 import 'package:geolocator/geolocator.dart';
@@ -27,6 +29,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
   bool recievedCharityData = false;
   Charity? curCharity = null;
   String distanceBetweenMarker = '0';
+  String? charityAddress, resAddress;
 
   // 0th position show LatLng of current location 1st shows LatLng of tepped restaurent
   List<LatLng?> directionLineMarker = new List.filled(2, null, growable: false);
@@ -35,31 +38,31 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
   Widget build(BuildContext context) {
     final charity = Provider.of<List<Charity>?>(context);
     final dataFromScreen = ModalRoute.of(context)!.settings.arguments as Map;
-    Restaurent curRes = dataFromScreen['res'];
+    Restaurent2 curRes = dataFromScreen['res'];
     Marker? location = dataFromScreen['location'];
 
     CameraPosition initialRestaurentPosition = CameraPosition(
       zoom: 12,
-      target: LatLng(double.parse(curRes.posLat), double.parse(curRes.posLng)),
+      target: LatLng(double.parse(curRes.lat), double.parse(curRes.lng)),
     );
 
     Set<Marker> pickupMarkers = {
       // Current restaurent marker
       Marker(
-        markerId: MarkerId(curRes.uniId),
+        markerId: MarkerId(curRes.email),
         infoWindow: InfoWindow(title: curRes.name),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
         position: LatLng(
-          double.parse(curRes.posLat),
-          double.parse(curRes.posLng),
+          double.parse(curRes.lat),
+          double.parse(curRes.lng),
         ),
       ),
       if (location != null) location,
     };
 
     directionLineMarker[0] = LatLng(
-      double.parse(curRes.posLat),
-      double.parse(curRes.posLng),
+      double.parse(curRes.lat),
+      double.parse(curRes.lng),
     );
 
     for (int i = 0; i < charity!.length; i++) {
@@ -86,17 +89,24 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
           distanceBetweenMarker = (Geolocator.distanceBetween(
                       double.parse(charityData.posLat),
                       double.parse(charityData.posLng),
-                      double.parse(curRes.posLat),
-                      double.parse(curRes.posLng)) *
+                      double.parse(curRes.lat),
+                      double.parse(curRes.lng)) *
                   0.000621371)
               .toStringAsFixed(3);
 
-          print(charityData.uniId);
+          String firebaseCharAdd = await Location()
+              .GetAddressFromLatLong(charityData.posLat, charityData.posLng);
+          String firebaseResAdd =
+              await Location().GetAddressFromLatLong(curRes.lat, curRes.lng);
+
+          // print(charityData.uniId);
           setState(() {
             curCharity = charityData;
             recievedCharityData = true;
-            print(curCharity!.closeTime);
-            print('\n\n\n\n\n\n\n\n\n\n');
+            charityAddress = firebaseCharAdd;
+            resAddress = firebaseResAdd;
+            // print(curCharity!.closeTime);
+            // print('\n\n\n\n\n\n\n\n\n\n');
           });
         },
       ));
@@ -148,7 +158,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                   borderRadius: new BorderRadius.circular(30.0),
                 ),
                 onPressed: () {
-                  print('object');
+                  // print('object');
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                   Navigator.push(context,
@@ -160,6 +170,8 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
         ),
       );
     }
+
+    // print(curRes.desList.length);
 
     return Column(
       children: [
@@ -271,7 +283,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                                 ),
                               ),
                               title: Text(
-                                'Pickup from ${curRes.name} at address dfawf agafd gg aga g zsfgs g zdsf g zdf',
+                                'Pickup from ${curRes.name} at ${resAddress}',
                                 style: TextStyle(
                                   fontSize: 14,
                                 ),
@@ -291,7 +303,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                                 ),
                               ),
                               title: Text(
-                                'Drop off to ${curCharity!.name} at address',
+                                'Drop off to ${curCharity!.name} at ${charityAddress}',
                                 style: TextStyle(
                                   fontSize: 14,
                                 ),
@@ -318,7 +330,16 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(24, 8, 0, 8),
-                            child: Text('food 1\nfood2'),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: curRes.desList.length,
+                              itemBuilder: (context, index) {
+                                return Text(curRes.quantityList[index] +
+                                    "  " +
+                                    curRes.desList[index]);
+                              },
+                            ),
+                            // child: Text('he;;p'),
                           ),
                           SizedBox(
                             height: 2,
@@ -340,7 +361,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(24, 8, 0, 8),
-                            child: Text('food 1\nfood2'),
+                            child: Text(curRes.details),
                           ),
                           SizedBox(
                             height: 2,
@@ -389,14 +410,29 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                                 borderRadius: new BorderRadius.circular(30.0),
                               ),
                               onPressed: () async {
-                                String curUserUid =
-                                    FirebaseAuth.instance.currentUser!.uid;
-                                MapService(uniqueId: curUserUid)
-                                    .getAndUpdatePickupDetails(
-                                        curCharity, curRes);
+                                final userRef = FirebaseFirestore.instance
+                                    .collection('pickup_details');
 
-                                await MapService(uniqueId: curRes.uniId)
-                                    .updateResClaimedCondition(curRes);
+                                await userRef.get().then((snapshot) {
+                                  snapshot.docs.forEach((element) async {
+                                    if (element.data()['email'] ==
+                                        curRes.email) {
+                                      print(curCharity!.uniId);
+                                      await userRef.doc(element.id).update({
+                                        'Status': 'picked',
+                                        'Pickedby': FirebaseAuth
+                                            .instance.currentUser!.email,
+                                        'PickedCharityUniId': curCharity!.uniId
+                                      });
+                                      return;
+                                    }
+                                    print(element.id);
+                                    print(element.data()['email']);
+                                  });
+                                });
+
+                                // await MapService(uniqueId: curRes.uniId)
+                                //     .updateResClaimedCondition(curRes);
 
                                 openDialogue();
                               },
