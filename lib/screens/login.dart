@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,22 +16,28 @@ class signinpage extends StatefulWidget {
 class _loginpageState extends State<signinpage> {
   bool _isObscure = true;
   var _userType;
-  usertype(){
-    FirebaseFirestore.instance
-                  .collection('users')
-                  .doc((FirebaseAuth.instance.currentUser)?.uid)
-                  .get()
-                  .then((value) {
-                setState(() {
-                  _userType = value.data()!['User Type'].toString();
-                });
-              });
-        if (_userType == "volunteer") {
-          return Home();
-        } else {
-          return HomeDonor();
-        }
-  }
+  // usertype(){
+  //   FirebaseFirestore.instance
+  //                 .collection('users')
+  //                 .doc((FirebaseAuth.instance.currentUser)?.uid)
+  //                 .get()
+  //                 .then((value) {
+  //               setState(() {
+  //                 if (value.data()!['email'].toString() == FirebaseAuth.instance.currentUser?.email) {
+  //                  _userType = value.data()!['User Type'].toString(); 
+  //                  }
+  //               });
+  //             });
+  //             print(_userType);
+  //       // Timer(Duration(seconds: 1), () {
+  //       // if (_userType == "volunteer") {
+  //       //    Navigator.push(context,
+  //       //         MaterialPageRoute(builder: (context) => Home()));
+  //       // } else {
+  //       //    Navigator.push(context,
+  //       //         MaterialPageRoute(builder: (context) => HomeDonor()));
+  //       // }});
+  // }
   final usernamecontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
   @override
@@ -132,6 +140,10 @@ class _loginpageState extends State<signinpage> {
                       borderRadius: BorderRadius.circular(20)),
                   child: TextButton(
                       onPressed: () {
+                        // Navigator.push(
+                        //          context,
+                        //          MaterialPageRoute(
+                        //             builder: (context) => HomeDonor()));
                         FirebaseAuth.instance
                             .signInWithEmailAndPassword(
                                 email: usernamecontroller.text,
@@ -162,7 +174,8 @@ class _loginpageState extends State<signinpage> {
                               passwordcontroller.clear();
                       }
                     }
-                  });} else {
+                  });} 
+                  else {
                             return Fluttertoast.showToast(
                                 msg: 'User not verified',
                                 gravity: ToastGravity.BOTTOM,

@@ -19,11 +19,10 @@ class _AuthScreenState extends State<AuthScreen> {
   String _userType = "volunteer";
   bool pressAttention = true;
   bool press = false;
-  var insta =
-      "https://www.instagram.com/p/CTjjmI3j91k1Ke-ahvLOQWjdMYzoO0mpDEaIHw0/?utm_medium=copy_link";
-  var fb =
-      "https://www.google.com/search?q=flowers&oq=flowers&aqs=chrome..69i57j0i67j0i433i512l2j0i512j46i512j0i433i512j0i512j46i512j0i512.2021j0j7&sourceid=chrome&ie=UTF-8";
-  var twitter = "https://twitter.com/";
+  var insta = "https://www.instagram.com/goglean_inc/";
+  var fb = "https://www.facebook.com/profile.php?id=100077581845900";
+  var twitter = " https://twitter.com/goglean_inc";
+  var lnkd = "https://www.linkedin.com/in/go-glean-305566230/";
 
   void mailLaunch(command) async {
     if (await canLaunch(command)) {
@@ -187,6 +186,18 @@ class _AuthScreenState extends State<AuthScreen> {
                                   await launch(insta);
                                 } else {
                                   throw 'Could not launch $insta';
+                                }
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(FontAwesomeIcons.linkedin,
+                                  color: Colors.blue),
+                              onPressed: () async {
+                                //const url = Resources.WEBSITE_NAME;
+                                if (await canLaunch(lnkd)) {
+                                  await launch(lnkd);
+                                } else {
+                                  throw 'Could not launch $lnkd';
                                 }
                               },
                             ),

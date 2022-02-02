@@ -1,6 +1,5 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Location {
   Future<String> GetAddressFromLatLong(String lat, String lng) async {
