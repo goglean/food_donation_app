@@ -334,6 +334,13 @@ class _DonateItemPageState extends State<DonateItemPage> {
                   side: BorderSide(color: Theme.of(context).primaryColor)),
               color: Theme.of(context).primaryColor,
               onPressed: () {
+              FirebaseFirestore.instance
+                   .collection('utils')
+                   .doc('stats')
+                   .get()
+                   .then((value) {
+                     print(value.data()!['Box'].toString());
+                   });
                 // Navigator.push(context,
                 //     MaterialPageRoute(builder: (context) => PickupDetails()));
               },
