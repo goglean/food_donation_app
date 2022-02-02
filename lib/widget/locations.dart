@@ -1,11 +1,12 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Location {
-  Future<String> GetAddressFromLatLong(Position position) async {
+  Future<String> GetAddressFromLatLong(String lat, String lng) async {
     List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    print(placemarks);
+        await placemarkFromCoordinates(double.parse(lat), double.parse(lng));
+    // print(placemarks);
     Placemark place = placemarks[0];
     String address =
         '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';

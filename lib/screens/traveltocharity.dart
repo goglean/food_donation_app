@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:food_donating_app/screens/donor_confirmation.dart';
+import 'package:food_donating_app/screens/charitysignature.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class StartJourney extends StatefulWidget {
+class TravelToCharity extends StatefulWidget {
   Map curChar, curRes;
-  StartJourney({required this.curChar, required this.curRes});
+  TravelToCharity({required this.curChar, required this.curRes});
 
   @override
-  _StartJourneyState createState() => _StartJourneyState();
+  _TravelToCharityState createState() => _TravelToCharityState();
 }
 
-class _StartJourneyState extends State<StartJourney> {
+class _TravelToCharityState extends State<TravelToCharity> {
   @override
   Widget build(BuildContext context) {
     CameraPosition defaultCameraPos = CameraPosition(
@@ -30,9 +30,20 @@ class _StartJourneyState extends State<StartJourney> {
       // onTap: () => _showRestaurentPanel,
     );
 
+    Marker charMarker = Marker(
+      markerId: MarkerId('Char'),
+      infoWindow: InfoWindow(title: widget.curChar['name']),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+      position: LatLng(
+        double.parse(widget.curChar['posLat']),
+        double.parse(widget.curChar['posLng']),
+      ),
+      // onTap: () => _showRestaurentPanel,
+    );
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Step 1: Travel to Donor'),
+        title: Text('Step 3: Travel to Charity'),
       ),
       body: Column(
         children: [
@@ -44,7 +55,7 @@ class _StartJourneyState extends State<StartJourney> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              widget.curRes['Restaurant Name'],
+              widget.curChar['name'],
               style: TextStyle(
                 fontSize: 26,
                 color: Theme.of(context).primaryColor,
@@ -65,7 +76,7 @@ class _StartJourneyState extends State<StartJourney> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.curRes['Address'],
+                        'charity address',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -84,7 +95,7 @@ class _StartJourneyState extends State<StartJourney> {
                   SizedBox(width: 3),
                   Column(
                     children: [
-                      Text('Bussines number: 1234567890'),
+                      Text('Bussines number: Phone'),
                     ],
                   ),
                 ],
@@ -97,10 +108,22 @@ class _StartJourneyState extends State<StartJourney> {
             color: Theme.of(context).primaryColor,
           ),
           Expanded(
-            child: GoogleMap(
-              initialCameraPosition: defaultCameraPos,
-              markers: {resMarker},
-            ),
+            child: GoogleMap(initialCameraPosition: defaultCameraPos, markers: {
+              resMarker,
+              charMarker
+            }, polylines: {
+              Polyline(
+                polylineId: const PolylineId('overview_polyline'),
+                color: Colors.blue,
+                width: 5,
+                points: [
+                  LatLng(double.parse(widget.curChar['posLat']),
+                      double.parse(widget.curChar['posLng'])),
+                  LatLng(double.parse(widget.curRes['Lat']),
+                      double.parse(widget.curRes['Lng'])),
+                ],
+              ),
+            }),
           ),
           Container(
             width: double.infinity,
@@ -111,15 +134,12 @@ class _StartJourneyState extends State<StartJourney> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DonorConfirmation(
-                      curChar: widget.curChar,
-                      curRes: widget.curRes,
-                    ),
+                    builder: (context) => CharitySignature(),
                   ),
                 );
               },
               textColor: Colors.white,
-              child: Text('ARRIVED AT PICKUP'),
+              child: Text('ARRIVED AT DROP OFF'),
             ),
           ),
         ],

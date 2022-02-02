@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food_donating_app/widget/charity.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:food_donating_app/widget/restaurents.dart';
 
 class MapService {
@@ -15,6 +16,9 @@ class MapService {
 
   final CollectionReference volunteerCollection =
       FirebaseFirestore.instance.collection('volunteers');
+
+  final CollectionReference pickupDetailsCollection =
+      FirebaseFirestore.instance.collection('pickup_details');
 
   void getAndUpdatePickupDetails(Charity? curCharity, Restaurent curRes) async {
     DocumentSnapshot pickUpSnapshot =
@@ -78,6 +82,41 @@ class MapService {
     );
   }
 
+  Future<Restaurent2?> getRestaurent2DataFromFirebase(String email) async {
+    // print(email);
+    QuerySnapshot snapshot = await pickupDetailsCollection.get();
+    List data = snapshot.docs.map((DocumentSnapshot s) => s.data()).toList();
+
+    for (var i = 0; i < data.length; i++) {
+      // print(data[i]['email']);
+      if (data[i]['email'] == email) {
+        return Restaurent2(
+          address: data[i]['Address'] ?? '',
+          city: data[i]['City'] ?? '',
+          contactPerson: data[i]['Contact Person'] ?? '',
+          lat: data[i]['Lat'] ?? '',
+          lng: data[i]['Lng'] ?? '',
+          phoneNo: data[i]['Phone Number'] ?? '',
+          name: data[i]['Restaurant Name'] ?? '',
+          status: data[i]['Status'] ?? '',
+          days: data[i]['days'] ?? '',
+          details: data[i]['details'] ?? '',
+          email: data[i]['email'] ?? '',
+          endDate: data[i]['enddate'] ?? '',
+          endTime: data[i]['endtime'] ?? '',
+          startDate: data[i]['startdate'] ?? '',
+          startTime: data[i]['starttime'] ?? '',
+          desList: data[i]['descriptionlist'] ?? [],
+          quantityList: data[i]['quantitylist'] ?? [],
+          unitList: data[i]['unitlist'] ?? [],
+        );
+      }
+    }
+    // print('\n\n\n');
+    return null;
+    // print(data);
+  }
+
   Future<Restaurent> getRestaurentDataFromFirebase(String uniqueId) async {
     DocumentSnapshot snapshot = await restaurentCollection.doc(uniqueId).get();
     var data = snapshot.data() as Map;
@@ -94,7 +133,7 @@ class MapService {
 
   bool? convertStringToBool(String str) {
     str = str.toLowerCase();
-    print(str);
+    // print(str);
     if (str == 'true')
       return true;
     else
@@ -134,5 +173,37 @@ class MapService {
 
   Stream<List<Restaurent>> get restaurents {
     return restaurentCollection.snapshots().map(_restaurentListFromSnapshot);
+  }
+
+  List<Restaurent2> _pickupRestaurentListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      // print(doc['unitlist']);
+      return Restaurent2(
+        address: doc['Address'] ?? '',
+        city: doc['City'] ?? '',
+        contactPerson: doc['Contact Person'] ?? '',
+        lat: doc['Lat'] ?? '',
+        lng: doc['Lng'] ?? '',
+        phoneNo: doc['Phone Number'] ?? '',
+        name: doc['Restaurant Name'] ?? '',
+        status: doc['Status'] ?? '',
+        days: doc['days'] ?? '',
+        details: doc['details'] ?? '',
+        email: doc['email'] ?? '',
+        endDate: doc['enddate'] ?? '',
+        endTime: doc['endtime'] ?? '',
+        startDate: doc['startdate'] ?? '',
+        startTime: doc['starttime'] ?? '',
+        desList: doc['descriptionlist'] ?? [],
+        quantityList: doc['quantitylist'] ?? [],
+        unitList: doc['unitlist'] ?? [],
+      );
+    }).toList();
+  }
+
+  Stream<List<Restaurent2>> get pickupRestaurents {
+    return pickupDetailsCollection
+        .snapshots()
+        .map(_pickupRestaurentListFromSnapshot);
   }
 }

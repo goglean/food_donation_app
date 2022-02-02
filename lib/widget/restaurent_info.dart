@@ -4,11 +4,12 @@ import 'package:food_donating_app/widget/charity.dart';
 import 'package:food_donating_app/widget/map_service.dart';
 import 'package:food_donating_app/widget/restaurents.dart';
 import 'package:food_donating_app/widget/transition_screen.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class RestaurentInfo extends StatefulWidget {
-  final Restaurent? curRestaurent;
+  final Restaurent2? curRestaurent;
   final Marker? location;
 
   const RestaurentInfo(this.curRestaurent, this.location);
@@ -18,6 +19,7 @@ class RestaurentInfo extends StatefulWidget {
 }
 
 class _RestaurentInfoState extends State<RestaurentInfo> {
+  String distanceBetweenMarker = 'Please choose your current location';
   @override
   Widget build(BuildContext context) {
     Widget makeDismissible({required Widget child}) => GestureDetector(
@@ -26,6 +28,17 @@ class _RestaurentInfoState extends State<RestaurentInfo> {
           child: GestureDetector(onTap: () {}, child: child),
         );
 
+    if (widget.location != null) {
+      distanceBetweenMarker = (Geolocator.distanceBetween(
+                      double.parse(widget.curRestaurent!.lat),
+                      double.parse(widget.curRestaurent!.lng),
+                      widget.location!.position.latitude,
+                      widget.location!.position.longitude) *
+                  0.000621371)
+              .toStringAsFixed(2) +
+          " miles";
+    }
+
     return makeDismissible(
       child: DraggableScrollableSheet(
         initialChildSize: 0.2,
@@ -33,7 +46,7 @@ class _RestaurentInfoState extends State<RestaurentInfo> {
         minChildSize: 0.1,
         builder: (_, controller) => InkWell(
           onTap: () {
-            if (widget.curRestaurent!.isClaimed) return;
+            if (widget.curRestaurent!.status != 'upcoming') return;
             Navigator.of(context).pop();
             Navigator.push(
                 context,
@@ -61,16 +74,16 @@ class _RestaurentInfoState extends State<RestaurentInfo> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(25)),
-                      color: widget.curRestaurent!.isClaimed
-                          ? Colors.red[400]
-                          : Colors.green[400],
+                      color: widget.curRestaurent!.status == 'upcoming'
+                          ? Colors.green[400]
+                          : Colors.red[400],
                     ),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(24, 8, 0, 8),
                       child: Text(
-                        widget.curRestaurent!.isClaimed
-                            ? 'CLAIMED'
-                            : 'UNCLAIMED',
+                        widget.curRestaurent!.status == 'upcoming'
+                            ? 'UNCLAIMED'
+                            : 'CLAIMED',
                         // style: TextStyle(
                         //   backgroundColor: widget.curRestaurent!.isClaimed
                         //       ? Colors.red[600]
@@ -96,7 +109,7 @@ class _RestaurentInfoState extends State<RestaurentInfo> {
                     ),
                   ),
                   subtitle: Text(
-                    '${widget.curRestaurent!.openTime} - ${widget.curRestaurent!.closeTime}\ndistance',
+                    '${widget.curRestaurent!.startDate}, ${widget.curRestaurent!.startTime} - ${widget.curRestaurent!.endTime}\n${distanceBetweenMarker}',
                   ),
                 ),
                 SizedBox(height: 10),

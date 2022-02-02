@@ -15,18 +15,39 @@ class MyPickups extends StatefulWidget {
 class _MyPickupsState extends State<MyPickups> {
   bool _pressAttention = true, _dataLoaded = false, _pickUpAvailable = false;
   List pickUpList = [];
+  List pickUpCharityList = [];
   void getPickUps() async {
-    CollectionReference volunteerCollection =
-        FirebaseFirestore.instance.collection('volunteers');
-    String curUserUid = FirebaseAuth.instance.currentUser!.uid;
+    CollectionReference pickupCollection =
+        FirebaseFirestore.instance.collection('pickup_details');
 
-    DocumentSnapshot pickUpSnapshot =
-        await volunteerCollection.doc(curUserUid).get();
+    CollectionReference charityCollection =
+        FirebaseFirestore.instance.collection('charity');
 
-    pickUpList = (pickUpSnapshot.data() as Map)['PickUps'];
-    for (var i = 0; i < pickUpList.length; i++) {
-      print(pickUpList[i]);
+    String? curUserEmail = FirebaseAuth.instance.currentUser!.email;
+
+    QuerySnapshot pickUpSnapshot = await pickupCollection.get();
+
+    List? pList = [];
+    List pList2 =
+        pickUpSnapshot.docs.map((DocumentSnapshot s) => s.data()).toList();
+
+    // print('hello');
+    for (var i = 0; i < pList2.length; i++) {
+      // print('\n\n\n');
+      if (pList2[i]['Pickedby'] == curUserEmail) {
+        DocumentSnapshot snapshot =
+            await charityCollection.doc(pList2[i]['PickedCharityUniId']).get();
+        // print(pList2[i]['PickedCharityUniId']);
+        var data = snapshot.data() as Map;
+        pickUpCharityList.add(data);
+        pList.add(pList2[i]);
+      }
     }
+
+    pickUpList = pList;
+    // for (var i = 0; i < pickUpList.length; i++) {
+    //   print(pickUpList[i]);
+    // }
 
     if (!_dataLoaded)
       setState(() {
@@ -39,6 +60,9 @@ class _MyPickupsState extends State<MyPickups> {
   void initState() {
     super.initState();
     getPickUps();
+
+    // print(FirebaseAuth.instance.currentUser!.email);
+    // print('\n\n\n\n');
   }
 
   @override
@@ -70,23 +94,26 @@ class _MyPickupsState extends State<MyPickups> {
                     borderRadius: new BorderRadius.circular(28.0),
                   ),
                   onPressed: () async {
-                    final CollectionReference resCollection =
-                        FirebaseFirestore.instance.collection('restaurent');
-                    await resCollection
-                        .doc(pickUpList[index]['resUid'])
-                        .update({'isClaimed': false});
+                    // print('object');
+                    final CollectionReference pCollection =
+                        FirebaseFirestore.instance.collection('pickup_details');
 
-                    print(pickUpList[index]['resUid']);
-
-                    pickUpList.removeAt(index);
-                    print('\n\n\n\n\n\n\n\n\n');
-
-                    final CollectionReference volunteerCollection =
-                        FirebaseFirestore.instance.collection('volunteers');
-                    String curUser = FirebaseAuth.instance.currentUser!.uid;
-                    await volunteerCollection
-                        .doc(curUser)
-                        .update({'PickUps': pickUpList});
+                    QuerySnapshot snapshot = await pCollection.get();
+                    bool found = false;
+                    snapshot.docs.forEach((element) {
+                      Map dataMap = element.data() as Map;
+                      if (dataMap['Pickedby'] ==
+                              FirebaseAuth.instance.currentUser!.email &&
+                          !found &&
+                          pickUpList[index]['PickedCharityUniId'] ==
+                              dataMap['PickedCharityUniId']) {
+                        print(element.id);
+                        pCollection.doc(element.id).update({
+                          'Pickedby': '',
+                          'Status': 'upcoming',
+                        });
+                      }
+                    });
 
                     _dataLoaded = false;
                     _pickUpAvailable = false;
@@ -211,7 +238,7 @@ class _MyPickupsState extends State<MyPickups> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Today ${pickUpList[index]['charityOpenTime']} - ${pickUpList[index]['charityCloseTime']}",
+                                            "Today ${pickUpCharityList[index]['openTime']} - ${pickUpCharityList[index]['closeTime']}",
                                             style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
@@ -234,7 +261,8 @@ class _MyPickupsState extends State<MyPickups> {
                                               ),
                                               SizedBox(width: 8),
                                               Text(
-                                                pickUpList[index]['from'],
+                                                pickUpList[index]
+                                                    ['Restaurant Name'],
                                                 style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold,
@@ -257,7 +285,8 @@ class _MyPickupsState extends State<MyPickups> {
                                               ),
                                               SizedBox(width: 8),
                                               Text(
-                                                pickUpList[index]['to'],
+                                                pickUpCharityList[index]
+                                                    ['name'],
                                                 style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold,
@@ -301,11 +330,18 @@ class _MyPickupsState extends State<MyPickups> {
                                                     // print(FirebaseAuth.instance.currentUser!.uid);
                                                     Navigator.pop(context);
                                                     Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              StartJourney(),
-                                                        ));
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            StartJourney(
+                                                          curChar:
+                                                              pickUpCharityList[
+                                                                  index],
+                                                          curRes:
+                                                              pickUpList[index],
+                                                        ),
+                                                      ),
+                                                    );
                                                   },
                                                 ),
                                               ),

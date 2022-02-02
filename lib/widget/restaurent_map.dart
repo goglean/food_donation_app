@@ -113,8 +113,9 @@ class _RestaurentMapState extends State<RestaurentMap> {
 
   @override
   Widget build(BuildContext context) {
-    final restaurent = Provider.of<List<Restaurent>?>(context);
-    Restaurent? curRestaurent = null;
+    List<Restaurent2>? restaurent = Provider.of<List<Restaurent2>?>(context);
+    // print(restaurent!.length);
+    Restaurent2? curRestaurent = null;
 
     CameraPosition? curCameraPos = null;
 
@@ -142,17 +143,15 @@ class _RestaurentMapState extends State<RestaurentMap> {
       position: LatLng(37.43296265331129, -122.08832357078792),
     );
 
-    void getRestaurentInfo(String restaurentId) async {
-      Restaurent restaurentData =
-          await MapService().getRestaurentDataFromFirebase(restaurentId);
+    void getRestaurentInfo(String email) async {
+      Restaurent2? restaurentData =
+          await MapService().getRestaurent2DataFromFirebase(email);
+
+      // Restaurent restaurentData =
+      //     await MapService().getRestaurentDataFromFirebase(restaurentId);
       setState(() {
         curRestaurent = restaurentData;
       });
-      // print(restaurentData.name);
-      // print(restaurentData.posLat);
-      // print(restaurentData.posLng);
-      // print(restaurentData.uniId);
-      // print(restaurentData.isClaimed);
     }
 
     Future<int> curLocation() async {
@@ -160,8 +159,8 @@ class _RestaurentMapState extends State<RestaurentMap> {
       bool isLocationServiceEnabled =
           await Geolocator.isLocationServiceEnabled();
       if (isLocationServiceEnabled) {
-        print('${curPos.longitude} - ${curPos.latitude}');
-        print('\n\n\n\n\n\n\n\n\n\n');
+        // print('${curPos.longitude} - ${curPos.latitude}');
+        // print('\n\n\n\n\n\n\n\n\n\n');
         // setState(() {
         //   curCameraPos = CameraPosition(
         //     target: LatLng(curPos.latitude, curPos.longitude),
@@ -174,13 +173,13 @@ class _RestaurentMapState extends State<RestaurentMap> {
 
     // curLocation();
 
-    void _showRestaurentPanel(String restaurentId) {
+    void _showRestaurentPanel(String email) {
       showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
         builder: (context) {
-          getRestaurentInfo(restaurentId);
+          getRestaurentInfo(email);
           if (curRestaurent != null) {
             return RestaurentInfo(curRestaurent, locationMarker);
           } else {
@@ -194,24 +193,27 @@ class _RestaurentMapState extends State<RestaurentMap> {
 
     for (int i = 0; i < restaurent!.length; i++) {
       restaurentMarker.add(Marker(
-        markerId: MarkerId(restaurent[i].uniId),
+        markerId: MarkerId(restaurent[i].email),
         infoWindow: InfoWindow(title: restaurent[i].name),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
         position: LatLng(
-          double.parse(restaurent[i].posLat),
-          double.parse(restaurent[i].posLng),
+          double.parse(restaurent[i].lat),
+          double.parse(restaurent[i].lng),
         ),
         // onTap: () => _showRestaurentPanel,
+
         onTap: () async {
-          directionLineMarker[1] = LatLng(double.parse(restaurent[i].posLat),
-              double.parse(restaurent[i].posLng));
-          _showRestaurentPanel(restaurent[i].uniId);
+          directionLineMarker[1] = LatLng(
+              double.parse(restaurent[i].lat), double.parse(restaurent[i].lng));
+          _showRestaurentPanel(restaurent[i].email);
           // print(_origin!.position.latitude);
           // print(_destination!.position.longitude);
+
           // Get directions
-          final directions = await DirectionsRepository().getDirections(
-              origin: _origin!.position, destination: _destination!.position);
-          print(directions.totalDistance);
+          // final directions = await DirectionsRepository().getDirections(
+          //     origin: _origin!.position, destination: _destination!.position);
+          // print(directions.totalDistance);
+
           // setState(() => _info = directions);
           // await curLocation();
         },
@@ -265,7 +267,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
                   zoom: 14,
                 );
 
-                print(position.longitude);
+                // print(position.longitude);
                 _goToCurrentLocation(cameraPosition);
 
                 locationMarker = Marker(
