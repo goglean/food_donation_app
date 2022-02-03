@@ -32,6 +32,7 @@ class _StartJourneyState extends State<StartJourney> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('Step 1: Travel to Donor'),
       ),
       body: Column(

@@ -41,7 +41,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
         return Future.error('Location permissions are denied');
       }
     } else {
-      print('Location not avaiable');
+      print('Location not available');
     }
 
     //   if (permission == LocationPermission.deniedForever) {

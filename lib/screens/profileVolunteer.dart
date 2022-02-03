@@ -12,6 +12,7 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -20,6 +21,8 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
           ),
           title: Text("Volunteer\'s Profile"),
         ),
-        body: Container());
+        body: Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+        ));
   }
 }

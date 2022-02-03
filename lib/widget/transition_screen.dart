@@ -18,8 +18,8 @@ class _TransitionScreenState extends State<TransitionScreen> {
       initialData: [],
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Avaiable Pickups'),
-          backgroundColor: Colors.orange[800],
+          title: Text('Available Pickups'),
+          backgroundColor: Theme.of(context).primaryColor,
           centerTitle: true,
         ),
         body: AvaiablePickups(

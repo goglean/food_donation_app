@@ -43,6 +43,7 @@ class _TravelToCharityState extends State<TravelToCharity> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('Step 3: Travel to Charity'),
       ),
       body: Column(
