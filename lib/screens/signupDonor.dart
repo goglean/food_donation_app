@@ -672,8 +672,25 @@ class _SignupDonorState extends State<SignupDonor> {
                           color: Theme.of(context).primaryColor,
                         ),
                         child: TextButton(
-                          onPressed: () {
-                            showDialog<String>(
+                          onPressed: () {                            
+                            setState(() {
+                              FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                                email: _emailController.text,
+                                password: _passwordController.text)
+                            .then((value) => FirebaseAuth.instance.currentUser
+                                ?.sendEmailVerification().then((value) {}));
+                              submitForm();
+                              _cityController.clear();
+                              _addressController.clear();
+                              _nameController.clear();
+                              _emailController.clear();
+                              _passwordController.clear();
+                              _addressController.clear();
+                              _phoneNoController.clear();
+                              _zipcodeController.clear();
+                              _contactPersonController.clear();
+                              showDialog<String>(
                               barrierDismissible: false,
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -691,22 +708,6 @@ class _SignupDonorState extends State<SignupDonor> {
           ],
         ),
       );
-                            
-                            setState(() {
-                              submitForm();
-                              _cityController.clear();
-                              _addressController.clear();
-                              _nameController.clear();
-                              _emailController.clear();
-                              _passwordController.clear();
-                              _addressController.clear();
-                              _phoneNoController.clear();
-                              _zipcodeController.clear();
-                              _contactPersonController.clear();
-                              //   Navigator.push(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //           builder: (context) => HomeDonor()));
                             });
                           },
                           child: Text(
