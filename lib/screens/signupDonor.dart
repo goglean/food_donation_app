@@ -673,13 +673,13 @@ class _SignupDonorState extends State<SignupDonor> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            // setState(() {
-                            //   FirebaseAuth.instance
-                            // .createUserWithEmailAndPassword(
-                            //     email: _emailController.text,
-                            //     password: _passwordController.text)
-                            // .then((value) => FirebaseAuth.instance.currentUser
-                            //     ?.sendEmailVerification().then((value) {}));
+                            setState(() {
+                              FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                                email: _emailController.text,
+                                password: _passwordController.text)
+                            .then((value) => FirebaseAuth.instance.currentUser
+                                ?.sendEmailVerification().then((value) {}));
                             submitForm();
                             _cityController.clear();
                             _addressController.clear();
@@ -709,7 +709,7 @@ class _SignupDonorState extends State<SignupDonor> {
                                 ],
                               ),
                             );
-                            //});
+                            });
                           },
                           child: Text(
                             "Submit",
