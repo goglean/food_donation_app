@@ -345,36 +345,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                           onSaved: (val) => print(val),
                         )),
                   ],
-                ),
-                IconButton(onPressed: () {
-                  fetchdetails();
-                  
-                for (var i = 0; i < widget.quanlist.length; i++) {
-                  if (widget.Unilist[i] == "Crate") {
-                    Crate = Crate +int.parse(widget.quanlist[i]);
-                  }
-                  if (widget.Unilist[i] == "Case") {
-                      Case = Case + int.parse(widget.quanlist[i]);
-                  }
-                  if (widget.Unilist[i] == "Tray") {
-                    Tray = Tray + int.parse(widget.quanlist[i]);                    
-                  }
-                  if (widget.Unilist[i] == "Box") {
-                    box = int.parse(widget.quanlist[i]);                    
-                  }
-                  if (widget.Unilist[i] == "Large Bag") {
-                    Large_Bag = Large_Bag + int.parse(widget.quanlist[i]);                
-                  } else {
-                    Small_Bag = Small_Bag + int.parse(widget.quanlist[i]);
-                  }
-                }
-            print("Crate : " + Crate.toString());
-                print(Case.toString());
-                print(Large_Bag.toString());
-                print(Small_Bag.toString());
-                print(box.toString());
-                print(Tray.toString());
-                }, icon: Icon(Icons.arrow_back))
+                )
               ],
             ),
             Padding(padding: EdgeInsets.all(10)),
