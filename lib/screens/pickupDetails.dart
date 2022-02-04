@@ -42,6 +42,7 @@ class _PickupDetailsState extends State<PickupDetails> {
   String city = "";
   var lati;
   var longi;
+  DateTime start = DateTime.now();
   bool isfetched = false;
   Future<Position> _determinePosition() async {
     LocationPermission permission;
@@ -201,14 +202,10 @@ class _PickupDetailsState extends State<PickupDetails> {
                           dateLabelText: 'Date',
                           timeLabelText: "Time",
                           selectableDayPredicate: (date) {
-                            if (date.weekday == 6 || date.weekday == 7) {
-                              return false;
-                            }
-
                             return true;
                           },
                           onChanged: (val) {
-                            //print(val);
+                            start = DateTime.parse(val);
                             startdate = val;
                           },
                           // validator: (val) {
@@ -219,15 +216,15 @@ class _PickupDetailsState extends State<PickupDetails> {
                         )),
                   ],
                 ),
-                IconButton(
-                    onPressed: () {
-                      final DocumentReference docRef = FirebaseFirestore
-                          .instance
-                          .collection("utils")
-                          .doc("Pz2bdEn7LlTDiG7lMw5i");
-                      docRef.get();
-                    },
-                    icon: Icon(Icons.plus_one)),
+                // IconButton(
+                //     onPressed: () {
+                //       final DocumentReference docRef = FirebaseFirestore
+                //           .instance
+                //           .collection("utils")
+                //           .doc("Pz2bdEn7LlTDiG7lMw5i");
+                //       docRef.get();
+                //     },
+                //     icon: Icon(Icons.plus_one)),
                 Padding(padding: EdgeInsets.all(20)),
                 Column(
                   children: [
@@ -250,7 +247,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                           dateLabelText: 'Date',
                           timeLabelText: "Time",
                           selectableDayPredicate: (date) {
-                            if (date.weekday == 6 || date.weekday == 7) {
+                            if (date.isBefore(start)) {
                               return false;
                             }
                             return true;
