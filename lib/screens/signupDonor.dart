@@ -53,7 +53,7 @@ class _SignupDonorState extends State<SignupDonor> {
             email: _email, password: _password);
         final User user = result.user!;
         String uid = user.uid;
-        FirebaseAuth.instance.currentUser?.sendEmailVerification();
+        //FirebaseAuth.instance.currentUser?.sendEmailVerification();
         await firestore.collection('donors').doc(uid).set({
           'Name': _name,
           'email': _email,
@@ -672,43 +672,44 @@ class _SignupDonorState extends State<SignupDonor> {
                           color: Theme.of(context).primaryColor,
                         ),
                         child: TextButton(
-                          onPressed: () {                            
-                            setState(() {
-                              FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                                email: _emailController.text,
-                                password: _passwordController.text)
-                            .then((value) => FirebaseAuth.instance.currentUser
-                                ?.sendEmailVerification().then((value) {}));
-                              submitForm();
-                              _cityController.clear();
-                              _addressController.clear();
-                              _nameController.clear();
-                              _emailController.clear();
-                              _passwordController.clear();
-                              _addressController.clear();
-                              _phoneNoController.clear();
-                              _zipcodeController.clear();
-                              _contactPersonController.clear();
-                              showDialog<String>(
+                          onPressed: () {
+                            // setState(() {
+                            //   FirebaseAuth.instance
+                            // .createUserWithEmailAndPassword(
+                            //     email: _emailController.text,
+                            //     password: _passwordController.text)
+                            // .then((value) => FirebaseAuth.instance.currentUser
+                            //     ?.sendEmailVerification().then((value) {}));
+                            submitForm();
+                            _cityController.clear();
+                            _addressController.clear();
+                            _nameController.clear();
+                            _emailController.clear();
+                            _passwordController.clear();
+                            _addressController.clear();
+                            _phoneNoController.clear();
+                            _zipcodeController.clear();
+                            _contactPersonController.clear();
+                            showDialog<String>(
                               barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          
-          title: const Text('Account Created successfully'),
-          content: const Text('Please verify your mail and login'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () { 
-                Navigator.pop(context, 'OK');
-                Navigator.pop(context);
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-                            });
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title:
+                                    const Text('Account Created successfully'),
+                                content: const Text(
+                                    'Please verify your mail and login'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, 'OK');
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                            //});
                           },
                           child: Text(
                             "Submit",

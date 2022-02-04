@@ -177,7 +177,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 ),
                                 IconButton(
                                   icon: const Icon(FontAwesomeIcons.twitter,
-                                      color: Colors.blue),
+                                      color: Color(0xFF1DA1F2)),
                                   onPressed: () async {
                                     //const url = Resources.WEBSITE_NAME;
                                     if (await canLaunch(twitter)) {
@@ -201,7 +201,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 ),
                                 IconButton(
                                   icon: const Icon(FontAwesomeIcons.linkedin,
-                                      color: Colors.blue),
+                                      color: Color(0xFF0072b1)),
                                   onPressed: () async {
                                     //const url = Resources.WEBSITE_NAME;
                                     if (await canLaunch(lnkd)) {

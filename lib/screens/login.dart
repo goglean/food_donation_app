@@ -146,49 +146,48 @@ class _loginpageState extends State<signinpage> {
                           //          context,
                           //          MaterialPageRoute(
                           //             builder: (context) => HomeDonor()));
-                          FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                                  email: usernamecontroller.text,
-                                  password: passwordcontroller.text)
-                              .then((value) async {
-                            if (FirebaseAuth
-                                    .instance.currentUser?.emailVerified ==
-                                true) {
-                              FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc((FirebaseAuth.instance.currentUser)?.uid)
-                                  .get()
-                                  .then((value) {
-                                if (usernamecontroller.text ==
-                                    value.data()!['email'].toString()) {
-                                  if (value.data()!['User Type'].toString() ==
-                                      "volunteer") {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Home()));
-                                    usernamecontroller.clear();
-                                    passwordcontroller.clear();
-                                  } else {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => HomeDonor()));
-                                    usernamecontroller.clear();
-                                    passwordcontroller.clear();
-                                  }
-                                }
-                              });
-                            } else {
-                              return Fluttertoast.showToast(
-                                  msg: 'User not verified',
-                                  gravity: ToastGravity.BOTTOM,
-                                  fontSize: 18,
-                                  backgroundColor:
-                                      Theme.of(context).primaryColor,
-                                  textColor: Colors.white);
-                            }
-                          });
+                          FirebaseAuth.instance.signInWithEmailAndPassword(
+                              email: usernamecontroller.text,
+                              password: passwordcontroller.text);
+                          //     .then((value) async {
+                          //   if (FirebaseAuth
+                          //           .instance.currentUser?.emailVerified ==
+                          //       true) {
+                          //     FirebaseFirestore.instance
+                          //         .collection('users')
+                          //         .doc((FirebaseAuth.instance.currentUser)?.uid)
+                          //         .get()
+                          //         .then((value) {
+                          //       if (usernamecontroller.text ==
+                          //           value.data()!['email'].toString()) {
+                          //         if (value.data()!['User Type'].toString() ==
+                          //             "volunteer") {
+                          //           Navigator.push(
+                          //               context,
+                          //               MaterialPageRoute(
+                          //                   builder: (context) => Home()));
+                          //           usernamecontroller.clear();
+                          //           passwordcontroller.clear();
+                          //         } else {
+                          //           Navigator.push(
+                          //               context,
+                          //               MaterialPageRoute(
+                          //                   builder: (context) => HomeDonor()));
+                          //           usernamecontroller.clear();
+                          //           passwordcontroller.clear();
+                          //         }
+                          //       }
+                          //     });
+                          //   } else {
+                          //     return Fluttertoast.showToast(
+                          //         msg: 'User not verified',
+                          //         gravity: ToastGravity.BOTTOM,
+                          //         fontSize: 18,
+                          //         backgroundColor:
+                          //             Theme.of(context).primaryColor,
+                          //         textColor: Colors.white);
+                          //   }
+                          // });
                         },
                         child: Text(
                           'Signin',

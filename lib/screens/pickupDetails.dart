@@ -17,11 +17,8 @@ class PickupDetails extends StatefulWidget {
   List quanlist;
   List desclist;
   List Unilist;
-  PickupDetails({
-    required this.Unilist,
-    required this.desclist,
-    required this.quanlist
-  });
+  PickupDetails(
+      {required this.Unilist, required this.desclist, required this.quanlist});
   @override
   _PickupDetailsState createState() => _PickupDetailsState();
 }
@@ -31,12 +28,10 @@ class _PickupDetailsState extends State<PickupDetails> {
   String location = "";
   String startdate = DateTime.now().toString();
   String enddate = DateTime.now().toString();
-  String starttime = DateTime.now().hour.toString() +
-                              ":" +
-                              DateTime.now().minute.toString();
-  String endtime = DateTime.now().hour.toString() +
-                              ":" +
-                              DateTime.now().minute.toString();
+  String starttime =
+      DateTime.now().hour.toString() + ":" + DateTime.now().minute.toString();
+  String endtime =
+      DateTime.now().hour.toString() + ":" + DateTime.now().minute.toString();
   String pickup = "";
   String lat = "";
   String long = "";
@@ -61,21 +56,23 @@ class _PickupDetailsState extends State<PickupDetails> {
     }
     return await Geolocator.getCurrentPosition();
   }
+
   void fetchdetails() {
     FirebaseFirestore.instance
-                  .collection('users')
-                  .doc((FirebaseAuth.instance.currentUser)?.uid)
-                  .get()
-                  .then((value) {
-                    if (value.data()!['email'] == FirebaseAuth.instance.currentUser!.email) {
-                    resname = value.data()!['Name'].toString();
-                    address = value.data()!['Address'].toString();
-                    phoneno = value.data()!['Phone Number'].toString();
-                    contactperson = value.data()!['Contact Person'].toString();
-                    city = value.data()!['City'].toString();
-                    }
-                  });
+        .collection('users')
+        .doc((FirebaseAuth.instance.currentUser)?.uid)
+        .get()
+        .then((value) {
+      if (value.data()!['email'] == FirebaseAuth.instance.currentUser!.email) {
+        resname = value.data()!['Name'].toString();
+        address = value.data()!['Address'].toString();
+        phoneno = value.data()!['Phone Number'].toString();
+        contactperson = value.data()!['Contact Person'].toString();
+        city = value.data()!['City'].toString();
+      }
+    });
   }
+
   final myController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -122,16 +119,18 @@ class _PickupDetailsState extends State<PickupDetails> {
                 style: TextStyle(color: Colors.black),
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                suffixIcon: IconButton(onPressed: () async{
-              Position curPos = await _determinePosition();
-      bool isLocationServiceEnabled =
-          await Geolocator.isLocationServiceEnabled();
-      if (isLocationServiceEnabled) {
-        longi = curPos.longitude;
-        lati = curPos.latitude;
-        isfetched = true;
-      }
-            }, icon: Icon(Icons.location_on)),
+                  suffixIcon: IconButton(
+                      onPressed: () async {
+                        Position curPos = await _determinePosition();
+                        bool isLocationServiceEnabled =
+                            await Geolocator.isLocationServiceEnabled();
+                        if (isLocationServiceEnabled) {
+                          longi = curPos.longitude;
+                          lati = curPos.latitude;
+                          isfetched = true;
+                        }
+                      },
+                      icon: Icon(Icons.location_on)),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                         color: Theme.of(context).primaryColor, width: 1),
@@ -209,21 +208,26 @@ class _PickupDetailsState extends State<PickupDetails> {
                             return true;
                           },
                           onChanged: (val) {
-                            print(val);
+                            //print(val);
                             startdate = val;
                           },
-                          validator: (val) {
-                            print(val);
-                            return null;
-                          },
-                          onSaved: (val) => print(val),
+                          // validator: (val) {
+                          //   //print(val);
+                          //   return null;
+                          // },
+                          // onSaved: (val) => print(val),
                         )),
                   ],
                 ),
-                IconButton(onPressed: () {
-                  final DocumentReference docRef = FirebaseFirestore.instance.collection("utils").doc("Pz2bdEn7LlTDiG7lMw5i");
-                  docRef.get();
-                }, icon: Icon(Icons.plus_one)),
+                IconButton(
+                    onPressed: () {
+                      final DocumentReference docRef = FirebaseFirestore
+                          .instance
+                          .collection("utils")
+                          .doc("Pz2bdEn7LlTDiG7lMw5i");
+                      docRef.get();
+                    },
+                    icon: Icon(Icons.plus_one)),
                 Padding(padding: EdgeInsets.all(20)),
                 Column(
                   children: [
@@ -252,14 +256,14 @@ class _PickupDetailsState extends State<PickupDetails> {
                             return true;
                           },
                           onChanged: (val) {
-                            print(val);
+                            //print(val);
                             enddate = val;
                           },
-                          validator: (val) {
-                            print(val);
-                            return null;
-                          },
-                          onSaved: (val) => print(val),
+                          // validator: (val) {
+                          //   //print(val);
+                          //   return null;
+                          // },
+                          //onSaved: (val) => print(val),
                         )),
                   ],
                 )
@@ -387,7 +391,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                     color: Colors.black),
               ),
             ),
-           ],
+          ],
         )),
       ),
       bottomNavigationBar: Container(
@@ -409,42 +413,42 @@ class _PickupDetailsState extends State<PickupDetails> {
             fetchdetails();
             Timer(Duration(seconds: 1), () {
               if (lati == null) {
-                 FirebaseFirestore.instance
-                .collection("pickup_details")
-                .doc(DateTime.now().toString())
-                .set({
-              "days": _selecteddetails,
-              "details": myController.text,
-              "enddate": enddate,
-              "endtime": endtime,
-              "startdate": startdate,
-              "starttime": starttime,
-              "quantitylist" : widget.quanlist.toList(),
-              "descriptionlist" : widget.desclist.toList(),
-              "unitlist" : widget.Unilist.toList(),
-              "Restaurant Name" : resname,
-              "Address" : address,
-              "Phone Number" : phoneno,
-              "Contact Person" : contactperson,
-              "City" : city,
-              "Status" : "upcoming",
-              "email" : FirebaseAuth.instance.currentUser?.email,
-              "lati" : lati.toString(),
-              "longi" : longi.toString(),
-            });
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => FinishPickupDetails()));
-            widget.quanlist.clear();
-            widget.desclist.clear();
-            widget.Unilist.clear();
-              } 
-              else {
+                FirebaseFirestore.instance
+                    .collection("pickup_details")
+                    .doc(DateTime.now().toString())
+                    .set({
+                  "days": _selecteddetails,
+                  "details": myController.text,
+                  "enddate": enddate,
+                  "endtime": endtime,
+                  "startdate": startdate,
+                  "starttime": starttime,
+                  "quantitylist": widget.quanlist.toList(),
+                  "descriptionlist": widget.desclist.toList(),
+                  "unitlist": widget.Unilist.toList(),
+                  "Restaurant Name": resname,
+                  "Address": address,
+                  "Phone Number": phoneno,
+                  "Contact Person": contactperson,
+                  "City": city,
+                  "Status": "upcoming",
+                  "email": FirebaseAuth.instance.currentUser?.email,
+                  "lati": lati.toString(),
+                  "longi": longi.toString(),
+                });
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FinishPickupDetails()));
+                widget.quanlist.clear();
+                widget.desclist.clear();
+                widget.Unilist.clear();
+              } else {
                 Fluttertoast.showToast(
-                  msg: "Please select your location",
-                  gravity: ToastGravity.BOTTOM
-                  );
+                    msg: "Please select your location",
+                    gravity: ToastGravity.BOTTOM);
               }
-});
+            });
           },
           splashColor: Colors.redAccent,
         ),

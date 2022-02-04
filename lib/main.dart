@@ -24,40 +24,41 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primaryColor: Color(0xFFFF6E40),
-          scaffoldBackgroundColor: Color(0xFFFCF8F0)),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, usersnapshot) {
-          if (usersnapshot.hasData && FirebaseAuth.instance.currentUser?.emailVerified == true) {
-            try {
-              FirebaseFirestore.instance
-                  .collection('users')
-                  .doc((FirebaseAuth.instance.currentUser)?.uid)
-                  .get()
-                  .then((value) {
-                setState(() {
-                  _userType = value.data()!['User Type'].toString();
-                });
-              });
-            } catch (e) {
-              print("error" + e.toString());
-            }
-            // print("hello $_userType");
-            if (_userType == "volunteer") {
-              return Home();
-            } else
-              return HomeDonor();
-          } else
-            return AuthScreen();
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
         },
-      ),
-    ));
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              primaryColor: Color(0xFFFF6E40),
+              scaffoldBackgroundColor: Color(0xFFFCF8F0)),
+          home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, usersnapshot) {
+              if (usersnapshot.hasData &&
+                  FirebaseAuth.instance.currentUser?.emailVerified == true) {
+                try {
+                  FirebaseFirestore.instance
+                      .collection('users')
+                      .doc((FirebaseAuth.instance.currentUser)?.uid)
+                      .get()
+                      .then((value) {
+                    setState(() {
+                      _userType = value.data()!['User Type'].toString();
+                    });
+                  });
+                } catch (e) {
+                  print("error" + e.toString());
+                }
+                // print("hello $_userType");
+                if (_userType == "volunteer") {
+                  return Home();
+                } else
+                  return HomeDonor();
+              } else
+                return AuthScreen();
+            },
+          ),
+        ));
   }
 }

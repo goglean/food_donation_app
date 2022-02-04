@@ -186,7 +186,7 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
                                                   TextButton(
                                                       onPressed: () {
                                                         Navigator.pop(context);
-                                                        //Navigator.pop(context);
+                                                        _nameController.clear();
                                                       },
                                                       child: Text(
                                                         "Cancel",
@@ -328,7 +328,8 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
                                                   TextButton(
                                                       onPressed: () {
                                                         Navigator.pop(context);
-                                                        //Navigator.pop(context);
+                                                        _emailController
+                                                            .clear();
                                                       },
                                                       child: Text(
                                                         "Cancel",
@@ -471,7 +472,8 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
                                                   TextButton(
                                                       onPressed: () {
                                                         Navigator.pop(context);
-                                                        //Navigator.pop(context);
+                                                        _phoneNoController
+                                                            .clear();
                                                       },
                                                       child: Text(
                                                         "Cancel",
