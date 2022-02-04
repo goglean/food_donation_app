@@ -334,13 +334,7 @@ class _donateitemsState extends State<donateitems> {
             height: 40.0,
             minWidth: double.infinity,
             onPressed: () {
-              FirebaseFirestore.instance
-                  .collection('utils')
-                  .doc('stats')
-                  .get()
-                  .then((value) {
-                print(value.data()!['Box']);
-              });
+              print(unitslist);
               Navigator.push(
                   context,
                   MaterialPageRoute(
