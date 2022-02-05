@@ -42,6 +42,12 @@ class _PickupDetailsState extends State<PickupDetails> {
   String city = "";
   var lati;
   var longi;
+  int box = 0;
+  int Case = 0;
+  int Crate = 0;
+  int Large_Bag = 0;
+  int Small_Bag = 0;
+  int Tray = 0;
   DateTime start = DateTime.now();
   bool isfetched = false;
   Future<Position> _determinePosition() async {
@@ -71,6 +77,18 @@ class _PickupDetailsState extends State<PickupDetails> {
         contactperson = value.data()!['Contact Person'].toString();
         city = value.data()!['City'].toString();
       }
+    });
+    FirebaseFirestore.instance
+        .collection('utils')
+        .doc('stats')
+        .get()
+        .then((value) {
+        box = value.data()!['Box'];
+        Crate = value.data()!['Crate'];
+        Case = value.data()!['Case'];
+        Large_Bag = value.data()!['Large Bag'];
+        Small_Bag = value.data()!['Small Bag'];
+        Tray = value.data()!['Tray'];
     });
   }
 
@@ -409,7 +427,7 @@ class _PickupDetailsState extends State<PickupDetails> {
           onPressed: () async {
             fetchdetails();
             Timer(Duration(seconds: 1), () {
-              if (lati == null) {
+              if (lati != null) {
                 FirebaseFirestore.instance
                     .collection("pickup_details")
                     .doc(DateTime.now().toString())
@@ -432,6 +450,36 @@ class _PickupDetailsState extends State<PickupDetails> {
                   "email": FirebaseAuth.instance.currentUser?.email,
                   "lati": lati.toString(),
                   "longi": longi.toString(),
+                });
+                for (var i = 0; i < widget.quanlist.length; i++) {
+                  if (widget.Unilist[i] == "Crate") {
+                    Crate = Crate + int.parse(widget.quanlist[i]);
+                  }
+                  if (widget.Unilist[i] == "Case") {
+                      Case = Case + int.parse(widget.quanlist[i]);
+                  }
+                  if (widget.Unilist[i] == "Tray") {
+                    Tray = Tray + int.parse(widget.quanlist[i]);                    
+                  }
+                  if (widget.Unilist[i] == "Box") {
+                    box = box + int.parse(widget.quanlist[i]);                    
+                  }
+                  if (widget.Unilist[i] == "Large Bag") {
+                    Large_Bag = Large_Bag + int.parse(widget.quanlist[i]);                    
+                  } else {
+                    Small_Bag = Small_Bag + int.parse(widget.quanlist[i]);
+                  }
+                }
+                FirebaseFirestore.instance
+                    .collection("utils")
+                    .doc("stats")
+                    .set({
+                  "Box" : box,
+                  "Case" : Case,
+                  "Crate" : Crate,
+                  "Large Bag" : Large_Bag,
+                  "Small Bag" : Small_Bag,
+                  "Tray" : Tray
                 });
                 Navigator.push(
                     context,
