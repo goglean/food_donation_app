@@ -9,6 +9,7 @@ class DonorConfirmation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('Step 2: Donor Confirmation'),
       ),
       body: Column(

@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
       setState(() {
         _userName = value.data()!['Name'].toString();
         _userName = _userName.toUpperCase();
-        // print('$_userName');
+        print('${_userName[0]}');
       });
     });
   }
@@ -64,12 +64,26 @@ class _HomeState extends State<Home> {
                       bottomRight: Radius.circular(
                           MediaQuery.of(context).size.width * 0.1))),
               child: Container(
+                //color: Theme.of(context).scaffoldBackgroundColor,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CircleAvatar(
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
                       radius: 50,
+                      /*
+                      child: Text(
+                        '${_userName[0]}',
+                        style: GoogleFonts.roboto(
+                            fontSize: 30,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1,
+                            wordSpacing: 5),
+                      ),
+                      */
                     ),
                     SizedBox(
                       height: 5,
@@ -81,12 +95,12 @@ class _HomeState extends State<Home> {
                           width: 10,
                         ),
                         Text(
-                          "$_userName",
-                          style: TextStyle(
-                              fontSize: 30,
+                          "$_userName ",
+                          style: GoogleFonts.roboto(
+                              fontSize: 20,
                               color: Colors.white,
                               fontWeight: FontWeight.w800,
-                              letterSpacing: 2,
+                              letterSpacing: 1,
                               wordSpacing: 5),
                         ),
                       ],

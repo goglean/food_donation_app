@@ -506,7 +506,24 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            showDialog<String>(
+                            setState(() {
+                              FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                                email: _emailController.text,
+                                password: _passwordController.text)
+                            .then((value) => FirebaseAuth.instance.currentUser
+                                ?.sendEmailVerification().then((value) {}));
+                              submitForm();
+                              
+                              _cityController.clear();
+                              _addressController.clear();
+                              _nameController.clear();
+                              _emailController.clear();
+                              _passwordController.clear();
+                              _addressController.clear();
+                              _phoneNoController.clear();
+                              _zipcodeController.clear();
+                              showDialog<String>(
                               barrierDismissible: false,
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -524,21 +541,8 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
           ],
         ),
       );
-                            setState(() {
-                              submitForm();
-                              _cityController.clear();
-                              _addressController.clear();
-                              _nameController.clear();
-                              _emailController.clear();
-                              _passwordController.clear();
-                              _addressController.clear();
-                              _phoneNoController.clear();
-                              _zipcodeController.clear();
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => Home()));
                             });
+            
                           },
                           child: Text(
                             "Submit",

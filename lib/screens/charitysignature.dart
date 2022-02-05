@@ -101,6 +101,7 @@ class _CharitySignatureState extends State<CharitySignature> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('Step 4: Charity Signature'),
       ),
       body: Column(
