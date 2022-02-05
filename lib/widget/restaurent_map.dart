@@ -104,12 +104,44 @@ class _RestaurentMapState extends State<RestaurentMap> {
   );
 
   CameraPosition defaultCameraPos = CameraPosition(
-    target: LatLng(13.5566036, 80.0251352),
+    // target: LatLng(13.5566036, 80.0251352),
+    target: LatLng(113.5566036, 180.0251352),
     zoom: 14.4746,
   );
 
   Marker? _origin = null, _destination = null;
   Directions? _info = null;
+
+  Future<void> _goToCurrentLocation(CameraPosition curLocation) async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(curLocation));
+  }
+
+  void initializeWithCurrentLocation() async {
+    Position position = await Location().getGeoLocationPosition();
+
+    CameraPosition? cameraPosition = CameraPosition(
+      target: LatLng(position.latitude, position.longitude),
+      zoom: 14,
+    );
+
+    // print(position.longitude);
+    _goToCurrentLocation(cameraPosition);
+
+    locationMarker = Marker(
+      markerId: MarkerId('userLocation'),
+      infoWindow: InfoWindow(title: 'You'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      position: LatLng(
+        position.latitude,
+        position.longitude,
+      ),
+    );
+
+    setState(() {
+      restaurentMarker.add(locationMarker!);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,10 +151,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
 
     CameraPosition? curCameraPos = null;
 
-    Future<void> _goToCurrentLocation(CameraPosition curLocation) async {
-      final GoogleMapController controller = await _controller.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(curLocation));
-    }
+    if (locationMarker == null) initializeWithCurrentLocation();
 
     Future<void> _goToTheLake() async {
       final GoogleMapController controller = await _controller.future;

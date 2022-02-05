@@ -211,185 +211,188 @@ class _MyPickupsState extends State<MyPickups> {
           _dataLoaded
               ? _pickUpAvailable
                   // ? Text('data')
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: pickUpList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Column(
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.8,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              child: Card(
-                                clipBehavior: Clip.antiAlias,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
+                  ? Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: pickUpList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Column(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  borderRadius: BorderRadius.circular(5.0),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Today ${pickUpCharityList[index]['openTime']} - ${pickUpCharityList[index]['closeTime']}",
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              decoration:
-                                                  TextDecoration.underline,
-                                              color: Colors.black,
+                                child: Card(
+                                  clipBehavior: Clip.antiAlias,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Today ${pickUpCharityList[index]['openTime']} - ${pickUpCharityList[index]['closeTime']}",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                color: Colors.black,
+                                              ),
                                             ),
-                                          ),
-                                          SizedBox(height: 8),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                'Pickup from',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                ),
-                                              ),
-                                              SizedBox(width: 8),
-                                              Text(
-                                                pickUpList[index]
-                                                    ['Restaurant Name'],
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black54,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(height: 8),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                'Drop off to',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                ),
-                                              ),
-                                              SizedBox(width: 8),
-                                              Text(
-                                                pickUpCharityList[index]
-                                                    ['name'],
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black54,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(height: 8),
-                                        ],
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              ButtonTheme(
-                                                minWidth: 36,
-                                                child: RaisedButton(
-                                                  textColor: Colors.white,
-                                                  color: Color.fromRGBO(
-                                                      118, 210, 83, 1),
-                                                  child: Text(
-                                                    'START',
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                    ),
+                                            SizedBox(height: 8),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  'Pickup from',
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
                                                   ),
-                                                  shape:
-                                                      new RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        new BorderRadius
-                                                            .circular(10.0),
+                                                ),
+                                                SizedBox(width: 8),
+                                                Text(
+                                                  pickUpList[index]
+                                                      ['Restaurant Name'],
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black54,
                                                   ),
-                                                  onPressed: () {
-                                                    // print(FirebaseAuth.instance.currentUser!.uid);
-                                                    Navigator.pop(context);
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            StartJourney(
-                                                          curChar:
-                                                              pickUpCharityList[
-                                                                  index],
-                                                          curRes:
-                                                              pickUpList[index],
-                                                        ),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(height: 8),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  'Drop off to',
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
+                                                ),
+                                                SizedBox(width: 8),
+                                                Text(
+                                                  pickUpCharityList[index]
+                                                      ['name'],
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black54,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(height: 8),
+                                          ],
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                ButtonTheme(
+                                                  minWidth: 36,
+                                                  child: RaisedButton(
+                                                    textColor: Colors.white,
+                                                    color: Color.fromRGBO(
+                                                        118, 210, 83, 1),
+                                                    child: Text(
+                                                      'START',
+                                                      style: TextStyle(
+                                                        fontSize: 16,
                                                       ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              ButtonTheme(
-                                                minWidth: 36,
-                                                child: RaisedButton(
-                                                  textColor: Colors.white,
-                                                  color: Color.fromRGBO(
-                                                      248, 95, 99, 1),
-                                                  child: Text(
-                                                    'UNCLAIM',
-                                                    style: TextStyle(
-                                                      fontSize: 16,
                                                     ),
+                                                    shape:
+                                                        new RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          new BorderRadius
+                                                              .circular(10.0),
+                                                    ),
+                                                    onPressed: () {
+                                                      // print(FirebaseAuth.instance.currentUser!.uid);
+                                                      Navigator.pop(context);
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              StartJourney(
+                                                            curChar:
+                                                                pickUpCharityList[
+                                                                    index],
+                                                            curRes: pickUpList[
+                                                                index],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
                                                   ),
-                                                  shape:
-                                                      new RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        new BorderRadius
-                                                            .circular(10.0),
-                                                  ),
-                                                  onPressed: () {
-                                                    openUnclaimConfirmation(
-                                                        index);
-                                                    // print(FirebaseAuth.instance.currentUser!.uid);
-                                                    // Navigator.pop(context);
-                                                  },
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      )
-                                    ],
+                                              ],
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                ButtonTheme(
+                                                  minWidth: 36,
+                                                  child: RaisedButton(
+                                                    textColor: Colors.white,
+                                                    color: Color.fromRGBO(
+                                                        248, 95, 99, 1),
+                                                    child: Text(
+                                                      'UNCLAIM',
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                      ),
+                                                    ),
+                                                    shape:
+                                                        new RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          new BorderRadius
+                                                              .circular(10.0),
+                                                    ),
+                                                    onPressed: () {
+                                                      openUnclaimConfirmation(
+                                                          index);
+                                                      // print(FirebaseAuth.instance.currentUser!.uid);
+                                                      // Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: 16)
-                          ],
-                        );
-                      },
+                              SizedBox(height: 16)
+                            ],
+                          );
+                        },
+                      ),
                     )
                   : NoPickUpsAvailable()
               : Loading()
