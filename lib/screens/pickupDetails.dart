@@ -26,8 +26,8 @@ class PickupDetails extends StatefulWidget {
 class _PickupDetailsState extends State<PickupDetails> {
   String _selecteddetails = "";
   String location = "";
-  String startdate = DateTime.now().toString();
-  String enddate = DateTime.now().toString();
+  String startdate = DateTime.now().year.toString() + "/" + DateTime.now().month.toString() + DateTime.now().day.toString();
+  String enddate = DateTime.now().year.toString() + "/" + DateTime.now().month.toString() + DateTime.now().day.toString();
   String starttime =
       DateTime.now().hour.toString() + ":" + DateTime.now().minute.toString();
   String endtime =
