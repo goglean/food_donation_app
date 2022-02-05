@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/donor_confirmation.dart';
+import 'package:food_donating_app/widget/locations.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class StartJourney extends StatefulWidget {
@@ -11,15 +13,42 @@ class StartJourney extends StatefulWidget {
 }
 
 class _StartJourneyState extends State<StartJourney> {
+  List<LatLng?> directionLineMarker = new List.filled(2, null, growable: false);
+  Set<Marker> markersSet = {};
+
+  void setCurrentDirectionMarker() async {
+    if (directionLineMarker[0] == null) {
+      Position position = await Location().getGeoLocationPosition();
+
+      setState(() {
+        directionLineMarker[0] = LatLng(position.latitude, position.longitude);
+
+        markersSet.add(Marker(
+          markerId: MarkerId('CurrentLocation'),
+          infoWindow: InfoWindow(title: 'You'),
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+          position: LatLng(
+            position.latitude,
+            position.longitude,
+          ),
+          // onTap: () => _showRestaurentPanel,
+        ));
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    setCurrentDirectionMarker();
+
     CameraPosition defaultCameraPos = CameraPosition(
       target: LatLng(double.parse(widget.curRes['Lat']),
           double.parse(widget.curRes['Lng'])),
       zoom: 14.4746,
     );
 
-    Marker resMarker = Marker(
+    markersSet.add(Marker(
       markerId: MarkerId('Res'),
       infoWindow: InfoWindow(title: widget.curRes['Restaurant Name']),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
@@ -28,7 +57,23 @@ class _StartJourneyState extends State<StartJourney> {
         double.parse(widget.curRes['Lng']),
       ),
       // onTap: () => _showRestaurentPanel,
-    );
+    ));
+
+    // Marker resMarker = Marker(
+    //   markerId: MarkerId('Res'),
+    //   infoWindow: InfoWindow(title: widget.curRes['Restaurant Name']),
+    //   icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+    //   position: LatLng(
+    //     double.parse(widget.curRes['Lat']),
+    //     double.parse(widget.curRes['Lng']),
+    //   ),
+    //   // onTap: () => _showRestaurentPanel,
+    // );
+
+    if (directionLineMarker[1] == null) {
+      directionLineMarker[1] = LatLng(double.parse(widget.curRes['Lat']),
+          double.parse(widget.curRes['Lng']));
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -99,7 +144,17 @@ class _StartJourneyState extends State<StartJourney> {
           Expanded(
             child: GoogleMap(
               initialCameraPosition: defaultCameraPos,
-              markers: {resMarker},
+              markers: markersSet,
+              polylines: {
+                if (directionLineMarker[0] != null &&
+                    directionLineMarker[1] != null)
+                  Polyline(
+                    polylineId: const PolylineId('overview_polyline'),
+                    color: Colors.blue,
+                    width: 5,
+                    points: [directionLineMarker[0]!, directionLineMarker[1]!],
+                  ),
+              },
             ),
           ),
           Container(

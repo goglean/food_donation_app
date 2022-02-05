@@ -134,7 +134,10 @@ class _TravelToCharityState extends State<TravelToCharity> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CharitySignature(),
+                    builder: (context) => CharitySignature(
+                      curChar: widget.curChar,
+                      curRes: widget.curRes,
+                    ),
                   ),
                 );
               },

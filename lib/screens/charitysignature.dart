@@ -1,18 +1,235 @@
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:food_donating_app/screens/journeyfinished.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 
 class CharitySignature extends StatefulWidget {
-  const CharitySignature({Key? key}) : super(key: key);
+  Map curChar, curRes;
+  CharitySignature({required this.curChar, required this.curRes});
 
   @override
   _CharitySignatureState createState() => _CharitySignatureState();
 }
 
 class _CharitySignatureState extends State<CharitySignature> {
+  final _controller = TextEditingController();
+  String? fullName;
+  File? _imageFile;
+  bool imagePicked = false;
+  String? _uploadedFileURL;
+
+  final picker = ImagePicker();
+
+  Future pickImage() async {
+    try {
+      final pickedFile = await picker.pickImage(source: ImageSource.camera);
+      if (pickedFile == null) return;
+
+      final imageTemp = File(pickedFile.path);
+      setState(() {
+        _imageFile = imageTemp;
+        imagePicked = true;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pickup images');
+    }
+  }
+
+  Future uploadImageToFirebase(BuildContext context) async {
+    if (_imageFile == null) return;
+
+    String fileName = basename(_imageFile!.path);
+    bool found = false;
+
+    print(fileName);
+
+    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('signature')
+        .child('/$fileName');
+
+    final metadata = firebase_storage.SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': fileName});
+    firebase_storage.UploadTask uploadTask;
+    uploadTask = ref.putFile(File(_imageFile!.path), metadata);
+
+    firebase_storage.UploadTask task = await Future.value(uploadTask);
+    Future.value(uploadTask)
+        .then((value) => {print("Upload file path ${value.ref.fullPath}")})
+        .onError((error, stackTrace) =>
+            {print("Upload file path error ${error.toString()} ")});
+
+    final CollectionReference pCollection =
+        FirebaseFirestore.instance.collection('pickup_details');
+
+    QuerySnapshot snapshot = await pCollection.get();
+
+    snapshot.docs.forEach((element) {
+      Map dataMap = element.data() as Map;
+      if (dataMap['Pickedby'] == FirebaseAuth.instance.currentUser!.email &&
+          !found &&
+          dataMap['PickedCharityUniId'] ==
+              widget.curRes['PickedCharityUniId']) {
+        print(element.id);
+        pCollection.doc(element.id).update({
+          "Reciever's name": fullName,
+          "ImageFileName": fileName,
+        });
+      }
+    });
+
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => JourneyFinished(
+          curChar: widget.curChar,
+          curRes: widget.curRes,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Step 4: Charity Signature'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Reciever's Name",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    TextField(
+                      controller: _controller,
+                      onChanged: (val) {
+                        fullName = _controller.text.toString();
+                      },
+                      cursorColor: Theme.of(context).primaryColor,
+                      decoration: InputDecoration(
+                        hintText: 'Full Name',
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.red,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 45),
+                    Text(
+                      "Reciever's Signature",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 25),
+                    Center(
+                      child: _imageFile == null
+                          ? FlatButton(
+                              child: Icon(
+                                Icons.add_a_photo,
+                                size: 50,
+                              ),
+                              onPressed: pickImage,
+                            )
+                          : Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Image.file(
+                                    _imageFile!,
+                                    width: 360,
+                                    height: 360,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                SizedBox(height: 25),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                  width: double.infinity,
+                                  child: FlatButton(
+                                    onPressed: pickImage,
+                                    textColor: Colors.white,
+                                    child: Text(
+                                      'Click Again',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            color: Theme.of(context).primaryColor,
+            child: FlatButton(
+              onPressed: () {
+                if (fullName == null || !imagePicked) {
+                  Fluttertoast.showToast(
+                      msg: "Please fill name and signature!",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.black45,
+                      fontSize: 16.0);
+                  return;
+                }
+                uploadImageToFirebase(context);
+                // Navigator.pop(context);
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => TravelToCharity(
+                //       curChar: curChar,
+                //       curRes: curRes,
+                //     ),
+                //   ),
+                // );
+              },
+              textColor: Colors.white,
+              child: Text(
+                'FINISH',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
