@@ -448,8 +448,8 @@ class _PickupDetailsState extends State<PickupDetails> {
                   "City": city,
                   "Status": "upcoming",
                   "email": FirebaseAuth.instance.currentUser?.email,
-                  "lati": lati.toString(),
-                  "longi": longi.toString(),
+                  "Lat": lati.toString(),
+                  "Lng": longi.toString(),
                 });
                 for (var i = 0; i < widget.quanlist.length; i++) {
                   if (widget.Unilist[i] == "Crate") {
