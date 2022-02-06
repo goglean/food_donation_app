@@ -117,7 +117,10 @@ class _PickupsDonorState extends State<PickupsDonor> {
                                               .primaryColor)),
                                   color: Theme.of(context).primaryColor,
                                   onPressed: () {
-
+                                    Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => donateitems()));
                                   },
                                   child: Text(
                                     "Add a donation",
@@ -218,6 +221,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
                                   TextButton(
                                     onPressed: () {
                     FirebaseFirestore.instance.collection('pickup_details').doc(document.id).delete();
+                                      Navigator.pop(context, 'Yes');
                                     },
                                     child: const Text('Yes'),
                                   ),

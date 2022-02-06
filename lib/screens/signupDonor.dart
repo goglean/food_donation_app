@@ -679,36 +679,10 @@ class _SignupDonorState extends State<SignupDonor> {
                                 email: _emailController.text,
                                 password: _passwordController.text)
                             .then((value) => FirebaseAuth.instance.currentUser
-                                ?.sendEmailVerification().then((value) {}));
-                            submitForm();
-                            _cityController.clear();
-                            _addressController.clear();
-                            _nameController.clear();
-                            _emailController.clear();
-                            _passwordController.clear();
-                            _addressController.clear();
-                            _phoneNoController.clear();
-                            _zipcodeController.clear();
-                            _contactPersonController.clear();
-                            showDialog<String>(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title:
-                                    const Text('Account Created successfully'),
-                                content: const Text(
-                                    'Please verify your mail and login'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context, 'OK');
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              ),
-                            );
+                                ?.sendEmailVerification().then((value) {
+
+                                }));
+                            
                             });
                           },
                           child: Text(
