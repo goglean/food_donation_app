@@ -90,9 +90,9 @@ class _CharitySignatureState extends State<CharitySignature> {
       context,
       MaterialPageRoute(
         builder: (context) => JourneyFinished(
-          curChar: widget.curChar,
-          curRes: widget.curRes,
-        ),
+            // curChar: widget.curChar,
+            // curRes: widget.curRes,
+            ),
       ),
     );
   }
