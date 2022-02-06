@@ -16,6 +16,10 @@ class JourneyFinished extends StatelessWidget {
           Text(
             curChar['name'],
           ),
+          FlatButton(
+            onPressed: () {},
+            child: Text('next'),
+          )
         ],
       ),
     );
