@@ -153,22 +153,22 @@ class _loginpageState extends State<signinpage> {
                             if (FirebaseAuth
                                     .instance.currentUser?.emailVerified ==
                                 true) {
-                              // FirebaseFirestore.instance
-                              //     .collection('users')
-                              //     .doc((FirebaseAuth.instance.currentUser)?.uid)
-                              //     .get()
-                              //     .then((value) {
-                              //   if (usernamecontroller.text ==
-                              //       value.data()!['email'].toString()) {
-                              //     if (value.data()!['User Type'].toString() ==
-                              //         "volunteer") {
-                              //       Navigator.push(
-                              //           context,
-                              //           MaterialPageRoute(
-                              //               builder: (context) => Home()));
-                              //       usernamecontroller.clear();
-                              //       passwordcontroller.clear();
-                              //     } else {
+                              FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc((FirebaseAuth.instance.currentUser)?.uid)
+                                  .get()
+                                  .then((value) {
+                                if (usernamecontroller.text ==
+                                    value.data()!['email'].toString()) {
+                                  if (value.data()!['User Type'].toString() ==
+                                      "volunteer") {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Home()));
+                                    usernamecontroller.clear();
+                                    passwordcontroller.clear();
+                                  } else {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -176,9 +176,9 @@ class _loginpageState extends State<signinpage> {
                                     usernamecontroller.clear();
                                     passwordcontroller.clear();
                                   }
-                              //   }
-                              // });
-                            //} 
+                                }
+                              });
+                            } 
                             else {
                               return Fluttertoast.showToast(
                                   msg: 'User not verified',
