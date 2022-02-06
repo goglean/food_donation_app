@@ -679,36 +679,51 @@ class _SignupDonorState extends State<SignupDonor> {
                                 email: _emailController.text,
                                 password: _passwordController.text)
                             .then((value) => FirebaseAuth.instance.currentUser
-                                ?.sendEmailVerification().then((value) {}));
-                            submitForm();
-                            _cityController.clear();
-                            _addressController.clear();
-                            _nameController.clear();
-                            _emailController.clear();
-                            _passwordController.clear();
-                            _addressController.clear();
-                            _phoneNoController.clear();
-                            _zipcodeController.clear();
-                            _contactPersonController.clear();
-                            showDialog<String>(
+                                ?.sendEmailVerification().then((value) {
+                                    FirebaseFirestore.instance
+                                .collection('users')
+                                .add({'Address' : _addressController.text,
+                                      'City' : _cityController.text,
+                                      'Contact Person' : _contactPersonController.text,
+                                      'Cuisine' : _cuisine,
+                                      'Donor Type' : _donorType,
+                                      'Name' : _nameController.text,
+                                      'Phone Number' : _phoneNoController.text,
+                                      'State' : _state,
+                                      'User Type' : 'donor',
+                                      'Zipcode' : _zipcodeController.text,
+                                      'email': _emailController.text,
+                                      'password': _passwordController.text
+                                 });
+                              _cityController.clear();
+                              _addressController.clear();
+                              _nameController.clear();
+                              _emailController.clear();
+                              _passwordController.clear();
+                              _addressController.clear();
+                              _phoneNoController.clear();
+                              _zipcodeController.clear();
+                              _contactPersonController.clear();
+                              showDialog<String>(
                               barrierDismissible: false,
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title:
-                                    const Text('Account Created successfully'),
-                                content: const Text(
-                                    'Please verify your mail and login'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context, 'OK');
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              ),
-                            );
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          
+          title: const Text('Account Created successfully'),
+          content: const Text('Please verify your mail and login'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () { 
+                Navigator.pop(context, 'OK');
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+                                }));
+                            
                             });
                           },
                           child: Text(

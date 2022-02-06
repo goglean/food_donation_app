@@ -512,9 +512,19 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                                 email: _emailController.text,
                                 password: _passwordController.text)
                             .then((value) => FirebaseAuth.instance.currentUser
-                                ?.sendEmailVerification().then((value) {}));
-                              submitForm();
-                              
+                                ?.sendEmailVerification().then((value) {
+                                 FirebaseFirestore.instance
+                                .collection('users')
+                                .add({'Address' : _addressController.text,
+                                      'City' : _cityController.text,
+                                      'Name' : _nameController.text,
+                                      'Phone Number' : _phoneNoController.text,
+                                      'State' : _state,
+                                      'User Type' : 'volunteer',
+                                      'Zipcode' : _zipcodeController.text,
+                                      'email': _emailController.text,
+                                      'password': _passwordController.text
+                                 });
                               _cityController.clear();
                               _addressController.clear();
                               _nameController.clear();
@@ -541,6 +551,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
           ],
         ),
       );
+                                }));
                             });
             
                           },

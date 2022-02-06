@@ -17,6 +17,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
   String _donationtype = "Upcoming";
   bool pressAttention = true;
   bool press = false;
+  int num = 0;
   var discriptlist = [];
   var quantilist = [];
   var unitslist = [];
@@ -107,6 +108,30 @@ class _PickupsDonorState extends State<PickupsDonor> {
         Expanded(
           child: donationtypes(),
         ),
+        RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(5.0),
+                                      side: BorderSide(
+                                          color: Theme.of(context)
+                                              .primaryColor)),
+                                  color: Theme.of(context).primaryColor,
+                                  onPressed: () {
+                                    Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => donateitems()));
+                                  },
+                                  child: Text(
+                                    "Add a donation",
+                                    style: GoogleFonts.roboto(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: MediaQuery.of(context)
+                                                .size
+                                                .height *
+                                            0.04),
+                                  )),
       ],
     );
   }
@@ -121,6 +146,9 @@ class _PickupsDonorState extends State<PickupsDonor> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
+          // if (num == 0) {
+          //         return Text('No Data');
+          // }
           return ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
@@ -180,7 +208,33 @@ class _PickupsDonorState extends State<PickupsDonor> {
                       ),
                     ],
                   ),
-              ),
+                  trailing: IconButton(onPressed: () {
+                    showDialog<String>(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title:
+                                    const Text('Delete donation'),
+                                content: const Text(
+                                    'Do you wish to cancel the donation?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                    FirebaseFirestore.instance.collection('pickup_details').doc(document.id).delete();
+                                      Navigator.pop(context, 'Yes');
+                                    },
+                                    child: const Text('Yes'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, 'No');
+                                    },
+                                    child: const Text('No'),
+                                  ),
+                                ],
+                              ),
+                            );}, icon: Icon(Icons.delete,color: Theme.of(context).primaryColor,)),
+                ),
                 );
               }
               return Container();
