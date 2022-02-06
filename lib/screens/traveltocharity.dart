@@ -11,6 +11,23 @@ class TravelToCharity extends StatefulWidget {
 }
 
 class _TravelToCharityState extends State<TravelToCharity> {
+  BitmapDescriptor? resIcon, charIcon;
+
+  @override
+  void initState() {
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(128, 128)),
+            'assets/Pickup_Orange_Marker.png')
+        .then((onValue) {
+      resIcon = onValue;
+    });
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(128, 128)),
+            'assets/Drop-off_Orange_Marker.png')
+        .then((onValue) {
+      charIcon = onValue;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     CameraPosition defaultCameraPos = CameraPosition(
@@ -22,7 +39,9 @@ class _TravelToCharityState extends State<TravelToCharity> {
     Marker resMarker = Marker(
       markerId: MarkerId('Res'),
       infoWindow: InfoWindow(title: widget.curRes['Restaurant Name']),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      icon: resIcon ??
+          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
       position: LatLng(
         double.parse(widget.curRes['Lat']),
         double.parse(widget.curRes['Lng']),
@@ -33,7 +52,9 @@ class _TravelToCharityState extends State<TravelToCharity> {
     Marker charMarker = Marker(
       markerId: MarkerId('Char'),
       infoWindow: InfoWindow(title: widget.curChar['name']),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+      // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+      icon: charIcon ??
+          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
       position: LatLng(
         double.parse(widget.curChar['posLat']),
         double.parse(widget.curChar['posLng']),

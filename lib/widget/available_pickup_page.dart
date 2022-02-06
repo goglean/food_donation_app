@@ -34,6 +34,23 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
   // 0th position show LatLng of current location 1st shows LatLng of tepped restaurent
   List<LatLng?> directionLineMarker = new List.filled(2, null, growable: false);
 
+  BitmapDescriptor? resIcon, charIcon;
+
+  @override
+  void initState() {
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(128, 128)),
+            'assets/Donor_Map_Marker_Orange.png')
+        .then((onValue) {
+      resIcon = onValue;
+    });
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(128, 128)),
+            'assets/Drop-off_Orange_Marker.png')
+        .then((onValue) {
+      charIcon = onValue;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final charity = Provider.of<List<Charity>?>(context);
@@ -51,7 +68,9 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
       Marker(
         markerId: MarkerId(curRes.email),
         infoWindow: InfoWindow(title: curRes.name),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+        // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+        icon: resIcon ??
+            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
         position: LatLng(
           double.parse(curRes.lat),
           double.parse(curRes.lng),
@@ -69,7 +88,9 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
       pickupMarkers.add(Marker(
         markerId: MarkerId(charity[i].uniId),
         infoWindow: InfoWindow(title: charity[i].name),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+        // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+        icon: charIcon ??
+            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
         position: LatLng(
           double.parse(charity[i].posLat),
           double.parse(charity[i].posLng),

@@ -120,6 +120,8 @@ class _RestaurentMapState extends State<RestaurentMap> {
   void initializeWithCurrentLocation() async {
     Position position = await Location().getGeoLocationPosition();
 
+    directionLineMarker[0] = LatLng(position.latitude, position.longitude);
+
     CameraPosition? cameraPosition = CameraPosition(
       target: LatLng(position.latitude, position.longitude),
       zoom: 14,
@@ -143,9 +145,30 @@ class _RestaurentMapState extends State<RestaurentMap> {
     });
   }
 
+  late BitmapDescriptor resIcon;
+
+  // void putCustomIcon() {
+  //   BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(100, 100)),
+  //           'assets/Donor_Map_Marker_Orange.png')
+  //       .then((onValue) {
+  //     resIcon = onValue;
+  //   });
+  // }
+
+  @override
+  void initState() {
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(128, 128)),
+            'assets/Donor_Map_Marker_Orange.png')
+        .then((onValue) {
+      resIcon = onValue;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Restaurent2>? restaurent = Provider.of<List<Restaurent2>?>(context);
+    // if (resIcon != null) setState(() => putCustomIcon);
     // print(restaurent!.length);
     Restaurent2? curRestaurent = null;
 
@@ -224,7 +247,8 @@ class _RestaurentMapState extends State<RestaurentMap> {
       restaurentMarker.add(Marker(
         markerId: MarkerId(restaurent[i].email),
         infoWindow: InfoWindow(title: restaurent[i].name),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+        // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+        icon: resIcon,
         position: LatLng(
           double.parse(restaurent[i].lat),
           double.parse(restaurent[i].lng),

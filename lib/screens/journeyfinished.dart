@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_donating_app/screens/writereview.dart';
 
 class JourneyFinished extends StatelessWidget {
   Map curChar, curRes;
@@ -17,7 +18,15 @@ class JourneyFinished extends StatelessWidget {
             curChar['name'],
           ),
           FlatButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => WriteReview(),
+                ),
+              );
+            },
             child: Text('next'),
           )
         ],

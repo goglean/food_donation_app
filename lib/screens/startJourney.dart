@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/donor_confirmation.dart';
+import 'package:food_donating_app/screens/writereview.dart';
 import 'package:food_donating_app/widget/locations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -38,6 +39,18 @@ class _StartJourneyState extends State<StartJourney> {
     }
   }
 
+  BitmapDescriptor? resIcon;
+
+  @override
+  void initState() {
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(128, 128)),
+            'assets/Pickup_Orange_Marker.png')
+        .then((onValue) {
+      resIcon = onValue;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     setCurrentDirectionMarker();
@@ -51,7 +64,9 @@ class _StartJourneyState extends State<StartJourney> {
     markersSet.add(Marker(
       markerId: MarkerId('Res'),
       infoWindow: InfoWindow(title: widget.curRes['Restaurant Name']),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      icon: resIcon ??
+          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
       position: LatLng(
         double.parse(widget.curRes['Lat']),
         double.parse(widget.curRes['Lng']),
@@ -164,13 +179,20 @@ class _StartJourneyState extends State<StartJourney> {
             child: FlatButton(
               onPressed: () {
                 Navigator.pop(context);
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => DonorConfirmation(
+                //       curChar: widget.curChar,
+                //       curRes: widget.curRes,
+                //     ),
+                //   ),
+                // );
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DonorConfirmation(
-                      curChar: widget.curChar,
-                      curRes: widget.curRes,
-                    ),
+                    builder: (context) => WriteReview(),
                   ),
                 );
               },
