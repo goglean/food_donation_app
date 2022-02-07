@@ -51,6 +51,7 @@ class _PickupDetailsState extends State<PickupDetails> {
   int Tray = 0;
   DateTime start = DateTime.now();
   DateTime endiniti = DateTime.now().add(Duration(days: 1));
+  DateTime startiniti = DateTime.now();
   bool isfetched = false;
   Future<Position> _determinePosition() async {
     LocationPermission permission;
@@ -216,38 +217,23 @@ class _PickupDetailsState extends State<PickupDetails> {
                           type: DateTimePickerType.date,
                           dateMask: 'd MMM, yyyy',
                           initialValue: DateTime.now().toString(),
-                          firstDate: DateTime(2000),
+                          firstDate: startiniti,
                           lastDate: DateTime(2100),
                           icon: Icon(Icons.event),
                           dateLabelText: 'Date',
                           timeLabelText: "Time",
                           selectableDayPredicate: (date) {
-                            if(date.isBefore(start) == true){
-                              return false;
-                            }
                             return true;
                           },
                           onChanged: (val) {
+                            start = DateTime.parse(val);
                             startdate = val;
                             endiniti = DateTime.parse(val).add(Duration(days: 1));
                           },
-                          // validator: (val) {
-                          //   //print(val);
-                          //   return null;
-                          // },
-                          // onSaved: (val) => print(val),
-                        )),
+                        )
+                        ),
                   ],
                 ),
-                // IconButton(
-                //     onPressed: () {
-                //       final DocumentReference docRef = FirebaseFirestore
-                //           .instance
-                //           .collection("utils")
-                //           .doc("Pz2bdEn7LlTDiG7lMw5i");
-                //       docRef.get();
-                //     },
-                //     icon: Icon(Icons.plus_one)),
                 Padding(padding: EdgeInsets.all(20)),
                 Column(
                   children: [
@@ -263,14 +249,14 @@ class _PickupDetailsState extends State<PickupDetails> {
                         child: DateTimePicker(
                           type: DateTimePickerType.date,
                           dateMask: 'd MMM, yyyy',
-                          initialValue: endiniti.toString(),
-                          firstDate: DateTime(2000),
+                          initialValue: start.add(Duration(days: 1)).toString(),
+                          firstDate: start.add(Duration(days: 1)),
                           lastDate: DateTime(2100),
                           icon: Icon(Icons.event),
                           dateLabelText: 'Date',
                           timeLabelText: "Time",
                           selectableDayPredicate: (date) {
-                            if (_selecteddetails == "Single Date" || date.isAfter(start) == false) {
+                            if (_selecteddetails == "Single Date") {
                               return false;
                             }
                             return true;
