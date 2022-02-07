@@ -2,9 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WriteReview extends StatefulWidget {
-  const WriteReview({Key? key}) : super(key: key);
+  Map curChar, curRes;
+  WriteReview({required this.curChar, required this.curRes});
 
   @override
   State<WriteReview> createState() => _WriteReviewState();
@@ -17,7 +19,21 @@ class _WriteReviewState extends State<WriteReview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Write a Review'),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        //foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          "Write a Review",
+          style: GoogleFonts.roboto(color: Theme.of(context).primaryColor),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -128,7 +144,9 @@ class _WriteReviewState extends State<WriteReview> {
                   color: Theme.of(context).primaryColor,
                 ),
                 child: FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   textColor: Colors.white,
                   child: Text(
                     'NEXT',

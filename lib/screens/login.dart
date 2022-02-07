@@ -142,13 +142,16 @@ class _loginpageState extends State<signinpage> {
                         borderRadius: BorderRadius.circular(20)),
                     child: TextButton(
                         onPressed: () {
+                          print(usernamecontroller.text.runtimeType);
+                          print(usernamecontroller.text.toString().runtimeType);
                           // Navigator.push(
                           //          context,
                           //          MaterialPageRoute(
                           //             builder: (context) => HomeDonor()));
-                          FirebaseAuth.instance.signInWithEmailAndPassword(
-                              email: usernamecontroller.text,
-                              password: passwordcontroller.text)
+                          FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: usernamecontroller.text,
+                                  password: passwordcontroller.text)
                               .then((value) async {
                             if (FirebaseAuth
                                     .instance.currentUser?.emailVerified ==

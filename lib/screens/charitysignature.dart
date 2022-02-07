@@ -28,7 +28,7 @@ class _CharitySignatureState extends State<CharitySignature> {
 
   Future pickImage() async {
     try {
-      final pickedFile = await picker.pickImage(source: ImageSource.camera);
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
       if (pickedFile == null) return;
 
       final imageTemp = File(pickedFile.path);
@@ -212,16 +212,16 @@ class _CharitySignatureState extends State<CharitySignature> {
                   return;
                 }
                 uploadImageToFirebase(context);
-                // Navigator.pop(context);
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => TravelToCharity(
-                //       curChar: curChar,
-                //       curRes: curRes,
-                //     ),
-                //   ),
-                // );
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => JourneyFinished(
+                      curChar: widget.curChar,
+                      curRes: widget.curRes,
+                    ),
+                  ),
+                );
               },
               textColor: Colors.white,
               child: Text(

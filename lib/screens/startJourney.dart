@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/donor_confirmation.dart';
+import 'package:food_donating_app/screens/journeyfinished.dart';
 import 'package:food_donating_app/screens/writereview.dart';
 import 'package:food_donating_app/widget/locations.dart';
 import 'package:geolocator/geolocator.dart';
@@ -179,22 +180,31 @@ class _StartJourneyState extends State<StartJourney> {
             child: FlatButton(
               onPressed: () {
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DonorConfirmation(
+                      curChar: widget.curChar,
+                      curRes: widget.curRes,
+                    ),
+                  ),
+                );
+
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(
-                //     builder: (context) => DonorConfirmation(
+                //     builder: (context) => WriteReview(),
+                //   ),
+                // );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => JourneyFinished(
                 //       curChar: widget.curChar,
                 //       curRes: widget.curRes,
                 //     ),
                 //   ),
                 // );
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => WriteReview(),
-                  ),
-                );
               },
               textColor: Colors.white,
               child: Text('ARRIVED AT PICKUP'),

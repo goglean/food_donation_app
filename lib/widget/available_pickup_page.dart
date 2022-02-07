@@ -39,7 +39,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
   @override
   void initState() {
     BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(128, 128)),
-            'assets/Donor_Map_Marker_Orange.png')
+            'assets/Pickup_Orange_Marker.png')
         .then((onValue) {
       resIcon = onValue;
     });
