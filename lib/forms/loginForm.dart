@@ -50,7 +50,7 @@ class _LoginFormState extends State<LoginForm> {
       await auth.signInWithEmailAndPassword(email: email, password: password);
       FirebaseFirestore.instance
           .collection('users')
-          .doc((FirebaseAuth.instance.currentUser)?.uid)
+          .doc(email)
           .get()
           .then((value) {
         userType = value.data()!['User Type'].toString();

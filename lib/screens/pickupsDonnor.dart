@@ -13,7 +13,6 @@ class PickupsDonor extends StatefulWidget {
 }
 class _PickupsDonorState extends State<PickupsDonor> {
   var curemail = FirebaseAuth.instance.currentUser?.email.toString();
-  var emails = ["prajeeth.s20@iiits.in","prajeeth347@gmail.com "];
   String _donationtype = "Upcoming";
   bool pressAttention = true;
   bool press = false;

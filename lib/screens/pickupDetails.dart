@@ -67,7 +67,7 @@ class _PickupDetailsState extends State<PickupDetails> {
   void fetchdetails() {
     FirebaseFirestore.instance
         .collection('users')
-        .doc((FirebaseAuth.instance.currentUser)?.uid)
+        .doc((FirebaseAuth.instance.currentUser)?.email)
         .get()
         .then((value) {
       if (value.data()!['email'] == FirebaseAuth.instance.currentUser!.email) {
@@ -448,8 +448,8 @@ class _PickupDetailsState extends State<PickupDetails> {
                   "City": city,
                   "Status": "upcoming",
                   "email": FirebaseAuth.instance.currentUser?.email,
-                  "lati": lati.toString(),
-                  "longi": longi.toString(),
+                  "Lat": lati.toString(),
+                  "Lng": longi.toString(),
                 });
                 for (var i = 0; i < widget.quanlist.length; i++) {
                   if (widget.Unilist[i] == "Crate") {
