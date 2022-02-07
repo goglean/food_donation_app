@@ -24,6 +24,7 @@ class PickupDetails extends StatefulWidget {
 }
 
 class _PickupDetailsState extends State<PickupDetails> {
+  
   String _selecteddetails = "";
   String location = "";
   String startdate = DateTime.now().year.toString() + "/" + DateTime.now().month.toString() + DateTime.now().day.toString();
@@ -49,6 +50,7 @@ class _PickupDetailsState extends State<PickupDetails> {
   int Small_Bag = 0;
   int Tray = 0;
   DateTime start = DateTime.now();
+  DateTime endiniti = DateTime.now().add(Duration(days: 1));
   bool isfetched = false;
   Future<Position> _determinePosition() async {
     LocationPermission permission;
@@ -220,11 +222,14 @@ class _PickupDetailsState extends State<PickupDetails> {
                           dateLabelText: 'Date',
                           timeLabelText: "Time",
                           selectableDayPredicate: (date) {
+                            if(date.isBefore(start) == true){
+                              return false;
+                            }
                             return true;
                           },
                           onChanged: (val) {
-                            start = DateTime.parse(val);
                             startdate = val;
+                            endiniti = DateTime.parse(val).add(Duration(days: 1));
                           },
                           // validator: (val) {
                           //   //print(val);
@@ -258,14 +263,14 @@ class _PickupDetailsState extends State<PickupDetails> {
                         child: DateTimePicker(
                           type: DateTimePickerType.date,
                           dateMask: 'd MMM, yyyy',
-                          initialValue: DateTime.now().toString(),
+                          initialValue: endiniti.toString(),
                           firstDate: DateTime(2000),
                           lastDate: DateTime(2100),
                           icon: Icon(Icons.event),
                           dateLabelText: 'Date',
                           timeLabelText: "Time",
                           selectableDayPredicate: (date) {
-                            if (date.isBefore(start)) {
+                            if (_selecteddetails == "Single Date" || date.isAfter(start) == false) {
                               return false;
                             }
                             return true;
