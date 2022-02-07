@@ -167,6 +167,8 @@ class _loginpageState extends State<signinpage> {
                                             builder: (context) => Home()));
                                     usernamecontroller.clear();
                                     passwordcontroller.clear();
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
                                   } else {
                                     Navigator.push(
                                         context,
@@ -174,6 +176,8 @@ class _loginpageState extends State<signinpage> {
                                             builder: (context) => HomeDonor()));
                                     usernamecontroller.clear();
                                     passwordcontroller.clear();
+                                     Navigator.pop(context);
+                                     Navigator.pop(context);
                                 }
                               });
                             } 
