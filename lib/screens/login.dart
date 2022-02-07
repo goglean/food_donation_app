@@ -147,19 +147,18 @@ class _loginpageState extends State<signinpage> {
                           //          MaterialPageRoute(
                           //             builder: (context) => HomeDonor()));
                           FirebaseAuth.instance.signInWithEmailAndPassword(
-                              email: usernamecontroller.text,
+                              email: usernamecontroller.text.trim(),
                               password: passwordcontroller.text)
                               .then((value) async {
+                                print('Success');
                             if (FirebaseAuth
                                     .instance.currentUser?.emailVerified ==
                                 true) {
                               FirebaseFirestore.instance
                                   .collection('users')
-                                  .doc((FirebaseAuth.instance.currentUser)?.uid)
+                                  .doc(usernamecontroller.text.trim())
                                   .get()
                                   .then((value) {
-                                if (usernamecontroller.text ==
-                                    value.data()!['email'].toString()) {
                                   if (value.data()!['User Type'].toString() ==
                                       "volunteer") {
                                     Navigator.push(
@@ -175,7 +174,6 @@ class _loginpageState extends State<signinpage> {
                                             builder: (context) => HomeDonor()));
                                     usernamecontroller.clear();
                                     passwordcontroller.clear();
-                                  }
                                 }
                               });
                             } 

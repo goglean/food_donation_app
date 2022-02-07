@@ -67,7 +67,7 @@ class _PickupDetailsState extends State<PickupDetails> {
   void fetchdetails() {
     FirebaseFirestore.instance
         .collection('users')
-        .doc((FirebaseAuth.instance.currentUser)?.uid)
+        .doc((FirebaseAuth.instance.currentUser)?.email)
         .get()
         .then((value) {
       if (value.data()!['email'] == FirebaseAuth.instance.currentUser!.email) {

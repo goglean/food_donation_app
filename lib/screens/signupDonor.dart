@@ -681,8 +681,21 @@ class _SignupDonorState extends State<SignupDonor> {
                             .then((value) => FirebaseAuth.instance.currentUser
                                 ?.sendEmailVerification().then((value) {
                                     FirebaseFirestore.instance
-                                .collection('users')
-                                .add({'Address' : _addressController.text,
+                                .collection('users').doc(_emailController.text.trim()).set({'Address' : _addressController.text,
+                                      'City' : _cityController.text,
+                                      'Contact Person' : _contactPersonController.text,
+                                      'Cuisine' : _cuisine,
+                                      'Donor Type' : _donorType,
+                                      'Name' : _nameController.text,
+                                      'Phone Number' : _phoneNoController.text,
+                                      'State' : _state,
+                                      'User Type' : 'donor',
+                                      'Zipcode' : _zipcodeController.text,
+                                      'email': _emailController.text,
+                                      'password': _passwordController.text
+                                 });
+                                 FirebaseFirestore.instance
+                                .collection('donors').doc(_emailController.text.trim()).set({'Address' : _addressController.text,
                                       'City' : _cityController.text,
                                       'Contact Person' : _contactPersonController.text,
                                       'Cuisine' : _cuisine,
