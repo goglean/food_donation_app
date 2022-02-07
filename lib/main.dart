@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
                 try {
                   FirebaseFirestore.instance
                       .collection('users')
-                      .doc((FirebaseAuth.instance.currentUser)?.uid)
+                      .doc((FirebaseAuth.instance.currentUser)?.email)
                       .get()
                       .then((value) {
                     setState(() {
