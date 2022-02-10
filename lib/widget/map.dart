@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:food_donating_app/widget/locations.dart';
+import 'package:food_donating_app/widget/location_service.dart';
 import 'package:food_donating_app/widget/restaurent_map.dart';
 import 'package:food_donating_app/widget/map_service.dart';
 import 'package:food_donating_app/widget/restaurents.dart';

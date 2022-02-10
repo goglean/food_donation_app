@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:food_donating_app/widget/directionfiles/directions_model.dart';
 import 'package:food_donating_app/widget/directionfiles/directions_repository.dart';
-import 'package:food_donating_app/widget/locations.dart';
+import 'package:food_donating_app/widget/location_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/shared/loading.dart';
@@ -118,7 +118,9 @@ class _RestaurentMapState extends State<RestaurentMap> {
   }
 
   void initializeWithCurrentLocation() async {
-    Position position = await Location().getGeoLocationPosition();
+    Position position = await LocationService().getGeoLocationPosition();
+
+    directionLineMarker[0] = LatLng(position.latitude, position.longitude);
 
     CameraPosition? cameraPosition = CameraPosition(
       target: LatLng(position.latitude, position.longitude),
@@ -143,11 +145,34 @@ class _RestaurentMapState extends State<RestaurentMap> {
     });
   }
 
+  late BitmapDescriptor resIcon;
+
+  // void putCustomIcon() {
+  //   BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(100, 100)),
+  //           'assets/Donor_Map_Marker_Orange.png')
+  //       .then((onValue) {
+  //     resIcon = onValue;
+  //   });
+  // }
+
+  @override
+  void initState() {
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(128, 128)),
+            'assets/Donor_Map_Marker_Orange.png')
+        .then((onValue) {
+      resIcon = onValue;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Restaurent2>? restaurent = Provider.of<List<Restaurent2>?>(context);
+    // if (resIcon != null) setState(() => putCustomIcon);
     // print(restaurent!.length);
     Restaurent2? curRestaurent = null;
+    restaurentMarker.clear();
+    if (locationMarker != null) restaurentMarker.add(locationMarker!);
 
     CameraPosition? curCameraPos = null;
 
@@ -224,7 +249,8 @@ class _RestaurentMapState extends State<RestaurentMap> {
       restaurentMarker.add(Marker(
         markerId: MarkerId(restaurent[i].email),
         infoWindow: InfoWindow(title: restaurent[i].name),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+        // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+        icon: resIcon,
         position: LatLng(
           double.parse(restaurent[i].lat),
           double.parse(restaurent[i].lng),
@@ -279,6 +305,8 @@ class _RestaurentMapState extends State<RestaurentMap> {
                 points: [directionLineMarker[0]!, directionLineMarker[1]!],
               ),
           },
+          // myLocationEnabled: true,
+          // myLocationButtonEnabled: true,
           // polygons: {
           //   _kPolygon,
           // },
@@ -289,7 +317,8 @@ class _RestaurentMapState extends State<RestaurentMap> {
             alignment: Alignment.bottomLeft,
             child: FloatingActionButton(
               onPressed: () async {
-                Position position = await Location().getGeoLocationPosition();
+                Position position =
+                    await LocationService().getGeoLocationPosition();
 
                 CameraPosition? cameraPosition = CameraPosition(
                   target: LatLng(position.latitude, position.longitude),

@@ -22,7 +22,9 @@ class _CharitySignatureState extends State<CharitySignature> {
   String? fullName;
   File? _imageFile;
   bool imagePicked = false;
-  String? _uploadedFileURL;
+  // String? curPickupDocId;
+  List<String>? curPickupDocId = [];
+  bool? checked = false;
 
   final picker = ImagePicker();
 
@@ -41,11 +43,54 @@ class _CharitySignatureState extends State<CharitySignature> {
     }
   }
 
-  Future uploadImageToFirebase(BuildContext context) async {
+  Future uploadImageToFirebase(BuildContext context, bool? checked) async {
+    bool found = false;
+    if (checked!) {
+      final CollectionReference pCollection =
+          FirebaseFirestore.instance.collection('pickup_details');
+      final CollectionReference oldPickups =
+          FirebaseFirestore.instance.collection('old_pickups');
+
+      QuerySnapshot snapshot = await pCollection.get();
+
+      snapshot.docs.forEach((element) {
+        Map dataMap = element.data() as Map;
+        if (dataMap['Pickedby'] == FirebaseAuth.instance.currentUser!.email &&
+            !found &&
+            dataMap['PickedCharityUniId'] ==
+                widget.curRes['PickedCharityUniId'] &&
+            widget.curRes['Restaurant Name'] == dataMap['Restaurant Name']) {
+          print(element.id);
+          pCollection.doc(element.id).update({
+            "Reciever's name": fullName,
+          });
+
+          curPickupDocId!.add(element.id);
+
+          dataMap["Reciever's name"] = fullName;
+
+          oldPickups.doc(element.id).set(dataMap);
+          pCollection.doc(element.id).delete();
+        }
+      });
+
+      Navigator.pop(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => JourneyFinished(
+            curChar: widget.curChar,
+            curRes: widget.curRes,
+          ),
+        ),
+      );
+
+      return;
+    }
+
     if (_imageFile == null) return;
 
     String fileName = basename(_imageFile!.path);
-    bool found = false;
 
     print(fileName);
 
@@ -68,6 +113,8 @@ class _CharitySignatureState extends State<CharitySignature> {
 
     final CollectionReference pCollection =
         FirebaseFirestore.instance.collection('pickup_details');
+    final CollectionReference oldPickups =
+        FirebaseFirestore.instance.collection('old_pickups');
 
     QuerySnapshot snapshot = await pCollection.get();
 
@@ -80,8 +127,16 @@ class _CharitySignatureState extends State<CharitySignature> {
         print(element.id);
         pCollection.doc(element.id).update({
           "Reciever's name": fullName,
-          "ImageFileName": fileName,
+          "Reciever's Signature": fileName,
         });
+
+        curPickupDocId!.add(element.id);
+
+        dataMap["Reciever's name"] = fullName;
+        dataMap["Reciever's Signature"] = fileName;
+
+        oldPickups.doc(element.id).set(dataMap);
+        pCollection.doc(element.id).delete();
       }
     });
 
@@ -90,9 +145,9 @@ class _CharitySignatureState extends State<CharitySignature> {
       context,
       MaterialPageRoute(
         builder: (context) => JourneyFinished(
-            // curChar: widget.curChar,
-            // curRes: widget.curRes,
-            ),
+          curChar: widget.curChar,
+          curRes: widget.curRes,
+        ),
       ),
     );
   }
@@ -191,6 +246,27 @@ class _CharitySignatureState extends State<CharitySignature> {
                               ],
                             ),
                     ),
+                    SizedBox(height: 24),
+                    Row(
+                      children: [
+                        Transform.scale(
+                          scale: 1.3,
+                          child: Checkbox(
+                            value: this.checked,
+                            onChanged: (checked) {
+                              print(checked);
+                              setState(() {
+                                this.checked = checked;
+                              });
+                            },
+                          ),
+                        ),
+                        Text(
+                          'No one is available to sign',
+                          style: TextStyle(fontSize: 18),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -201,27 +277,30 @@ class _CharitySignatureState extends State<CharitySignature> {
             color: Theme.of(context).primaryColor,
             child: FlatButton(
               onPressed: () {
-                if (fullName == null || !imagePicked) {
-                  Fluttertoast.showToast(
-                      msg: "Please fill name and signature!",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.black45,
-                      fontSize: 16.0);
-                  return;
+                if (!checked!) {
+                  if (fullName == null || !imagePicked) {
+                    Fluttertoast.showToast(
+                        msg: "Please fill name and signature!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.black45,
+                        fontSize: 16.0);
+                    return;
+                  }
                 }
-                uploadImageToFirebase(context);
-                // Navigator.pop(context);
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => TravelToCharity(
-                //       curChar: curChar,
-                //       curRes: curRes,
-                //     ),
-                //   ),
-                // );
+                uploadImageToFirebase(context, checked);
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => JourneyFinished(
+                      curChar: widget.curChar,
+                      curRes: widget.curRes,
+                      curPickupDocId: curPickupDocId,
+                    ),
+                  ),
+                );
               },
               textColor: Colors.white,
               child: Text(

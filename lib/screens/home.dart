@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_donating_app/screens/contactUsVolunteer.dart';
+import 'package:food_donating_app/screens/impacts.dart';
 import 'package:food_donating_app/screens/myPickups.dart';
 import 'package:food_donating_app/screens/profileVolunteer.dart';
 import 'package:food_donating_app/widget/map.dart';
@@ -73,17 +75,15 @@ class _HomeState extends State<Home> {
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
                       radius: 50,
-                      /*
-                      child: Text(
-                        '${_userName[0]}',
-                        style: GoogleFonts.roboto(
-                            fontSize: 30,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1,
-                            wordSpacing: 5),
-                      ),
-                      */
+                      // child: Text(
+                      //   '${_userName[0]}',
+                      //   style: GoogleFonts.roboto(
+                      //       fontSize: MediaQuery.of(context).size.width * 0.1,
+                      //       color: Theme.of(context).primaryColor,
+                      //       fontWeight: FontWeight.w800,
+                      //       letterSpacing: 1,
+                      //       wordSpacing: 5),
+                      // ),
                     ),
                     SizedBox(
                       height: 5,
@@ -113,8 +113,8 @@ class _HomeState extends State<Home> {
               leading: Icon(Icons.account_circle_outlined),
               title: Text(
                 'Profile',
-                style:
-                    TextStyle(fontSize: 18, letterSpacing: 1, wordSpacing: 5),
+                style: GoogleFonts.roboto(
+                    fontSize: 18, letterSpacing: 1, wordSpacing: 5),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -130,8 +130,8 @@ class _HomeState extends State<Home> {
               ),
               title: Text(
                 'My Pickups',
-                style:
-                    TextStyle(fontSize: 18, letterSpacing: 1, wordSpacing: 5),
+                style: GoogleFonts.roboto(
+                    fontSize: 18, letterSpacing: 1, wordSpacing: 5),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -142,11 +142,43 @@ class _HomeState extends State<Home> {
               },
             ),
             ListTile(
+              leading: Icon(Icons.auto_graph),
+              title: Text(
+                'Impacts',
+                style: GoogleFonts.roboto(
+                    fontSize: 18, letterSpacing: 1, wordSpacing: 5),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Imapcts()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.help_center,
+              ),
+              title: Text(
+                'Contact Us',
+                style: GoogleFonts.roboto(
+                    fontSize: 18, letterSpacing: 1, wordSpacing: 5),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ContactUsVolunteer()),
+                );
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.logout),
               title: Text(
                 'Logout',
-                style:
-                    TextStyle(fontSize: 18, letterSpacing: 1, wordSpacing: 5),
+                style: GoogleFonts.roboto(
+                    fontSize: 18, letterSpacing: 1, wordSpacing: 5),
               ),
               onTap: () {
                 Navigator.pop(context);

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_donating_app/screens/finishPickupdetails.dart';
-import 'package:food_donating_app/widget/locations.dart';
+import 'package:food_donating_app/widget/location_service.dart';
 import 'package:food_donating_app/widget/restaurents.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -24,11 +24,16 @@ class PickupDetails extends StatefulWidget {
 }
 
 class _PickupDetailsState extends State<PickupDetails> {
-  
   String _selecteddetails = "";
   String location = "";
-  String startdate = DateTime.now().year.toString() + "/" + DateTime.now().month.toString() + DateTime.now().day.toString();
-  String enddate = DateTime.now().year.toString() + "/" + DateTime.now().month.toString() + DateTime.now().day.toString();
+  String startdate = DateTime.now().year.toString() +
+      "/" +
+      DateTime.now().month.toString() +
+      DateTime.now().day.toString();
+  String enddate = DateTime.now().year.toString() +
+      "/" +
+      DateTime.now().month.toString() +
+      DateTime.now().day.toString();
   String starttime =
       DateTime.now().hour.toString() + ":" + DateTime.now().minute.toString();
   String endtime =
@@ -86,12 +91,12 @@ class _PickupDetailsState extends State<PickupDetails> {
         .doc('stats')
         .get()
         .then((value) {
-        box = value.data()!['Box'];
-        Crate = value.data()!['Crate'];
-        Case = value.data()!['Case'];
-        Large_Bag = value.data()!['Large Bag'];
-        Small_Bag = value.data()!['Small Bag'];
-        Tray = value.data()!['Tray'];
+      box = value.data()!['Box'];
+      Crate = value.data()!['Crate'];
+      Case = value.data()!['Case'];
+      Large_Bag = value.data()!['Large Bag'];
+      Small_Bag = value.data()!['Small Bag'];
+      Tray = value.data()!['Tray'];
     });
   }
 
@@ -228,10 +233,10 @@ class _PickupDetailsState extends State<PickupDetails> {
                           onChanged: (val) {
                             start = DateTime.parse(val);
                             startdate = val;
-                            endiniti = DateTime.parse(val).add(Duration(days: 1));
+                            endiniti =
+                                DateTime.parse(val).add(Duration(days: 1));
                           },
-                        )
-                        ),
+                        )),
                   ],
                 ),
                 Padding(padding: EdgeInsets.all(20)),
@@ -447,16 +452,16 @@ class _PickupDetailsState extends State<PickupDetails> {
                     Crate = Crate + int.parse(widget.quanlist[i]);
                   }
                   if (widget.Unilist[i] == "Case") {
-                      Case = Case + int.parse(widget.quanlist[i]);
+                    Case = Case + int.parse(widget.quanlist[i]);
                   }
                   if (widget.Unilist[i] == "Tray") {
-                    Tray = Tray + int.parse(widget.quanlist[i]);                    
+                    Tray = Tray + int.parse(widget.quanlist[i]);
                   }
                   if (widget.Unilist[i] == "Box") {
-                    box = box + int.parse(widget.quanlist[i]);                    
+                    box = box + int.parse(widget.quanlist[i]);
                   }
                   if (widget.Unilist[i] == "Large Bag") {
-                    Large_Bag = Large_Bag + int.parse(widget.quanlist[i]);                    
+                    Large_Bag = Large_Bag + int.parse(widget.quanlist[i]);
                   } else {
                     Small_Bag = Small_Bag + int.parse(widget.quanlist[i]);
                   }
@@ -465,12 +470,12 @@ class _PickupDetailsState extends State<PickupDetails> {
                     .collection("utils")
                     .doc("stats")
                     .set({
-                  "Box" : box,
-                  "Case" : Case,
-                  "Crate" : Crate,
-                  "Large Bag" : Large_Bag,
-                  "Small Bag" : Small_Bag,
-                  "Tray" : Tray
+                  "Box": box,
+                  "Case": Case,
+                  "Crate": Crate,
+                  "Large Bag": Large_Bag,
+                  "Small Bag": Small_Bag,
+                  "Tray": Tray
                 });
                 Navigator.push(
                     context,

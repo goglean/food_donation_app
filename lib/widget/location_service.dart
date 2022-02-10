@@ -1,7 +1,7 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
-class Location {
+class LocationService {
   Future<String> GetAddressFromLatLong(String lat, String lng) async {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(double.parse(lat), double.parse(lng));
