@@ -27,7 +27,7 @@ class _ProfileDonorState extends State<ProfileDonor> {
   void _updateDetails() async {
     FirebaseFirestore.instance
         .collection("donors")
-        .doc((FirebaseAuth.instance.currentUser)?.uid)
+        .doc((FirebaseAuth.instance.currentUser)?.email)
         .update({
       "Name": _restaurant,
       "Phone Number": _PhoneNo,
@@ -38,7 +38,7 @@ class _ProfileDonorState extends State<ProfileDonor> {
 
     FirebaseFirestore.instance
         .collection("users")
-        .doc((FirebaseAuth.instance.currentUser)?.uid)
+        .doc((FirebaseAuth.instance.currentUser)?.email)
         .update({
       "Name": _restaurant,
       "Phone Number": _PhoneNo,
@@ -54,7 +54,7 @@ class _ProfileDonorState extends State<ProfileDonor> {
   Future<void> _getUserName() async {
     FirebaseFirestore.instance
         .collection('users')
-        .doc((FirebaseAuth.instance.currentUser)?.uid)
+        .doc((FirebaseAuth.instance.currentUser)?.email)
         .get()
         .then((value) {
       setState(() {

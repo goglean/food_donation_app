@@ -509,20 +509,30 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                             setState(() {
                               FirebaseAuth.instance
                             .createUserWithEmailAndPassword(
-                                email: _emailController.text,
+                                email: _emailController.text.trim(),
                                 password: _passwordController.text)
                             .then((value) => FirebaseAuth.instance.currentUser
                                 ?.sendEmailVerification().then((value) {
                                  FirebaseFirestore.instance
-                                .collection('users')
-                                .add({'Address' : _addressController.text,
+                                .collection('users').doc(_emailController.text.trim()).set({'Address' : _addressController.text,
                                       'City' : _cityController.text,
                                       'Name' : _nameController.text,
                                       'Phone Number' : _phoneNoController.text,
                                       'State' : _state,
                                       'User Type' : 'volunteer',
                                       'Zipcode' : _zipcodeController.text,
-                                      'email': _emailController.text,
+                                      'email': _emailController.text.trim(),
+                                      'password': _passwordController.text
+                                 });
+                                 FirebaseFirestore.instance
+                                .collection('volunteers').doc(_emailController.text.trim()).set({'Address' : _addressController.text,
+                                      'City' : _cityController.text,
+                                      'Name' : _nameController.text,
+                                      'Phone Number' : _phoneNoController.text,
+                                      'State' : _state,
+                                      'User Type' : 'volunteer',
+                                      'Zipcode' : _zipcodeController.text,
+                                      'email': _emailController.text.trim(),
                                       'password': _passwordController.text
                                  });
                               _cityController.clear();

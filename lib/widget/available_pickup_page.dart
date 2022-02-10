@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/myPickups.dart';
 import 'package:food_donating_app/shared/loading.dart';
 import 'package:food_donating_app/widget/charity.dart';
-import 'package:food_donating_app/widget/locations.dart';
+import 'package:food_donating_app/widget/location_service.dart';
 import 'package:food_donating_app/widget/map_service.dart';
 import 'package:food_donating_app/widget/restaurents.dart';
 import 'package:geolocator/geolocator.dart';
@@ -115,10 +115,10 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                   0.000621371)
               .toStringAsFixed(3);
 
-          String firebaseCharAdd = await Location()
+          String firebaseCharAdd = await LocationService()
               .GetAddressFromLatLong(charityData.posLat, charityData.posLng);
-          String firebaseResAdd =
-              await Location().GetAddressFromLatLong(curRes.lat, curRes.lng);
+          String firebaseResAdd = await LocationService()
+              .GetAddressFromLatLong(curRes.lat, curRes.lng);
 
           // print(charityData.uniId);
           setState(() {

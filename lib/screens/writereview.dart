@@ -1,12 +1,17 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WriteReview extends StatefulWidget {
   Map curChar, curRes;
-  WriteReview({required this.curChar, required this.curRes});
+  List<String> curPickupDocId;
+  WriteReview(
+      {required this.curChar,
+      required this.curRes,
+      required this.curPickupDocId});
 
   @override
   State<WriteReview> createState() => _WriteReviewState();
@@ -145,6 +150,16 @@ class _WriteReviewState extends State<WriteReview> {
                 ),
                 child: FlatButton(
                   onPressed: () {
+                    final CollectionReference oldPickups =
+                        FirebaseFirestore.instance.collection('old_pickups');
+                    // oldPickups.doc(widget.curPickupDocId).update({
+                    for (int i = 0; i < widget.curPickupDocId.length; i++) {
+                      oldPickups.doc(widget.curPickupDocId[i]).update({
+                        "Reviewer Name": _nameController.text.toString(),
+                        "Review": _reviewController.text.toString(),
+                      });
+                    }
+
                     Navigator.pop(context);
                   },
                   textColor: Colors.white,

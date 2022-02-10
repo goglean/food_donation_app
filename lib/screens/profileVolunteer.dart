@@ -21,7 +21,7 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
   void _updateDetails() async {
     FirebaseFirestore.instance
         .collection("volunteers")
-        .doc((FirebaseAuth.instance.currentUser)?.uid)
+        .doc((FirebaseAuth.instance.currentUser)?.email)
         .update({
       "Name": _userName,
       "Phone Number": _PhoneNo,
@@ -30,7 +30,7 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
 
     FirebaseFirestore.instance
         .collection("users")
-        .doc((FirebaseAuth.instance.currentUser)?.uid)
+        .doc((FirebaseAuth.instance.currentUser)?.email)
         .update({
       "Name": _userName,
       "Phone Number": _PhoneNo,
@@ -43,7 +43,7 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
   Future<void> _getUserName() async {
     FirebaseFirestore.instance
         .collection('users')
-        .doc((FirebaseAuth.instance.currentUser)?.uid)
+        .doc((FirebaseAuth.instance.currentUser)?.email)
         .get()
         .then((value) {
       setState(() {

@@ -8,7 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class JourneyFinished extends StatefulWidget {
   Map? curChar, curRes;
-  JourneyFinished({this.curChar, this.curRes});
+  List<String>? curPickupDocId;
+  JourneyFinished({this.curChar, this.curRes, this.curPickupDocId});
 
   @override
   _JourneyFinishedState createState() => _JourneyFinishedState();
@@ -89,6 +90,7 @@ class _JourneyFinishedState extends State<JourneyFinished> {
                           builder: (context) => WriteReview(
                             curChar: widget.curChar ?? Map(),
                             curRes: widget.curRes ?? Map(),
+                            curPickupDocId: widget.curPickupDocId ?? [],
                           ),
                         ),
                       );

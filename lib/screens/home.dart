@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
   Future<void> _getUserName() async {
     FirebaseFirestore.instance
         .collection('users')
-        .doc((FirebaseAuth.instance.currentUser)?.uid)
+        .doc((FirebaseAuth.instance.currentUser)?.email)
         .get()
         .then((value) {
       setState(() {
