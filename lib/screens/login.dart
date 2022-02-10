@@ -142,15 +142,18 @@ class _loginpageState extends State<signinpage> {
                         borderRadius: BorderRadius.circular(20)),
                     child: TextButton(
                         onPressed: () {
+                          print(usernamecontroller.text.runtimeType);
+                          print(usernamecontroller.text.toString().runtimeType);
                           // Navigator.push(
                           //          context,
                           //          MaterialPageRoute(
                           //             builder: (context) => HomeDonor()));
-                          FirebaseAuth.instance.signInWithEmailAndPassword(
-                              email: usernamecontroller.text.trim(),
-                              password: passwordcontroller.text)
+                          FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: usernamecontroller.text.trim(),
+                                  password: passwordcontroller.text)
                               .then((value) async {
-                                print('Success');
+                            print('Success');
                             if (FirebaseAuth
                                     .instance.currentUser?.emailVerified ==
                                 true) {
@@ -159,29 +162,28 @@ class _loginpageState extends State<signinpage> {
                                   .doc(usernamecontroller.text.trim())
                                   .get()
                                   .then((value) {
-                                  if (value.data()!['User Type'].toString() ==
-                                      "volunteer") {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Home()));
-                                    usernamecontroller.clear();
-                                    passwordcontroller.clear();
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                  } else {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => HomeDonor()));
-                                    usernamecontroller.clear();
-                                    passwordcontroller.clear();
-                                     Navigator.pop(context);
-                                     Navigator.pop(context);
+                                if (value.data()!['User Type'].toString() ==
+                                    "volunteer") {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()));
+                                  usernamecontroller.clear();
+                                  passwordcontroller.clear();
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                } else {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomeDonor()));
+                                  usernamecontroller.clear();
+                                  passwordcontroller.clear();
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
                                 }
                               });
-                            } 
-                            else {
+                            } else {
                               return Fluttertoast.showToast(
                                   msg: 'User not verified',
                                   gravity: ToastGravity.BOTTOM,
