@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/donor_confirmation.dart';
-import 'package:food_donating_app/widget/locations.dart';
+import 'package:food_donating_app/screens/journeyfinished.dart';
+import 'package:food_donating_app/screens/writereview.dart';
+import 'package:food_donating_app/widget/location_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -13,12 +17,13 @@ class StartJourney extends StatefulWidget {
 }
 
 class _StartJourneyState extends State<StartJourney> {
+  Completer<GoogleMapController> _controller = Completer();
   List<LatLng?> directionLineMarker = new List.filled(2, null, growable: false);
   Set<Marker> markersSet = {};
 
   void setCurrentDirectionMarker() async {
     if (directionLineMarker[0] == null) {
-      Position position = await Location().getGeoLocationPosition();
+      Position position = await LocationService().getGeoLocationPosition();
 
       setState(() {
         directionLineMarker[0] = LatLng(position.latitude, position.longitude);
@@ -38,6 +43,18 @@ class _StartJourneyState extends State<StartJourney> {
     }
   }
 
+  BitmapDescriptor? resIcon;
+
+  @override
+  void initState() {
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(128, 128)),
+            'assets/Pickup_Orange_Marker.png')
+        .then((onValue) {
+      resIcon = onValue;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     setCurrentDirectionMarker();
@@ -51,7 +68,9 @@ class _StartJourneyState extends State<StartJourney> {
     markersSet.add(Marker(
       markerId: MarkerId('Res'),
       infoWindow: InfoWindow(title: widget.curRes['Restaurant Name']),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      icon: resIcon ??
+          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
       position: LatLng(
         double.parse(widget.curRes['Lat']),
         double.parse(widget.curRes['Lng']),
@@ -75,107 +94,174 @@ class _StartJourneyState extends State<StartJourney> {
           double.parse(widget.curRes['Lng']));
     }
 
+    Future<void> _goToCurrentLocation(CameraPosition curLocation) async {
+      final GoogleMapController controller = await _controller.future;
+      controller.animateCamera(CameraUpdate.newCameraPosition(curLocation));
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Text('Step 1: Travel to Donor'),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          // Column(
-          //   children: [
-          //   ],
-          // ),
-          SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              widget.curRes['Restaurant Name'],
-              style: TextStyle(
-                fontSize: 26,
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1,
-              ),
-            ),
-          ),
-
           Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              // Column(
+              //   children: [
+              //   ],
+              // ),
+              SizedBox(height: 5),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  widget.curRes['Restaurant Name'],
+                  style: TextStyle(
+                    fontSize: 26,
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
+                ),
+              ),
+
+              Column(
                 children: [
-                  Icon(Icons.location_on_outlined),
-                  SizedBox(width: 3),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        widget.curRes['Address'],
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
+                      Icon(Icons.location_on_outlined),
+                      SizedBox(width: 3),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.curRes['Address'],
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text('Click for direction'),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.call),
+                      SizedBox(width: 3),
+                      Column(
+                        children: [
+                          Text('Bussines number: 1234567890'),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                ],
+              ),
+              Container(
+                height: 5,
+                color: Theme.of(context).primaryColor,
+              ),
+              Expanded(
+                child: GoogleMap(
+                  initialCameraPosition: defaultCameraPos,
+                  markers: markersSet,
+                  polylines: {
+                    if (directionLineMarker[0] != null &&
+                        directionLineMarker[1] != null)
+                      Polyline(
+                        polylineId: const PolylineId('overview_polyline'),
+                        color: Colors.blue,
+                        width: 5,
+                        points: [
+                          directionLineMarker[0]!,
+                          directionLineMarker[1]!
+                        ],
+                      ),
+                  },
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                color: Theme.of(context).primaryColor,
+                child: FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DonorConfirmation(
+                          curChar: widget.curChar,
+                          curRes: widget.curRes,
                         ),
                       ),
-                      Text('Click for direction'),
-                    ],
-                  ),
-                ],
+                    );
+
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => WriteReview(),
+                    //   ),
+                    // );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => JourneyFinished(
+                    //       curChar: widget.curChar,
+                    //       curRes: widget.curRes,
+                    //     ),
+                    //   ),
+                    // );
+                  },
+                  textColor: Colors.white,
+                  child: Text('ARRIVED AT PICKUP'),
+                ),
               ),
-              SizedBox(height: 5),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.call),
-                  SizedBox(width: 3),
-                  Column(
-                    children: [
-                      Text('Bussines number: 1234567890'),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
             ],
           ),
-          Container(
-            height: 5,
-            color: Theme.of(context).primaryColor,
-          ),
-          Expanded(
-            child: GoogleMap(
-              initialCameraPosition: defaultCameraPos,
-              markers: markersSet,
-              polylines: {
-                if (directionLineMarker[0] != null &&
-                    directionLineMarker[1] != null)
-                  Polyline(
-                    polylineId: const PolylineId('overview_polyline'),
-                    color: Colors.blue,
-                    width: 5,
-                    points: [directionLineMarker[0]!, directionLineMarker[1]!],
-                  ),
-              },
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            color: Theme.of(context).primaryColor,
-            child: FlatButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DonorConfirmation(
-                      curChar: widget.curChar,
-                      curRes: widget.curRes,
-                    ),
-                  ),
-                );
-              },
-              textColor: Colors.white,
-              child: Text('ARRIVED AT PICKUP'),
+          Padding(
+            padding: const EdgeInsets.only(left: 11, bottom: 81),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: FloatingActionButton(
+                onPressed: () async {
+                  Position position =
+                      await LocationService().getGeoLocationPosition();
+
+                  CameraPosition? cameraPosition = CameraPosition(
+                    target: LatLng(position.latitude, position.longitude),
+                    zoom: 14,
+                  );
+
+                  // print(position.longitude);
+                  _goToCurrentLocation(cameraPosition);
+
+                  setState(() {
+                    markersSet.add(
+                      Marker(
+                        markerId: MarkerId('CurrentLocation'),
+                        infoWindow: InfoWindow(title: 'You'),
+                        icon: BitmapDescriptor.defaultMarkerWithHue(
+                            BitmapDescriptor.hueViolet),
+                        position: LatLng(
+                          position.latitude,
+                          position.longitude,
+                        ),
+                      ),
+                    );
+
+                    directionLineMarker[0] =
+                        LatLng(position.latitude, position.longitude);
+                  });
+                },
+                child: const Icon(Icons.pin_drop),
+              ),
             ),
           ),
         ],

@@ -31,10 +31,24 @@ class _MyPickupsState extends State<MyPickups> {
     List pList2 =
         pickUpSnapshot.docs.map((DocumentSnapshot s) => s.data()).toList();
 
-    // print('hello');
     for (var i = 0; i < pList2.length; i++) {
       // print('\n\n\n');
       if (pList2[i]['Pickedby'] == curUserEmail) {
+        bool check = false;
+
+        for (var j = 0; j < pList.length; j++) {
+          if (pList[j]['Restaurant Name'] == pList2[i]['Restaurant Name']) {
+            check = true;
+            for (var k = 0; k < pList2[i]['descriptionlist'].length; k++) {
+              pList[j]['descriptionlist'].add(pList2[i]['descriptionlist'][k]);
+              pList[j]['quantitylist'].add(pList2[i]['quantitylist'][k]);
+              pList[j]['unitlist'].add(pList2[i]['unitlist'][k]);
+            }
+          }
+        }
+
+        if (check) continue;
+
         DocumentSnapshot snapshot =
             await charityCollection.doc(pList2[i]['PickedCharityUniId']).get();
         // print(pList2[i]['PickedCharityUniId']);
@@ -45,9 +59,11 @@ class _MyPickupsState extends State<MyPickups> {
     }
 
     pickUpList = pList;
-    // for (var i = 0; i < pickUpList.length; i++) {
-    //   print(pickUpList[i]);
-    // }
+    print(pickUpList.length);
+    for (var i = 0; i < pickUpList.length; i++) {
+      print(pickUpList[i]);
+      print('\n\n');
+    }
 
     if (!_dataLoaded)
       setState(() {
@@ -99,14 +115,14 @@ class _MyPickupsState extends State<MyPickups> {
                         FirebaseFirestore.instance.collection('pickup_details');
 
                     QuerySnapshot snapshot = await pCollection.get();
-                    bool found = false;
                     snapshot.docs.forEach((element) {
                       Map dataMap = element.data() as Map;
                       if (dataMap['Pickedby'] ==
                               FirebaseAuth.instance.currentUser!.email &&
-                          !found &&
                           pickUpList[index]['PickedCharityUniId'] ==
-                              dataMap['PickedCharityUniId']) {
+                              dataMap['PickedCharityUniId'] &&
+                          pickUpList[index]['Restaurant Name'] ==
+                              dataMap['Restaurant Name']) {
                         print(element.id);
                         pCollection.doc(element.id).update({
                           'Pickedby': '',
