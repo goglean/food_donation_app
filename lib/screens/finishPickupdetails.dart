@@ -78,10 +78,13 @@ class _FinishPickupDetailsState extends State<FinishPickupDetails> {
                               color: Theme.of(context).primaryColor)),
                       color: Colors.white,
                       onPressed: () => setState(() {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomeDonor()));
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => HomeDonor()));
                           }),
                       child: Text(
                         "Close",
