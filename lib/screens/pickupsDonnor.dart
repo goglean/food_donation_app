@@ -97,7 +97,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
         ),
         RaisedButton(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0),
+                borderRadius: BorderRadius.circular(15.0),
                 side: BorderSide(color: Theme.of(context).primaryColor)),
             color: Theme.of(context).primaryColor,
             onPressed: () {
@@ -109,7 +109,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
               style: GoogleFonts.roboto(
                   color: Colors.white,
                   fontWeight: FontWeight.w400,
-                  fontSize: MediaQuery.of(context).size.height * 0.04),
+                  fontSize: MediaQuery.of(context).size.height * 0.03),
             )),
       ],
     );
@@ -140,6 +140,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
                   margin: const EdgeInsets.all(15.0),
                   padding: const EdgeInsets.fromLTRB(3, 3, 1, 1),
                   decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       border: Border.all(
                           color: Theme.of(context).primaryColor, width: 1.5)),
@@ -262,6 +263,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
                   margin: const EdgeInsets.all(15.0),
                   padding: const EdgeInsets.fromLTRB(3, 3, 1, 1),
                   decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       border: Border.all(
                           color: Theme.of(context).primaryColor, width: 1.5)),

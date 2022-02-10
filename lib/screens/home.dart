@@ -75,15 +75,15 @@ class _HomeState extends State<Home> {
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
                       radius: 50,
-                      child: Text(
-                        '${_userName[0]}',
-                        style: GoogleFonts.roboto(
-                            fontSize: MediaQuery.of(context).size.width * 0.1,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1,
-                            wordSpacing: 5),
-                      ),
+                      // child: Text(
+                      //   '${_userName[0]}',
+                      //   style: GoogleFonts.roboto(
+                      //       fontSize: MediaQuery.of(context).size.width * 0.1,
+                      //       color: Theme.of(context).primaryColor,
+                      //       fontWeight: FontWeight.w800,
+                      //       letterSpacing: 1,
+                      //       wordSpacing: 5),
+                      // ),
                     ),
                     SizedBox(
                       height: 5,
