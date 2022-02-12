@@ -11,6 +11,7 @@ class PickupsDonor extends StatefulWidget {
   @override
   _PickupsDonorState createState() => _PickupsDonorState();
 }
+
 class _PickupsDonorState extends State<PickupsDonor> {
   var curemail = FirebaseAuth.instance.currentUser?.email.toString();
   String _donationtype = "Upcoming";
@@ -22,115 +23,94 @@ class _PickupsDonorState extends State<PickupsDonor> {
   var unitslist = [];
   final Stream<QuerySnapshot> _mydonationsstream =
       FirebaseFirestore.instance.collection('pickup_details').snapshots();
- donationtypes(){
-  if (_donationtype == "Upcoming") {
-    return upcoming();
-  } else {
-    return historystre();
+  donationtypes() {
+    if (_donationtype == "Upcoming") {
+      return upcoming();
+    } else {
+      return historystre();
+    }
   }
-}
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 16,),
+        SizedBox(
+          height: 16,
+        ),
         Row(
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.1,
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              child: RaisedButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(5.0),
-                                      side: BorderSide(
-                                          color: Theme.of(context)
-                                              .primaryColor)),
-                                  color: pressAttention
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context)
-                                          .scaffoldBackgroundColor,
-                                  onPressed: () => setState(() {
-                                        pressAttention = !pressAttention;
-                                        press = !press;
-                                        _donationtype = "Upcoming";
-                                      }),
-                                  child: Text(
-                                    "Upcoming",
-                                    style: GoogleFonts.roboto(
-                                        color: pressAttention
-                                            ? Colors.white
-                                            : Colors.black,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.02),
-                                  )),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              child: RaisedButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(5.0),
-                                      side: BorderSide(
-                                          color: Theme.of(context)
-                                              .primaryColor)),
-                                  color: press
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context)
-                                          .scaffoldBackgroundColor,
-                                  onPressed: () => setState(() {
-                                        press = !press;
-                                        pressAttention = !pressAttention;
-                                        _donationtype = "History";
-                                      }),
-                                  child: Text(
-                                    "History",
-                                    style: GoogleFonts.roboto(
-                                        color: press
-                                            ? Colors.white
-                                            : Colors.black,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.02),
-                                  )),
-                            ),
-                          ],
-                        ),
-        SizedBox(height: 16,),
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.1,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.4,
+              child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      side: BorderSide(color: Theme.of(context).primaryColor)),
+                  color: pressAttention
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).scaffoldBackgroundColor,
+                  onPressed: () => setState(() {
+                        pressAttention = !pressAttention;
+                        press = !press;
+                        _donationtype = "Upcoming";
+                      }),
+                  child: Text(
+                    "Upcoming",
+                    style: GoogleFonts.roboto(
+                        color: pressAttention ? Colors.white : Colors.black,
+                        fontWeight: FontWeight.w400,
+                        fontSize: MediaQuery.of(context).size.height * 0.02),
+                  )),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.4,
+              child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      side: BorderSide(color: Theme.of(context).primaryColor)),
+                  color: press
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).scaffoldBackgroundColor,
+                  onPressed: () => setState(() {
+                        press = !press;
+                        pressAttention = !pressAttention;
+                        _donationtype = "History";
+                      }),
+                  child: Text(
+                    "History",
+                    style: GoogleFonts.roboto(
+                        color: press ? Colors.white : Colors.black,
+                        fontWeight: FontWeight.w400,
+                        fontSize: MediaQuery.of(context).size.height * 0.02),
+                  )),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 16,
+        ),
         Expanded(
           child: donationtypes(),
         ),
         RaisedButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(5.0),
-                                      side: BorderSide(
-                                          color: Theme.of(context)
-                                              .primaryColor)),
-                                  color: Theme.of(context).primaryColor,
-                                  onPressed: () {
-                                    Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => donateitems()));
-                                  },
-                                  child: Text(
-                                    "Add a donation",
-                                    style: GoogleFonts.roboto(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.04),
-                                  )),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                side: BorderSide(color: Theme.of(context).primaryColor)),
+            color: Theme.of(context).primaryColor,
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => donateitems()));
+            },
+            child: Text(
+              "Add a donation",
+              style: GoogleFonts.roboto(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: MediaQuery.of(context).size.height * 0.03),
+            )),
       ],
     );
   }
@@ -158,82 +138,103 @@ class _PickupsDonorState extends State<PickupsDonor> {
                 unitslist = data['unitlist'];
                 return Container(
                   margin: const EdgeInsets.all(15.0),
-                  padding: const EdgeInsets.fromLTRB(3,3,1,1),
+                  padding: const EdgeInsets.fromLTRB(3, 3, 1, 1),
                   decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).primaryColor)
-                  ), 
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      border: Border.all(
+                          color: Theme.of(context).primaryColor, width: 1.5)),
                   child: ListTile(
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        data['startdate'] + " " + data['starttime']+ "-" + data['enddate'] + " " + data['endtime'],
-                        style: GoogleFonts.roboto(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          decoration: TextDecoration.underline,
-                          decorationThickness: 2
-                        ),
-                      ),
-                      SizedBox(height: 16,),
-                      Text(
-                        quantilist[0]+" "+unitslist[0]+" "+discriptlist[0],
-                        style: GoogleFonts.roboto(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Theme.of(context).primaryColor
-                        ),
-                      ),
-                      SizedBox(height:16),
-                      Text(
-                        "Our pick-up details for the volunteer",
-                        style: GoogleFonts.roboto(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          decoration: TextDecoration.underline,
-                          decorationThickness: 2
-                        ),
-                      ),
-                      SizedBox(height: 8,),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(3,0,0,0),
-                        child: Text(
-                          data['details'],
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data['startdate'] +
+                              " " +
+                              data['starttime'] +
+                              "-" +
+                              data['enddate'] +
+                              " " +
+                              data['endtime'],
                           style: GoogleFonts.roboto(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              decoration: TextDecoration.underline,
+                              decorationThickness: 2),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Text(
+                          quantilist[0] +
+                              " " +
+                              unitslist[0] +
+                              " " +
+                              discriptlist[0],
+                          style: GoogleFonts.roboto(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context).primaryColor),
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          "Our pick-up details for the volunteer",
+                          style: GoogleFonts.roboto(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.underline,
+                              decorationThickness: 2),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
+                          child: Text(
+                            data['details'],
+                            style: GoogleFonts.roboto(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                    trailing: IconButton(
+                        onPressed: () {
+                          showDialog<String>(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Delete donation'),
+                              content: const Text(
+                                  'Do you wish to cancel the donation?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('pickup_details')
+                                        .doc(document.id)
+                                        .delete();
+                                    Navigator.pop(context, 'Yes');
+                                  },
+                                  child: const Text('Yes'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context, 'No');
+                                  },
+                                  child: const Text('No'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.delete,
+                          color: Theme.of(context).primaryColor,
+                        )),
                   ),
-                  trailing: IconButton(onPressed: () {
-                    showDialog<String>(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title:
-                                    const Text('Delete donation'),
-                                content: const Text(
-                                    'Do you wish to cancel the donation?'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                    FirebaseFirestore.instance.collection('pickup_details').doc(document.id).delete();
-                                      Navigator.pop(context, 'Yes');
-                                    },
-                                    child: const Text('Yes'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context, 'No');
-                                    },
-                                    child: const Text('No'),
-                                  ),
-                                ],
-                              ),
-                            );}, icon: Icon(Icons.delete,color: Theme.of(context).primaryColor,)),
-                ),
                 );
               }
               return Container();
@@ -241,6 +242,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
           );
         });
   }
+
   StreamBuilder<QuerySnapshot<Object?>> historystre() {
     return StreamBuilder<QuerySnapshot>(
         stream: _mydonationsstream,
@@ -256,61 +258,72 @@ class _PickupsDonorState extends State<PickupsDonor> {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
               if (data['email'] == curemail && data['Status'] == "upcoming") {
-                
-              }
-              else if(data['email'] == curemail){
+              } else if (data['email'] == curemail) {
                 return Container(
                   margin: const EdgeInsets.all(15.0),
-                  padding: const EdgeInsets.fromLTRB(3,3,1,1),
+                  padding: const EdgeInsets.fromLTRB(3, 3, 1, 1),
                   decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).primaryColor)
-                  ), 
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      border: Border.all(
+                          color: Theme.of(context).primaryColor, width: 1.5)),
                   child: ListTile(
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        data['startdate'] + " " + data['starttime']+ "-" + data['enddate'] + " " + data['endtime'],
-                        style: GoogleFonts.roboto(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          decoration: TextDecoration.underline,
-                          decorationThickness: 2
-                        ),
-                      ),
-                      SizedBox(height: 16,),
-                      Text(
-                        quantilist[0]+" "+unitslist[0]+" "+discriptlist[0],
-                        style: GoogleFonts.roboto(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Theme.of(context).primaryColor
-                        ),
-                      ),
-                      SizedBox(height:16),
-                      Text(
-                        "Our pick-up details for the volunteer",
-                        style: GoogleFonts.roboto(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          decoration: TextDecoration.underline,
-                          decorationThickness: 2
-                        ),
-                      ),
-                      SizedBox(height: 8,),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(3,0,0,0),
-                        child: Text(
-                          data['details'],
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data['startdate'] +
+                              " " +
+                              data['starttime'] +
+                              "-" +
+                              data['enddate'] +
+                              " " +
+                              data['endtime'],
                           style: GoogleFonts.roboto(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              decoration: TextDecoration.underline,
+                              decorationThickness: 2),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Text(
+                          quantilist[0] +
+                              " " +
+                              unitslist[0] +
+                              " " +
+                              discriptlist[0],
+                          style: GoogleFonts.roboto(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context).primaryColor),
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          "Our pick-up details for the volunteer",
+                          style: GoogleFonts.roboto(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.underline,
+                              decorationThickness: 2),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
+                          child: Text(
+                            data['details'],
+                            style: GoogleFonts.roboto(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-              ),
                 );
               }
               return Container();

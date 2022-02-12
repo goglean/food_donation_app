@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:food_donating_app/screens/home.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WriteReview extends StatefulWidget {
@@ -75,8 +76,8 @@ class _WriteReviewState extends State<WriteReview> {
               SizedBox(height: 12),
               Center(
                 child: RatingBar(
-                  itemSize: 64,
-                  initialRating: 3,
+                  itemSize: MediaQuery.of(context).size.height * 0.07,
+                  initialRating: 0,
                   direction: Axis.horizontal,
                   itemCount: 5,
                   ratingWidget: RatingWidget(
@@ -170,7 +171,10 @@ class _WriteReviewState extends State<WriteReview> {
                 ),
               ),
               FlatButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => Home()));
+                },
                 textColor: Theme.of(context).primaryColor,
                 child: Text('NO, THANK YOU'),
               ),
