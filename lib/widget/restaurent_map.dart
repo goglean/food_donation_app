@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:food_donating_app/shared/nearby_res_info.dart';
 import 'package:food_donating_app/widget/directionfiles/directions_model.dart';
 import 'package:food_donating_app/widget/directionfiles/directions_repository.dart';
 import 'package:food_donating_app/widget/location_service.dart';
+import 'package:food_donating_app/widget/timecheck.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/shared/loading.dart';
@@ -18,9 +20,9 @@ class RestaurentMap extends StatefulWidget {
 
 class _RestaurentMapState extends State<RestaurentMap> {
   Completer<GoogleMapController> _controller = Completer();
-  TextEditingController _searchController = TextEditingController();
   Set<Marker> restaurentMarker = {};
   Marker? locationMarker = null;
+  bool isMarkerWithinRange = false;
 
   // 0th position show LatLng of current location 1st shows LatLng of tepped restaurent
   List<LatLng?> directionLineMarker = new List.filled(2, null, growable: false);
@@ -246,33 +248,49 @@ class _RestaurentMapState extends State<RestaurentMap> {
     }
 
     for (int i = 0; i < restaurent!.length; i++) {
-      restaurentMarker.add(Marker(
-        markerId: MarkerId(restaurent[i].email),
-        infoWindow: InfoWindow(title: restaurent[i].name),
-        // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-        icon: resIcon,
-        position: LatLng(
-          double.parse(restaurent[i].lat),
-          double.parse(restaurent[i].lng),
-        ),
-        // onTap: () => _showRestaurentPanel,
+      if (locationMarker != null) {
+        if (LocationService().calculateDistanceBetweenTwoLatLongsInKm(
+                  locationMarker!.position.latitude,
+                  locationMarker!.position.longitude,
+                  double.parse(restaurent[i].lat),
+                  double.parse(restaurent[i].lng),
+                ) >
+                20 &&
+            TimeCheck().getRestaurantOpenStatus(
+                restaurent[i].startTime, restaurent[i].startTime)) {
+          continue;
+        }
 
-        onTap: () async {
-          directionLineMarker[1] = LatLng(
-              double.parse(restaurent[i].lat), double.parse(restaurent[i].lng));
-          _showRestaurentPanel(restaurent[i].email);
-          // print(_origin!.position.latitude);
-          // print(_destination!.position.longitude);
+        isMarkerWithinRange = true;
 
-          // Get directions
-          // final directions = await DirectionsRepository().getDirections(
-          //     origin: _origin!.position, destination: _destination!.position);
-          // print(directions.totalDistance);
+        restaurentMarker.add(Marker(
+          markerId: MarkerId(restaurent[i].email),
+          infoWindow: InfoWindow(title: restaurent[i].name),
+          // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+          icon: resIcon,
+          position: LatLng(
+            double.parse(restaurent[i].lat),
+            double.parse(restaurent[i].lng),
+          ),
+          // onTap: () => _showRestaurentPanel,
 
-          // setState(() => _info = directions);
-          // await curLocation();
-        },
-      ));
+          onTap: () async {
+            directionLineMarker[1] = LatLng(double.parse(restaurent[i].lat),
+                double.parse(restaurent[i].lng));
+            _showRestaurentPanel(restaurent[i].email);
+            // print(_origin!.position.latitude);
+            // print(_destination!.position.longitude);
+
+            // Get directions
+            // final directions = await DirectionsRepository().getDirections(
+            //     origin: _origin!.position, destination: _destination!.position);
+            // print(directions.totalDistance);
+
+            // setState(() => _info = directions);
+            // await curLocation();
+          },
+        ));
+      }
     }
 
     // for (var item in restaurentMarker) {
@@ -350,6 +368,45 @@ class _RestaurentMapState extends State<RestaurentMap> {
             ),
           ),
         ),
+        (locationMarker != null)
+            ? isMarkerWithinRange
+                ? Container()
+                : NearbyRestaurantInfo()
+            : NearbyRestaurantInfo(
+                dialogueText:
+                    'Please, turn on your location and press location button',
+              ),
+        // Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     children: [
+        //       Container(
+        //         color: Colors.red[400],
+        //         child: Padding(
+        //           padding: const EdgeInsets.fromLTRB(8, 4, 2, 4),
+        //           child: Icon(
+        //             Icons.error_outline,
+        //             color: Colors.white,
+        //           ),
+        //         ),
+        //       ),
+        //       Container(
+        //         color: Colors.red[400],
+        //         child: Padding(
+        //           padding: const EdgeInsets.fromLTRB(2, 4, 16, 4),
+        //           child: Text(
+        //             'Sorry, no nearby Restaurants',
+        //             style: TextStyle(
+        //               fontSize: 18,
+        //               color: Colors.white,
+        //             ),
+        //           ),
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }
