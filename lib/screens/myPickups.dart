@@ -16,9 +16,17 @@ class _MyPickupsState extends State<MyPickups> {
   bool _pressAttention = true, _dataLoaded = false, _pickUpAvailable = false;
   List pickUpList = [];
   List pickUpCharityList = [];
-  void getPickUps() async {
+  void getPickUps(bool _pressAttention) async {
+    pickUpList = [];
     CollectionReference pickupCollection =
         FirebaseFirestore.instance.collection('pickup_details');
+
+    if (_pressAttention) {
+      pickupCollection =
+          FirebaseFirestore.instance.collection('pickup_details');
+    } else {
+      pickupCollection = FirebaseFirestore.instance.collection('old_pickups');
+    }
 
     CollectionReference charityCollection =
         FirebaseFirestore.instance.collection('charity');
@@ -68,14 +76,17 @@ class _MyPickupsState extends State<MyPickups> {
     if (!_dataLoaded)
       setState(() {
         _dataLoaded = true;
-        if (pickUpList.length != 0) _pickUpAvailable = true;
+        if (pickUpList.length != 0)
+          _pickUpAvailable = true;
+        else
+          _pickUpAvailable = false;
       });
   }
 
   @override
   void initState() {
     super.initState();
-    getPickUps();
+    getPickUps(_pressAttention);
 
     // print(FirebaseAuth.instance.currentUser!.email);
     // print('\n\n\n\n');
@@ -134,7 +145,7 @@ class _MyPickupsState extends State<MyPickups> {
                     _dataLoaded = false;
                     _pickUpAvailable = false;
                     Navigator.pop(context);
-                    getPickUps();
+                    getPickUps(_pressAttention);
                   },
                 ),
               ),
@@ -181,7 +192,9 @@ class _MyPickupsState extends State<MyPickups> {
                   onPressed: () {
                     setState(() {
                       _pressAttention = true;
+                      _dataLoaded = false;
                     });
+                    getPickUps(_pressAttention);
                     print('upcoming');
                   },
                   child: Text(
@@ -208,8 +221,11 @@ class _MyPickupsState extends State<MyPickups> {
                   onPressed: () {
                     setState(() {
                       _pressAttention = false;
+                      _dataLoaded = false;
                     });
-                    print('upcoming');
+                    print('history');
+                    print(_pressAttention);
+                    getPickUps(_pressAttention);
                   },
                   child: Text(
                     'History',
@@ -256,7 +272,7 @@ class _MyPickupsState extends State<MyPickups> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "Today ${pickUpCharityList[index]['openTime']} - ${pickUpCharityList[index]['closeTime']}",
+                                              "${pickUpList[index]['startdate']}, ${pickUpCharityList[index]['openTime']} - ${pickUpCharityList[index]['closeTime']}",
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
@@ -316,89 +332,91 @@ class _MyPickupsState extends State<MyPickups> {
                                             SizedBox(height: 8),
                                           ],
                                         ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                ButtonTheme(
-                                                  minWidth: 36,
-                                                  child: RaisedButton(
-                                                    textColor: Colors.white,
-                                                    color: Color.fromRGBO(
-                                                        118, 210, 83, 1),
-                                                    child: Text(
-                                                      'START',
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                      ),
-                                                    ),
-                                                    shape:
-                                                        new RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          new BorderRadius
-                                                              .circular(10.0),
-                                                    ),
-                                                    onPressed: () {
-                                                      // print(FirebaseAuth.instance.currentUser!.uid);
-                                                      Navigator.pop(context);
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              StartJourney(
-                                                            curChar:
-                                                                pickUpCharityList[
-                                                                    index],
-                                                            curRes: pickUpList[
-                                                                index],
-                                                          ),
+                                        if (_pressAttention)
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  ButtonTheme(
+                                                    minWidth: 36,
+                                                    child: RaisedButton(
+                                                      textColor: Colors.white,
+                                                      color: Color.fromRGBO(
+                                                          118, 210, 83, 1),
+                                                      child: Text(
+                                                        'START',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
                                                         ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                ButtonTheme(
-                                                  minWidth: 36,
-                                                  child: RaisedButton(
-                                                    textColor: Colors.white,
-                                                    color: Color.fromRGBO(
-                                                        248, 95, 99, 1),
-                                                    child: Text(
-                                                      'UNCLAIM',
-                                                      style: TextStyle(
-                                                        fontSize: 16,
                                                       ),
+                                                      shape:
+                                                          new RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            new BorderRadius
+                                                                .circular(10.0),
+                                                      ),
+                                                      onPressed: () {
+                                                        // print(FirebaseAuth.instance.currentUser!.uid);
+                                                        Navigator.pop(context);
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                StartJourney(
+                                                              curChar:
+                                                                  pickUpCharityList[
+                                                                      index],
+                                                              curRes:
+                                                                  pickUpList[
+                                                                      index],
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
                                                     ),
-                                                    shape:
-                                                        new RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          new BorderRadius
-                                                              .circular(10.0),
-                                                    ),
-                                                    onPressed: () {
-                                                      openUnclaimConfirmation(
-                                                          index);
-                                                      // print(FirebaseAuth.instance.currentUser!.uid);
-                                                      // Navigator.pop(context);
-                                                    },
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        )
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  ButtonTheme(
+                                                    minWidth: 36,
+                                                    child: RaisedButton(
+                                                      textColor: Colors.white,
+                                                      color: Color.fromRGBO(
+                                                          248, 95, 99, 1),
+                                                      child: Text(
+                                                        'UNCLAIM',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
+                                                      shape:
+                                                          new RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            new BorderRadius
+                                                                .circular(10.0),
+                                                      ),
+                                                      onPressed: () {
+                                                        openUnclaimConfirmation(
+                                                            index);
+                                                        // print(FirebaseAuth.instance.currentUser!.uid);
+                                                        // Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          )
                                       ],
                                     ),
                                   ),
