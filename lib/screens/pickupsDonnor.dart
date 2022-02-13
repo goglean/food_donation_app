@@ -23,6 +23,8 @@ class _PickupsDonorState extends State<PickupsDonor> {
   var unitslist = [];
   final Stream<QuerySnapshot> _mydonationsstream =
       FirebaseFirestore.instance.collection('pickup_details').snapshots();
+  final Stream<QuerySnapshot> _donationhistorystream =
+      FirebaseFirestore.instance.collection('old_pickups').snapshots();
   donationtypes() {
     if (_donationtype == "Upcoming") {
       return upcoming();
@@ -132,7 +134,14 @@ class _PickupsDonorState extends State<PickupsDonor> {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
-              if (data['email'] == curemail && data['Status'] == "upcoming") {
+              status(){
+                      if (data['Status'] == 'upcoming') {
+                        return Text('Yet to be picked');
+                      }
+                      else 
+                        return data['Status'];
+                    }
+              if (data['email'] == curemail) {
                 discriptlist = data['descriptionlist'];
                 quantilist = data['quantitylist'];
                 unitslist = data['unitlist'];
@@ -245,7 +254,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
 
   StreamBuilder<QuerySnapshot<Object?>> historystre() {
     return StreamBuilder<QuerySnapshot>(
-        stream: _mydonationsstream,
+        stream: _donationhistorystream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text('Something went wrong'));
@@ -257,8 +266,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
-              if (data['email'] == curemail && data['Status'] == "upcoming") {
-              } else if (data['email'] == curemail) {
+              if (data['email'] == curemail) {
                 return Container(
                   margin: const EdgeInsets.all(15.0),
                   padding: const EdgeInsets.fromLTRB(3, 3, 1, 1),
@@ -288,7 +296,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
                         SizedBox(
                           height: 16,
                         ),
-                        Text(
+                         Text(
                           quantilist[0] +
                               " " +
                               unitslist[0] +
