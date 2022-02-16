@@ -125,7 +125,10 @@ class _PickupsDonorState extends State<PickupsDonor> {
             return Center(child: Text('Something went wrong'));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ));
           }
           // if (num == 0) {
           //         return Text('No Data');
@@ -261,7 +264,10 @@ class _PickupsDonorState extends State<PickupsDonor> {
             return Center(child: Text('Something went wrong'));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ));
           }
           return ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -299,11 +305,11 @@ class _PickupsDonorState extends State<PickupsDonor> {
                         ),
                         for (int i = 0; i < unitslist.length; i++)
                           Text(
-                            quantilist[0] +
+                            quantilist[i] +
                                 " " +
-                                unitslist[0] +
+                                unitslist[i] +
                                 " " +
-                                discriptlist[0],
+                                discriptlist[i],
                             style: GoogleFonts.roboto(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,

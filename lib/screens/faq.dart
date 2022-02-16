@@ -20,7 +20,10 @@ class _FaqPageState extends State<FaqPage> {
           backgroundColor: Theme.of(context).primaryColor,
           foregroundColor: Colors.white,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back,color: Colors.black,),
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -28,57 +31,63 @@ class _FaqPageState extends State<FaqPage> {
           title: Text("Help Center"),
         ),
         body: StreamBuilder<QuerySnapshot>(
-        stream: _collegesstream,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text('Something went wrong'));
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          return Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(18),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Text('FAQs',style: GoogleFonts.roboto(
-                    color: Colors.black,
-                    fontSize: 22
-                  ),)),
-              ),
-              Expanded(
-                child: ListView(
-                  children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                    Map<String, dynamic> data =
-                        document.data()! as Map<String, dynamic>;
-                    return Column(
-                      children: [
-                        Container(
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          child: ListTile(
-                            title: Text(
-                              data['Question'],
-                              style: TextStyle(color: Colors.black),
+            stream: _collegesstream,
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return Center(child: Text('Something went wrong'));
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(18),
+                    child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'FAQs',
+                          style: GoogleFonts.roboto(
+                              color: Colors.black,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w600),
+                        )),
+                  ),
+                  Expanded(
+                    child: ListView(
+                        children: snapshot.data!.docs
+                            .map((DocumentSnapshot document) {
+                      Map<String, dynamic> data =
+                          document.data()! as Map<String, dynamic>;
+                      return Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            subtitle: Text(
-                              data['Answer'],
-                              style: TextStyle(color: Colors.black54),
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            child: ListTile(
+                              title: Text(
+                                "Q.) " + data['Question'],
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              subtitle: Text(
+                                "A.) " + data['Answer'],
+                                style: TextStyle(color: Colors.black54),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 16,
-                        )
-                      ],
-                    );
-                  }).toList()),
-              ),
-            ],
-          );
-        }
-          )
-        );
-}
+                          SizedBox(
+                            height: 16,
+                          )
+                        ],
+                      );
+                    }).toList()),
+                  ),
+                ],
+              );
+            }));
+  }
 }
