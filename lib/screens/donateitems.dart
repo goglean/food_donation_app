@@ -76,7 +76,8 @@ class _donateitemsState extends State<donateitems> {
   TextEditingController qtycontroller = TextEditingController();
   TextEditingController disccontroller = TextEditingController();
   String dropdownValue = 'Small Bag';
-
+  String food = "Packed";
+  List<String> foodType = [];
   List<String> units = [];
 
   Future<void> _getUnitType() async {
@@ -97,9 +98,28 @@ class _donateitemsState extends State<donateitems> {
     }
   }
 
+  Future<void> _getFoodType() async {
+    try {
+      FirebaseFirestore.instance
+          .collection('utils')
+          .doc('Type of food')
+          .get()
+          .then((value) {
+        print("food Type");
+        for (int i = 1; i <= value.data()!.length; i++) {
+          foodType.add(value.data()![i.toString()].toString());
+        }
+        print(foodType);
+      });
+    } catch (err) {
+      print("error      " + err.toString());
+    }
+  }
+
   @override
   void initState() {
     _getUnitType();
+    _getFoodType();
     super.initState();
   }
 
@@ -128,6 +148,62 @@ class _donateitemsState extends State<donateitems> {
         padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
         child: Column(
           children: [
+            Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.height * 0.04,
+              // decoration: BoxDecoration(
+              //   borderRadius: BorderRadius.circular(10),
+              //   color: Theme.of(context).primaryColor,
+              // ),
+              child: Center(
+                child: Text(
+                  "Select the type of food you want to donate",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.roboto(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                      fontSize: MediaQuery.of(context).size.height * 0.02),
+                ),
+              ),
+              margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+            ),
+            Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.height * 0.06,
+                margin:
+                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+                decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.grey),
+                    borderRadius: BorderRadius.circular(20.0)
+                    //)
+                    ),
+                child: Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: food,
+                        icon: const Icon(Icons.arrow_drop_down),
+                        elevation: 16,
+                        style: const TextStyle(color: Color(0xFFFF6E40)),
+                        underline: Container(
+                          height: 2,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            food = newValue!;
+                            changed = true;
+                          });
+                        },
+                        items: foodType
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ))),
             Row(
               children: [
                 Container(
@@ -339,10 +415,10 @@ class _donateitemsState extends State<donateitems> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => PickupDetails(
-                            Unilist: unitslist,
-                            quanlist: qtylist,
-                            desclist: disclist,
-                          )));
+                          Unilist: unitslist,
+                          quanlist: qtylist,
+                          desclist: disclist,
+                          food: food)));
             },
             child: Container(
               child: Text("Next",

@@ -21,7 +21,7 @@ class _AuthScreenState extends State<AuthScreen> {
   bool press = false;
   var insta = "https://www.instagram.com/goglean_inc/";
   var fb = "https://www.facebook.com/profile.php?id=100077581845900";
-  var twitter = " https://twitter.com/goglean_inc";
+  var twitter = "https://twitter.com/goglean_inc";
   var lnkd = "https://www.linkedin.com/in/go-glean-305566230/";
 
   void mailLaunch(command) async {

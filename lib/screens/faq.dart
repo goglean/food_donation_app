@@ -38,7 +38,9 @@ class _FaqPageState extends State<FaqPage> {
                 return Center(child: Text('Something went wrong'));
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return Center(
+                    child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor));
               }
               return ListView(
                 children: [
