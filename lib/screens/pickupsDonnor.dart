@@ -174,17 +174,18 @@ class _PickupsDonorState extends State<PickupsDonor> {
                         SizedBox(
                           height: 16,
                         ),
-                        Text(
-                          quantilist[0] +
-                              " " +
-                              unitslist[0] +
-                              " " +
-                              discriptlist[0],
-                          style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor),
-                        ),
+                        for (int i = 0; i < unitslist.length; i++)
+                          Text(
+                            quantilist[i] +
+                                " " +
+                                unitslist[i] +
+                                " " +
+                                discriptlist[i],
+                            style: GoogleFonts.roboto(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context).primaryColor),
+                          ),
                         SizedBox(height: 16),
                         Text(
                           "Our pick-up details for the volunteer",
@@ -296,17 +297,18 @@ class _PickupsDonorState extends State<PickupsDonor> {
                         SizedBox(
                           height: 16,
                         ),
-                        Text(
-                          quantilist[0] +
-                              " " +
-                              unitslist[0] +
-                              " " +
-                              discriptlist[0],
-                          style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor),
-                        ),
+                        for (int i = 0; i < unitslist.length; i++)
+                          Text(
+                            quantilist[0] +
+                                " " +
+                                unitslist[0] +
+                                " " +
+                                discriptlist[0],
+                            style: GoogleFonts.roboto(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context).primaryColor),
+                          ),
                         SizedBox(height: 16),
                         Text(
                           "Our pick-up details for the volunteer",
