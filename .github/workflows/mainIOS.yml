@@ -74,6 +74,6 @@ jobs:
      - name: collect ipa artifacts
        uses: actions/upload-artifact@v2
        with:
-        name: adhoc-ipa
+        name: gogleanIOS
         # Path to the release files
         path: build/ios/ipa/*.ipa
