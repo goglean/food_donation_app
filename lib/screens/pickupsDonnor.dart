@@ -134,13 +134,13 @@ class _PickupsDonorState extends State<PickupsDonor> {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
-              status(){
-                      if (data['Status'] == 'upcoming') {
-                        return Text('Yet to be picked');
-                      }
-                      else 
-                        return data['Status'];
-                    }
+              status() {
+                if (data['Status'] == 'upcoming') {
+                  return Text('Yet to be picked');
+                } else
+                  return data['Status'];
+              }
+
               if (data['email'] == curemail) {
                 discriptlist = data['descriptionlist'];
                 quantilist = data['quantitylist'];
@@ -152,7 +152,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       border: Border.all(
-                          color: Theme.of(context).primaryColor, width: 1.5)),
+                          color: Theme.of(context).primaryColor, width: 2)),
                   child: ListTile(
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,13 +161,13 @@ class _PickupsDonorState extends State<PickupsDonor> {
                           data['startdate'] +
                               " " +
                               data['starttime'] +
-                              "-" +
+                              " - " +
                               data['enddate'] +
                               " " +
                               data['endtime'],
                           style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
                               decoration: TextDecoration.underline,
                               decorationThickness: 2),
                         ),
@@ -274,7 +274,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       border: Border.all(
-                          color: Theme.of(context).primaryColor, width: 1.5)),
+                          color: Theme.of(context).primaryColor, width: 2)),
                   child: ListTile(
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,20 +283,20 @@ class _PickupsDonorState extends State<PickupsDonor> {
                           data['startdate'] +
                               " " +
                               data['starttime'] +
-                              "-" +
+                              " - " +
                               data['enddate'] +
                               " " +
                               data['endtime'],
                           style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
                               decoration: TextDecoration.underline,
                               decorationThickness: 2),
                         ),
                         SizedBox(
                           height: 16,
                         ),
-                         Text(
+                        Text(
                           quantilist[0] +
                               " " +
                               unitslist[0] +
