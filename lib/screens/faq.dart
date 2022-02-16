@@ -40,7 +40,7 @@ class _FaqPageState extends State<FaqPage> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
-              return Column(
+              return ListView(
                 children: [
                   Padding(
                     padding: EdgeInsets.all(18),

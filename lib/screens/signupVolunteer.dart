@@ -64,7 +64,6 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
         await firestore.collection('volunteers').doc(uid).set({
           'Name': _name,
           'email': _email,
-          'password': _password,
           'State': _state,
           'Phone Number': _phoneNo,
           'City': _city,

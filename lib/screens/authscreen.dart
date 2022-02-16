@@ -71,12 +71,10 @@ class _AuthScreenState extends State<AuthScreen> {
                             width: MediaQuery.of(context).size.width * 0.3,
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: AssetImage('assets/appIcon.png'),
+                                image: AssetImage('assets/app_logo.png'),
                                 fit: BoxFit.fill,
                               ),
                               shape: BoxShape.circle,
-                              //borderRadius: BorderRadius.circular(60),
-                              //color: Colors.black
                             ),
                           ),
                           Container(
@@ -158,7 +156,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                   icon: const Icon(Icons.email),
                                   onPressed: () {
                                     test();
-                                    // setState(() {});
                                   },
                                 ),
                                 IconButton(
@@ -179,7 +176,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                   icon: const Icon(FontAwesomeIcons.twitter,
                                       color: Color(0xFF1DA1F2)),
                                   onPressed: () async {
-                                    //const url = Resources.WEBSITE_NAME;
                                     if (await canLaunch(twitter)) {
                                       await launch(twitter);
                                     } else {
@@ -191,7 +187,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                   icon: const Icon(FontAwesomeIcons.instagram,
                                       color: Colors.pink),
                                   onPressed: () async {
-                                    //const url = Resources.WEBSITE_NAME;
                                     if (await canLaunch(insta)) {
                                       await launch(insta);
                                     } else {
@@ -203,7 +198,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                   icon: const Icon(FontAwesomeIcons.linkedin,
                                       color: Color(0xFF0072b1)),
                                   onPressed: () async {
-                                    //const url = Resources.WEBSITE_NAME;
                                     if (await canLaunch(lnkd)) {
                                       await launch(lnkd);
                                     } else {

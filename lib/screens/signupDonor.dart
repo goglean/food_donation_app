@@ -70,7 +70,7 @@ class _SignupDonorState extends State<SignupDonor> {
         await firestore.collection('users').doc(uid).set({
           'Name': _name,
           'email': _email,
-          'password': _password,
+          
           'Contact Person': _contactPerson,
           'State': _state,
           'Phone Number': _phoneNo,

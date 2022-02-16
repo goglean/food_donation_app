@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileVolunteer extends StatefulWidget {
   const ProfileVolunteer({Key? key}) : super(key: key);
@@ -17,6 +18,10 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneNoController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
+  var tc =
+      "https://docs.google.com/document/d/10l_RlmC1Uhao8pwf3lAMFjPs_LSnqV5WFmXrtYeCIGE/edit?usp=sharing";
+  var pp =
+      "https://docs.google.com/document/d/1Q7XrZCbveTAqc-aa9NcpYHNz-UK_zuYyiHMqmksog8k/edit?usp=sharing";
 
   void _updateDetails() async {
     FirebaseFirestore.instance
@@ -270,56 +275,10 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
                                   context: context,
                                   builder: (context) => AlertDialog(
                                         content: Text(
-                                            "Do you want to change your Email?"),
+                                            "You cannot change your Email."),
                                         actions: [
                                           Column(
                                             children: [
-                                              Container(
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
-                                                  child: TextField(
-                                                    cursorColor:
-                                                        Theme.of(context)
-                                                            .primaryColor,
-                                                    controller:
-                                                        _emailController,
-                                                    keyboardType: TextInputType
-                                                        .emailAddress,
-                                                    decoration: InputDecoration(
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                            width: 1),
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    20)),
-                                                      ),
-                                                      border:
-                                                          OutlineInputBorder(
-                                                        //borderRadius: new BorderRadius.circular(8),
-                                                        borderSide: BorderSide(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor),
-                                                        borderRadius:
-                                                            new BorderRadius
-                                                                .circular(20),
-                                                      ),
-                                                      labelText:
-                                                          "Enter new email here",
-                                                      labelStyle:
-                                                          GoogleFonts.roboto(
-                                                              color: Colors
-                                                                  .black87),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -328,33 +287,6 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
                                                   TextButton(
                                                       onPressed: () {
                                                         Navigator.pop(context);
-                                                        _emailController
-                                                            .clear();
-                                                      },
-                                                      child: Text(
-                                                        "Cancel",
-                                                        style: GoogleFonts.roboto(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor),
-                                                      )),
-                                                  TextButton(
-                                                      onPressed: () {
-                                                        if (_emailController
-                                                            .text.isNotEmpty) {
-                                                          setState(() {
-                                                            _email =
-                                                                _emailController
-                                                                    .text;
-                                                            print(
-                                                                _emailController
-                                                                    .toString());
-                                                          });
-                                                          Navigator.pop(
-                                                              context);
-                                                          _emailController
-                                                              .clear();
-                                                        }
                                                       },
                                                       child: Text(
                                                         "OK",
@@ -362,7 +294,7 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
                                                             color: Theme.of(
                                                                     context)
                                                                 .primaryColor),
-                                                      ))
+                                                      )),
                                                 ],
                                               ),
                                             ],
@@ -523,9 +455,34 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
                   ],
                 ),
               ),
+              Container(
+                //color: Colors.red,
+                height: MediaQuery.of(context).size.height * 0.1,
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.fromLTRB(20, 20, 15, 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(Icons.info_outline),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.07,
+                    ),
+                    Flexible(
+                      child: Text(
+                        "You maybe listed on Go Glean website and be included in Go Glean communications, celebrating your organization's engagement.",
+                        style: GoogleFonts.roboto(
+                            fontSize: MediaQuery.of(context).size.height * 0.02,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey[400]),
+                        softWrap: true,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Center(
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Container(
                     //
                     height: MediaQuery.of(context).size.height * 0.06,
@@ -552,7 +509,7 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
                   ),
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.width * 0.1),
+              //SizedBox(height: MediaQuery.of(context).size.width * 0.1),
               Container(
                 padding: EdgeInsets.fromLTRB(20, 20, 5, 0),
                 width: MediaQuery.of(context).size.width,
@@ -585,7 +542,16 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
                           fontWeight: FontWeight.w500),
                     ),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (await canLaunch(pp)) {
+                            await launch(
+                              pp,
+                              universalLinksOnly: true,
+                            );
+                          } else {
+                            throw 'There was a problem to open the url: $pp';
+                          }
+                        },
                         icon: Icon(
                           Icons.keyboard_arrow_right,
                           color: Colors.grey[500],
@@ -613,7 +579,14 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
                           fontWeight: FontWeight.w500),
                     ),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          //const url = Resources.WEBSITE_NAME;
+                          if (await canLaunch(tc)) {
+                            await launch(tc);
+                          } else {
+                            throw 'Could not launch $tc';
+                          }
+                        },
                         icon: Icon(
                           Icons.keyboard_arrow_right,
                           color: Colors.grey[500],
