@@ -53,7 +53,6 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
         await firestore.collection('users').doc(uid).set({
           'Name': _name,
           'email': _email,
-          'password': _password,
           'State': _state,
           'Phone Number': _phoneNo,
           'City': _city,
@@ -65,7 +64,6 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
         await firestore.collection('volunteers').doc(uid).set({
           'Name': _name,
           'email': _email,
-          'password': _password,
           'State': _state,
           'Phone Number': _phoneNo,
           'City': _city,
@@ -508,62 +506,73 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                           onPressed: () {
                             setState(() {
                               FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                                email: _emailController.text.trim(),
-                                password: _passwordController.text)
-                            .then((value) => FirebaseAuth.instance.currentUser
-                                ?.sendEmailVerification().then((value) {
-                                 FirebaseFirestore.instance
-                                .collection('users').doc(_emailController.text.trim()).set({'Address' : _addressController.text,
-                                      'City' : _cityController.text,
-                                      'Name' : _nameController.text,
-                                      'Phone Number' : _phoneNoController.text,
-                                      'State' : _state,
-                                      'User Type' : 'volunteer',
-                                      'Zipcode' : _zipcodeController.text,
-                                      'email': _emailController.text.trim(),
-                                      'password': _passwordController.text
-                                 });
-                                 FirebaseFirestore.instance
-                                .collection('volunteers').doc(_emailController.text.trim()).set({'Address' : _addressController.text,
-                                      'City' : _cityController.text,
-                                      'Name' : _nameController.text,
-                                      'Phone Number' : _phoneNoController.text,
-                                      'State' : _state,
-                                      'User Type' : 'volunteer',
-                                      'Zipcode' : _zipcodeController.text,
-                                      'email': _emailController.text.trim(),
-                                      'password': _passwordController.text
-                                 });
-                              _cityController.clear();
-                              _addressController.clear();
-                              _nameController.clear();
-                              _emailController.clear();
-                              _passwordController.clear();
-                              _addressController.clear();
-                              _phoneNoController.clear();
-                              _zipcodeController.clear();
-                              showDialog<String>(
-                              barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          
-          title: const Text('Account Created successfully'),
-          content: const Text('Please verify your mail and login'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () { 
-                Navigator.pop(context, 'OK');
-                Navigator.pop(context);
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-                                }));
+                                  .createUserWithEmailAndPassword(
+                                      email: _emailController.text.trim(),
+                                      password: _passwordController.text)
+                                  .then((value) => FirebaseAuth
+                                          .instance.currentUser
+                                          ?.sendEmailVerification()
+                                          .then((value) {
+                                        FirebaseFirestore.instance
+                                            .collection('users')
+                                            .doc(_emailController.text.trim())
+                                            .set({
+                                          'Address': _addressController.text,
+                                          'City': _cityController.text,
+                                          'Name': _nameController.text,
+                                          'Phone Number':
+                                              _phoneNoController.text,
+                                          'State': _state,
+                                          'User Type': 'volunteer',
+                                          'Zipcode': _zipcodeController.text,
+                                          'email': _emailController.text.trim(),
+                                          'password': _passwordController.text
+                                        });
+                                        FirebaseFirestore.instance
+                                            .collection('volunteers')
+                                            .doc(_emailController.text.trim())
+                                            .set({
+                                          'Address': _addressController.text,
+                                          'City': _cityController.text,
+                                          'Name': _nameController.text,
+                                          'Phone Number':
+                                              _phoneNoController.text,
+                                          'State': _state,
+                                          'User Type': 'volunteer',
+                                          'Zipcode': _zipcodeController.text,
+                                          'email': _emailController.text.trim(),
+                                          'password': _passwordController.text
+                                        });
+                                        _cityController.clear();
+                                        _addressController.clear();
+                                        _nameController.clear();
+                                        _emailController.clear();
+                                        _passwordController.clear();
+                                        _addressController.clear();
+                                        _phoneNoController.clear();
+                                        _zipcodeController.clear();
+                                        showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Account Created successfully'),
+                                            content: const Text(
+                                                'Please verify your mail and login'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }));
                             });
-            
                           },
                           child: Text(
                             "Submit",

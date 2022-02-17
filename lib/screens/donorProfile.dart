@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileDonor extends StatefulWidget {
   const ProfileDonor({Key? key}) : super(key: key);
@@ -12,7 +13,10 @@ class ProfileDonor extends StatefulWidget {
 
 class _ProfileDonorState extends State<ProfileDonor> {
   FirebaseAuth auth = FirebaseAuth.instance;
-
+  var tc =
+      "https://docs.google.com/document/d/10l_RlmC1Uhao8pwf3lAMFjPs_LSnqV5WFmXrtYeCIGE/edit?usp=sharing";
+  var pp =
+      "https://docs.google.com/document/d/1Q7XrZCbveTAqc-aa9NcpYHNz-UK_zuYyiHMqmksog8k/edit?usp=sharing";
   String _name = "";
   String _PhoneNo = "";
   String _email = "";
@@ -396,52 +400,11 @@ class _ProfileDonorState extends State<ProfileDonor> {
                           showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
-                                    content: Text(
-                                        "Do you want to change your Email?"),
+                                    content:
+                                        Text("You cannot change your Email."),
                                     actions: [
                                       Column(
                                         children: [
-                                          Container(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: TextField(
-                                                cursorColor: Theme.of(context)
-                                                    .primaryColor,
-                                                controller: _emailController,
-                                                keyboardType:
-                                                    TextInputType.emailAddress,
-                                                decoration: InputDecoration(
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
-                                                        width: 1),
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                20)),
-                                                  ),
-                                                  border: OutlineInputBorder(
-                                                    //borderRadius: new BorderRadius.circular(8),
-                                                    borderSide: BorderSide(
-                                                        color: Theme.of(context)
-                                                            .primaryColor),
-                                                    borderRadius:
-                                                        new BorderRadius
-                                                            .circular(20),
-                                                  ),
-                                                  labelText:
-                                                      "Enter new email here",
-                                                  labelStyle:
-                                                      GoogleFonts.roboto(
-                                                          color:
-                                                              Colors.black87),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
@@ -449,35 +412,13 @@ class _ProfileDonorState extends State<ProfileDonor> {
                                               TextButton(
                                                   onPressed: () {
                                                     Navigator.pop(context);
-                                                    _emailController.clear();
-                                                  },
-                                                  child: Text(
-                                                    "Cancel",
-                                                    style: GoogleFonts.roboto(
-                                                        color: Theme.of(context)
-                                                            .primaryColor),
-                                                  )),
-                                              TextButton(
-                                                  onPressed: () {
-                                                    if (_emailController
-                                                        .text.isNotEmpty) {
-                                                      setState(() {
-                                                        _email =
-                                                            _emailController
-                                                                .text;
-                                                        print(_emailController
-                                                            .toString());
-                                                      });
-                                                      Navigator.pop(context);
-                                                      _emailController.clear();
-                                                    }
                                                   },
                                                   child: Text(
                                                     "OK",
                                                     style: GoogleFonts.roboto(
                                                         color: Theme.of(context)
                                                             .primaryColor),
-                                                  ))
+                                                  )),
                                             ],
                                           ),
                                         ],
@@ -837,14 +778,21 @@ class _ProfileDonorState extends State<ProfileDonor> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Privacy policy",
+                  "Terms and Conditions",
                   style: GoogleFonts.roboto(
                       color: Colors.black,
                       fontSize: 15,
                       fontWeight: FontWeight.w500),
                 ),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      //const url = Resources.WEBSITE_NAME;
+                      if (await canLaunch(tc)) {
+                        await launch(tc);
+                      } else {
+                        throw 'Could not launch $tc';
+                      }
+                    },
                     icon: Icon(
                       Icons.keyboard_arrow_right,
                       color: Colors.grey[500],
@@ -865,14 +813,22 @@ class _ProfileDonorState extends State<ProfileDonor> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Terms and Conditions",
+                  "Privacy Policy",
                   style: GoogleFonts.roboto(
                       color: Colors.black,
                       fontSize: 15,
                       fontWeight: FontWeight.w500),
                 ),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      if (await canLaunch(pp)) {
+                        await launch(
+                          pp,
+                        );
+                      } else {
+                        throw 'There was a problem to open the url: $pp';
+                      }
+                    },
                     icon: Icon(
                       Icons.keyboard_arrow_right,
                       color: Colors.grey[500],

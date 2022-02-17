@@ -249,17 +249,17 @@ class _RestaurentMapState extends State<RestaurentMap> {
 
     for (int i = 0; i < restaurent!.length; i++) {
       if (locationMarker != null) {
-        // if (LocationService().calculateDistanceBetweenTwoLatLongsInKm(
-        //           locationMarker!.position.latitude,
-        //           locationMarker!.position.longitude,
-        //           double.parse(restaurent[i].lat),
-        //           double.parse(restaurent[i].lng),
-        //         ) >
-        //         20 &&
-        //     !TimeCheck().getOpenStatus(
-        //         restaurent[i].startTime, restaurent[i].startTime)) {
-        //   continue;
-        // }
+        if (LocationService().calculateDistanceBetweenTwoLatLongsInKm(
+                  locationMarker!.position.latitude,
+                  locationMarker!.position.longitude,
+                  double.parse(restaurent[i].lat),
+                  double.parse(restaurent[i].lng),
+                ) >
+                20 &&
+            !TimeCheck().getOpenStatus(
+                restaurent[i].startTime, restaurent[i].startTime)) {
+          continue;
+        }
 
         isMarkerWithinRange = true;
 

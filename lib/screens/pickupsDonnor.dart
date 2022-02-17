@@ -125,7 +125,10 @@ class _PickupsDonorState extends State<PickupsDonor> {
             return Center(child: Text('Something went wrong'));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ));
           }
           // if (num == 0) {
           //         return Text('No Data');
@@ -134,13 +137,13 @@ class _PickupsDonorState extends State<PickupsDonor> {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
-              status(){
-                      if (data['Status'] == 'upcoming') {
-                        return Text('Yet to be picked');
-                      }
-                      else 
-                        return data['Status'];
-                    }
+              status() {
+                if (data['Status'] == 'upcoming') {
+                  return Text('Yet to be picked');
+                } else
+                  return data['Status'];
+              }
+
               if (data['email'] == curemail) {
                 discriptlist = data['descriptionlist'];
                 quantilist = data['quantitylist'];
@@ -152,7 +155,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       border: Border.all(
-                          color: Theme.of(context).primaryColor, width: 1.5)),
+                          color: Theme.of(context).primaryColor, width: 2)),
                   child: ListTile(
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,30 +164,31 @@ class _PickupsDonorState extends State<PickupsDonor> {
                           data['startdate'] +
                               " " +
                               data['starttime'] +
-                              "-" +
+                              " - " +
                               data['enddate'] +
                               " " +
                               data['endtime'],
                           style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
                               decoration: TextDecoration.underline,
                               decorationThickness: 2),
                         ),
                         SizedBox(
                           height: 16,
                         ),
-                        Text(
-                          quantilist[0] +
-                              " " +
-                              unitslist[0] +
-                              " " +
-                              discriptlist[0],
-                          style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor),
-                        ),
+                        for (int i = 0; i < unitslist.length; i++)
+                          Text(
+                            quantilist[i] +
+                                " " +
+                                unitslist[i] +
+                                " " +
+                                discriptlist[i],
+                            style: GoogleFonts.roboto(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context).primaryColor),
+                          ),
                         SizedBox(height: 16),
                         Text(
                           "Our pick-up details for the volunteer",
@@ -260,7 +264,10 @@ class _PickupsDonorState extends State<PickupsDonor> {
             return Center(child: Text('Something went wrong'));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ));
           }
           return ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -274,7 +281,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       border: Border.all(
-                          color: Theme.of(context).primaryColor, width: 1.5)),
+                          color: Theme.of(context).primaryColor, width: 2)),
                   child: ListTile(
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,30 +290,31 @@ class _PickupsDonorState extends State<PickupsDonor> {
                           data['startdate'] +
                               " " +
                               data['starttime'] +
-                              "-" +
+                              " - " +
                               data['enddate'] +
                               " " +
                               data['endtime'],
                           style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
                               decoration: TextDecoration.underline,
                               decorationThickness: 2),
                         ),
                         SizedBox(
                           height: 16,
                         ),
-                         Text(
-                          quantilist[0] +
-                              " " +
-                              unitslist[0] +
-                              " " +
-                              discriptlist[0],
-                          style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColor),
-                        ),
+                        for (int i = 0; i < unitslist.length; i++)
+                          Text(
+                            quantilist[i] +
+                                " " +
+                                unitslist[i] +
+                                " " +
+                                discriptlist[i],
+                            style: GoogleFonts.roboto(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context).primaryColor),
+                          ),
                         SizedBox(height: 16),
                         Text(
                           "Our pick-up details for the volunteer",

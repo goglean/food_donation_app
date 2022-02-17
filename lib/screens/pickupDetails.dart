@@ -17,8 +17,12 @@ class PickupDetails extends StatefulWidget {
   List quanlist;
   List desclist;
   List Unilist;
+  String food;
   PickupDetails(
-      {required this.Unilist, required this.desclist, required this.quanlist});
+      {required this.Unilist,
+      required this.desclist,
+      required this.quanlist,
+      required this.food});
   @override
   _PickupDetailsState createState() => _PickupDetailsState();
 }
@@ -446,6 +450,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                   "email": FirebaseAuth.instance.currentUser?.email,
                   "Lat": lati.toString(),
                   "Lng": longi.toString(),
+                  "donationType": widget.food,
                 });
                 for (var i = 0; i < widget.quanlist.length; i++) {
                   if (widget.Unilist[i] == "Crate") {
