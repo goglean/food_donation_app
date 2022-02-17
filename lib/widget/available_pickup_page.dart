@@ -9,6 +9,7 @@ import 'package:food_donating_app/widget/charity.dart';
 import 'package:food_donating_app/widget/location_service.dart';
 import 'package:food_donating_app/widget/map_service.dart';
 import 'package:food_donating_app/widget/restaurents.dart';
+import 'package:food_donating_app/widget/timecheck.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -85,6 +86,19 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
     );
 
     for (int i = 0; i < charity!.length; i++) {
+      if (LocationService().calculateDistanceBetweenTwoLatLongsInKm(
+                  double.parse(curRes.lat),
+                  double.parse(curRes.lng),
+                  double.parse(charity[i].posLat),
+                  double.parse(charity[i].posLng)) >
+              20 &&
+          !TimeCheck()
+              .getOpenStatus(charity[i].openTime, charity[i].closeTime) &&
+          charity[i].donationType != curRes.donationType) {
+        continue;
+      }
+      print(curRes.donationType);
+
       pickupMarkers.add(Marker(
         markerId: MarkerId(charity[i].uniId),
         infoWindow: InfoWindow(title: charity[i].name),

@@ -73,12 +73,13 @@ class MapService {
     DocumentSnapshot snapshot = await charityCollection.doc(uniqueId).get();
     var data = snapshot.data() as Map;
     return Charity(
-      name: data['name'],
-      posLat: data['posLat'],
-      posLng: data['posLng'],
-      uniId: data['uniId'],
-      openTime: data['openTime'],
-      closeTime: data['closeTime'],
+      name: data['name'] ?? '',
+      posLat: data['posLat'] ?? '',
+      posLng: data['posLng'] ?? '',
+      uniId: data['uniId'] ?? '',
+      openTime: data['openTime'] ?? '',
+      closeTime: data['closeTime'] ?? '',
+      donationType: data['donationType'] ?? '',
     );
   }
 
@@ -109,6 +110,7 @@ class MapService {
           desList: data[i]['descriptionlist'] ?? [],
           quantityList: data[i]['quantitylist'] ?? [],
           unitList: data[i]['unitlist'] ?? [],
+          donationType: data[i]['donationType'] ?? '',
         );
       }
     }
@@ -149,6 +151,7 @@ class MapService {
         uniId: doc['uniId'] ?? '',
         openTime: doc['openTime'] ?? '',
         closeTime: doc['closeTime'] ?? '',
+        donationType: doc['donationType'] ?? '',
       );
     }).toList();
   }
@@ -197,6 +200,7 @@ class MapService {
         desList: doc['descriptionlist'] ?? [],
         quantityList: doc['quantitylist'] ?? [],
         unitList: doc['unitlist'] ?? [],
+        donationType: doc['donationType'] ?? '',
       );
     }).toList();
   }
