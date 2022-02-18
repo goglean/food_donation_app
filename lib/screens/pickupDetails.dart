@@ -32,11 +32,11 @@ class _PickupDetailsState extends State<PickupDetails> {
   String location = "";
   String startdate = DateTime.now().year.toString() +
       "/" +
-      DateTime.now().month.toString() +
+      DateTime.now().month.toString() +"/"+
       DateTime.now().day.toString();
   String enddate = DateTime.now().year.toString() +
       "/" +
-      DateTime.now().month.toString() +
+      DateTime.now().month.toString() + "/"+
       DateTime.now().day.toString();
   String starttime =
       DateTime.now().hour.toString() + ":" + DateTime.now().minute.toString();
