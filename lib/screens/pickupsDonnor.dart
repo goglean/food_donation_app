@@ -160,19 +160,22 @@ class _PickupsDonorState extends State<PickupsDonor> {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          data['startdate'] +
-                              " " +
-                              data['starttime'] +
-                              " - " +
-                              data['enddate'] +
-                              " " +
-                              data['endtime'],
-                          style: GoogleFonts.roboto(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 2),
+                        FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            data['startdate'] +
+                                " " +
+                                data['starttime'] +
+                                " - " +
+                                data['enddate'] +
+                                " " +
+                                data['endtime'],
+                            style: GoogleFonts.roboto(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                decoration: TextDecoration.underline,
+                                decorationThickness: 2),
+                          ),
                         ),
                         SizedBox(
                           height: 16,
@@ -274,6 +277,9 @@ class _PickupsDonorState extends State<PickupsDonor> {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
               if (data['email'] == curemail) {
+                discriptlist = data['descriptionlist'];
+                quantilist = data['quantitylist'];
+                unitslist = data['unitlist'];
                 return Container(
                   margin: const EdgeInsets.all(15.0),
                   padding: const EdgeInsets.fromLTRB(3, 3, 1, 1),
@@ -286,19 +292,22 @@ class _PickupsDonorState extends State<PickupsDonor> {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          data['startdate'] +
-                              " " +
-                              data['starttime'] +
-                              " - " +
-                              data['enddate'] +
-                              " " +
-                              data['endtime'],
-                          style: GoogleFonts.roboto(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 2),
+                        FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            data['startdate'] +
+                                " " +
+                                data['starttime'] +
+                                " - " +
+                                data['enddate'] +
+                                " " +
+                                data['endtime'],
+                            style: GoogleFonts.roboto(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                decoration: TextDecoration.underline,
+                                decorationThickness: 2),
+                          ),
                         ),
                         SizedBox(
                           height: 16,
