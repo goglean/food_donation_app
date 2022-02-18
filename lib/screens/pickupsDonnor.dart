@@ -143,7 +143,33 @@ class _PickupsDonorState extends State<PickupsDonor> {
                 } else
                   return data['Status'];
               }
-
+              if (DateTime.parse(data['enddate']).isBefore(DateTime.now()) == true) {
+                FirebaseFirestore.instance
+                    .collection("old_pickups")
+                    .doc(document.id)
+                    .set({
+                  "Address" : data['Address'],
+                  "City" : data['City'],
+                  "Contact Person" : data['Contact Person'],
+                  "Lat" : data['Lat'],
+                  "Lng" : data['Lng'],
+                  "Phone Number" : data['Phone Number'],
+                  "Restaurant Name" : data['Restaurant Name'],
+                  "Status" : data["Status"],
+                  "days" : data['days'],
+                  "descriptionlist" : data['descriptionlist'],
+                  "details" : data['details'],
+                  "dontaionType" : data['donationType'],
+                  "email" : data['email'],
+                  "enddate" : data['enddate'],
+                  "endtime" : data['endtime'],
+                  "quantitylist" : data['quantitylist'],
+                  "startdate" : data['startdate'],
+                  "starttime" : data['starttime'],
+                  "unitlist" : data['unitlist']
+                });
+                FirebaseFirestore.instance.collection('pickup_details').doc(document.id).delete();
+              }
               if (data['email'] == curemail) {
                 discriptlist = data['descriptionlist'];
                 quantilist = data['quantitylist'];
@@ -276,6 +302,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
+              
               if (data['email'] == curemail) {
                 discriptlist = data['descriptionlist'];
                 quantilist = data['quantitylist'];
