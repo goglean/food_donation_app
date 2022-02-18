@@ -256,7 +256,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
                   double.parse(restaurent[i].lng),
                 ) >
                 20 &&
-            !TimeCheck().getRestaurantOpenStatus(
+            !TimeCheck().getOpenStatus(
                 restaurent[i].startTime, restaurent[i].startTime)) {
           continue;
         }

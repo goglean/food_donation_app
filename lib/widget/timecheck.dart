@@ -1,5 +1,5 @@
 class TimeCheck {
-  bool getRestaurantOpenStatus(String openTime, String closeTime) {
+  bool getOpenStatus(String openTime, String closeTime) {
     DateTime now = DateTime.now();
     int nowHour = now.hour;
     int nowMin = now.minute;
