@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,14 +30,8 @@ class PickupDetails extends StatefulWidget {
 class _PickupDetailsState extends State<PickupDetails> {
   String _selecteddetails = "";
   String location = "";
-  String startdate = DateTime.now().year.toString() +
-      "/" +
-      DateTime.now().month.toString() +
-      DateTime.now().day.toString();
-  String enddate = DateTime.now().year.toString() +
-      "/" +
-      DateTime.now().month.toString() +
-      DateTime.now().day.toString();
+  String startdate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  String enddate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   String starttime =
       DateTime.now().hour.toString() + ":" + DateTime.now().minute.toString();
   String endtime =
@@ -225,7 +219,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                         child: DateTimePicker(
                           type: DateTimePickerType.date,
                           dateMask: 'd MMM, yyyy',
-                          initialValue: DateTime.now().toString(),
+                          initialValue: DateFormat('yyyy-MM-dd').format(DateTime.now()),
                           firstDate: startiniti,
                           lastDate: DateTime(2100),
                           icon: Icon(Icons.event),
