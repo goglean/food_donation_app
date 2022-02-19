@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_donating_app/screens/journeyfinished.dart';
+import 'package:food_donating_app/widget/internet_service.dart';
+import 'package:food_donating_app/widget/noInternetScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 
@@ -276,7 +278,19 @@ class _CharitySignatureState extends State<CharitySignature> {
             width: double.infinity,
             color: Theme.of(context).primaryColor,
             child: FlatButton(
-              onPressed: () {
+              onPressed: () async {
+                bool connected =
+                    await InternetService().checkInternetConnection();
+                if (!connected) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NoInternetScreen(),
+                    ),
+                  );
+                  return;
+                }
+
                 if (!checked!) {
                   if (fullName == null || !imagePicked) {
                     Fluttertoast.showToast(

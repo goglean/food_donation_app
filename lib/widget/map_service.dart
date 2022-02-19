@@ -79,7 +79,7 @@ class MapService {
       uniId: data['uniId'] ?? '',
       openTime: data['openTime'] ?? '',
       closeTime: data['closeTime'] ?? '',
-      donationType: data['donationType'] ?? '',
+      donationType: data['donationType'] ?? [],
     );
   }
 
@@ -151,7 +151,7 @@ class MapService {
         uniId: doc['uniId'] ?? '',
         openTime: doc['openTime'] ?? '',
         closeTime: doc['closeTime'] ?? '',
-        donationType: doc['donationType'] ?? '',
+        donationType: doc['donationType'] ?? [],
       );
     }).toList();
   }

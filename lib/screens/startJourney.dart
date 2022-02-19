@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/donor_confirmation.dart';
 import 'package:food_donating_app/screens/journeyfinished.dart';
 import 'package:food_donating_app/screens/writereview.dart';
+import 'package:food_donating_app/widget/internet_service.dart';
 import 'package:food_donating_app/widget/location_service.dart';
+import 'package:food_donating_app/widget/noInternetScreen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -77,17 +79,6 @@ class _StartJourneyState extends State<StartJourney> {
       ),
       // onTap: () => _showRestaurentPanel,
     ));
-
-    // Marker resMarker = Marker(
-    //   markerId: MarkerId('Res'),
-    //   infoWindow: InfoWindow(title: widget.curRes['Restaurant Name']),
-    //   icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-    //   position: LatLng(
-    //     double.parse(widget.curRes['Lat']),
-    //     double.parse(widget.curRes['Lng']),
-    //   ),
-    //   // onTap: () => _showRestaurentPanel,
-    // );
 
     if (directionLineMarker[1] == null) {
       directionLineMarker[1] = LatLng(double.parse(widget.curRes['Lat']),
@@ -191,7 +182,19 @@ class _StartJourneyState extends State<StartJourney> {
                 width: double.infinity,
                 color: Theme.of(context).primaryColor,
                 child: FlatButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    bool connected =
+                        await InternetService().checkInternetConnection();
+                    if (!connected) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NoInternetScreen(),
+                        ),
+                      );
+                      return;
+                    }
+
                     Navigator.pop(context);
                     Navigator.push(
                       context,
@@ -202,22 +205,6 @@ class _StartJourneyState extends State<StartJourney> {
                         ),
                       ),
                     );
-
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => WriteReview(),
-                    //   ),
-                    // );
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => JourneyFinished(
-                    //       curChar: widget.curChar,
-                    //       curRes: widget.curRes,
-                    //     ),
-                    //   ),
-                    // );
                   },
                   textColor: Colors.white,
                   child: Text('ARRIVED AT PICKUP'),

@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/myPickups.dart';
 import 'package:food_donating_app/shared/loading.dart';
 import 'package:food_donating_app/widget/charity.dart';
+import 'package:food_donating_app/widget/internet_service.dart';
 import 'package:food_donating_app/widget/location_service.dart';
 import 'package:food_donating_app/widget/map_service.dart';
+import 'package:food_donating_app/widget/noInternetScreen.dart';
 import 'package:food_donating_app/widget/restaurents.dart';
 import 'package:food_donating_app/widget/timecheck.dart';
 import 'package:geolocator/geolocator.dart';
@@ -86,6 +88,11 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
     );
 
     for (int i = 0; i < charity!.length; i++) {
+      // making all the values of donationType list to lowercase
+      for (var j = 0; j < charity[i].donationType.length; j++) {
+        charity[i].donationType[j] =
+            charity[i].donationType[j].toString().toLowerCase();
+      }
       if (LocationService().calculateDistanceBetweenTwoLatLongsInKm(
                   double.parse(curRes.lat),
                   double.parse(curRes.lng),
@@ -94,10 +101,10 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
               20 &&
           !TimeCheck()
               .getOpenStatus(charity[i].openTime, charity[i].closeTime) &&
-          charity[i].donationType != curRes.donationType) {
+          charity[i].donationType.contains(curRes.donationType.toLowerCase())) {
         continue;
       }
-      print(curRes.donationType);
+      // print(curRes.donationType);
 
       pickupMarkers.add(Marker(
         markerId: MarkerId(charity[i].uniId),
@@ -110,6 +117,17 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
           double.parse(charity[i].posLng),
         ),
         onTap: () async {
+          bool connected = await InternetService().checkInternetConnection();
+          if (!connected) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NoInternetScreen(),
+              ),
+            );
+            return;
+          }
+
           directionLineMarker[1] = LatLng(
               double.parse(charity[i].posLat), double.parse(charity[i].posLng));
 
@@ -192,7 +210,19 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                 shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(30.0),
                 ),
-                onPressed: () {
+                onPressed: () async {
+                  bool connected =
+                      await InternetService().checkInternetConnection();
+                  if (!connected) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NoInternetScreen(),
+                      ),
+                    );
+                    return;
+                  }
+
                   // print('object');
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
@@ -445,6 +475,18 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                                 borderRadius: new BorderRadius.circular(30.0),
                               ),
                               onPressed: () async {
+                                bool connected = await InternetService()
+                                    .checkInternetConnection();
+                                if (!connected) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => NoInternetScreen(),
+                                    ),
+                                  );
+                                  return;
+                                }
+
                                 final userRef = FirebaseFirestore.instance
                                     .collection('pickup_details');
 
@@ -452,7 +494,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                                   snapshot.docs.forEach((element) async {
                                     if (element.data()['email'] ==
                                         curRes.email) {
-                                      print(curCharity!.uniId);
+                                      // print(curCharity!.uniId);
                                       await userRef.doc(element.id).update({
                                         'Status': 'picked',
                                         'Pickedby': FirebaseAuth
@@ -461,8 +503,8 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                                       });
                                       return;
                                     }
-                                    print(element.id);
-                                    print(element.data()['email']);
+                                    // print(element.id);
+                                    // print(element.data()['email']);
                                   });
                                 });
 

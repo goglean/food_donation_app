@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:food_donating_app/widget/available_pickup_page.dart';
-import 'package:food_donating_app/widget/charity.dart';
-import 'package:food_donating_app/widget/map_service.dart';
+import 'package:food_donating_app/widget/internet_service.dart';
+import 'package:food_donating_app/widget/noInternetScreen.dart';
 import 'package:food_donating_app/widget/restaurents.dart';
 import 'package:food_donating_app/widget/transition_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 
 class RestaurentInfo extends StatefulWidget {
   final Restaurent2? curRestaurent;
@@ -45,20 +43,32 @@ class _RestaurentInfoState extends State<RestaurentInfo> {
         maxChildSize: 1,
         minChildSize: 0.1,
         builder: (_, controller) => InkWell(
-          onTap: () {
+          onTap: () async {
+            bool connected = await InternetService().checkInternetConnection();
+            if (!connected) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NoInternetScreen(),
+                ),
+              );
+              return;
+            }
+
             if (widget.curRestaurent!.status != 'upcoming') return;
             Navigator.of(context).pop();
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TransitionScreen(),
-                  settings: RouteSettings(
-                    arguments: {
-                      'res': widget.curRestaurent,
-                      'location': widget.location
-                    },
-                  ),
-                ));
+              context,
+              MaterialPageRoute(
+                builder: (context) => TransitionScreen(),
+                settings: RouteSettings(
+                  arguments: {
+                    'res': widget.curRestaurent,
+                    'location': widget.location
+                  },
+                ),
+              ),
+            );
           },
           child: Container(
             decoration: BoxDecoration(
