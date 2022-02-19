@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:food_donating_app/screens/home.dart';
+import 'package:food_donating_app/widget/internet_service.dart';
+import 'package:food_donating_app/widget/noInternetScreen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WriteReview extends StatefulWidget {
@@ -21,6 +23,7 @@ class WriteReview extends StatefulWidget {
 class _WriteReviewState extends State<WriteReview> {
   final _nameController = TextEditingController();
   final _reviewController = TextEditingController();
+  String ratingStar = '3';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,6 +93,7 @@ class _WriteReviewState extends State<WriteReview> {
                   ),
                   onRatingUpdate: (rating) {
                     print(rating);
+                    ratingStar = rating.toString();
                   },
                 ),
               ),
@@ -150,7 +154,19 @@ class _WriteReviewState extends State<WriteReview> {
                   color: Theme.of(context).primaryColor,
                 ),
                 child: FlatButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    bool connected =
+                        await InternetService().checkInternetConnection();
+                    if (!connected) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NoInternetScreen(),
+                        ),
+                      );
+                      return;
+                    }
+
                     final CollectionReference oldPickups =
                         FirebaseFirestore.instance.collection('old_pickups');
                     // oldPickups.doc(widget.curPickupDocId).update({
@@ -158,6 +174,7 @@ class _WriteReviewState extends State<WriteReview> {
                       oldPickups.doc(widget.curPickupDocId[i]).update({
                         "Reviewer Name": _nameController.text.toString(),
                         "Review": _reviewController.text.toString(),
+                        "Rating": ratingStar,
                       });
                     }
 

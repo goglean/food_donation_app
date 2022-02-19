@@ -5,7 +5,7 @@ class Restaurent2 {
   String name, status, days, details, email, endDate, endTime;
   String startDate, startTime;
   List desList, quantityList, unitList;
-  final String donationType;
+  String donationType;
 
   Restaurent2({
     required this.address,

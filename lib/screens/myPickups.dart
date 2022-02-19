@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/startJourney.dart';
 import 'package:food_donating_app/shared/loading.dart';
 import 'package:food_donating_app/shared/no_pickups.dart';
+import 'package:food_donating_app/widget/internet_service.dart';
+import 'package:food_donating_app/widget/noInternetScreen.dart';
 
 class MyPickups extends StatefulWidget {
   const MyPickups({Key? key}) : super(key: key);
@@ -17,6 +19,17 @@ class _MyPickupsState extends State<MyPickups> {
   List pickUpList = [];
   List pickUpCharityList = [];
   void getPickUps(bool _pressAttention) async {
+    bool connected = await InternetService().checkInternetConnection();
+    if (!connected) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NoInternetScreen(),
+        ),
+      );
+      return;
+    }
+
     pickUpList = [];
     CollectionReference pickupCollection =
         FirebaseFirestore.instance.collection('pickup_details');
@@ -361,7 +374,21 @@ class _MyPickupsState extends State<MyPickups> {
                                                             new BorderRadius
                                                                 .circular(10.0),
                                                       ),
-                                                      onPressed: () {
+                                                      onPressed: () async {
+                                                        bool connected =
+                                                            await InternetService()
+                                                                .checkInternetConnection();
+                                                        if (!connected) {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  NoInternetScreen(),
+                                                            ),
+                                                          );
+                                                          return;
+                                                        }
+
                                                         // print(FirebaseAuth.instance.currentUser!.uid);
                                                         Navigator.pop(context);
                                                         Navigator.push(

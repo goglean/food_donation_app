@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/charitysignature.dart';
+import 'package:food_donating_app/widget/internet_service.dart';
+import 'package:food_donating_app/widget/noInternetScreen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class TravelToCharity extends StatefulWidget {
@@ -151,7 +153,19 @@ class _TravelToCharityState extends State<TravelToCharity> {
             width: double.infinity,
             color: Theme.of(context).primaryColor,
             child: FlatButton(
-              onPressed: () {
+              onPressed: () async {
+                bool connected =
+                    await InternetService().checkInternetConnection();
+                if (!connected) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NoInternetScreen(),
+                    ),
+                  );
+                  return;
+                }
+
                 Navigator.pop(context);
                 Navigator.push(
                   context,

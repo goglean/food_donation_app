@@ -2,7 +2,7 @@ class Charity {
   final String name, uniId;
   final String posLat, posLng;
   final String openTime, closeTime;
-  final String donationType;
+  List donationType;
 
   Charity({
     required this.name,
