@@ -143,7 +143,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
                   locationMarker!.position.longitude,
                   double.parse(restaurent[i].lat),
                   double.parse(restaurent[i].lng),
-                ) <
+                ) >
                 20 &&
             !TimeCheck().getOpenStatus(
                 restaurent[i].startTime, restaurent[i].startTime)) {
