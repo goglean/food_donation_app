@@ -385,16 +385,49 @@ class _donateitemsState extends State<donateitems> {
                   ),
                   TextButton(
                     onPressed: () {
-                      qtylist.add(qtycontroller.text);
-                      disclist.add(disccontroller.text);
-                      unitslist.add(dropdownValue.toString());
-                      qtycontroller.clear();
-                      disccontroller.clear();
-                      dropdownValue = 'Small Bag';
-                      Navigator.pop(context, 'Add Item');
-                      print(disclist.toString() +
-                          qtylist.toString() +
-                          unitslist.toString());
+                      print("hi" + qtycontroller.text);
+                      if (qtycontroller.text.trim().isEmpty ||
+                          disccontroller.text.trim().isEmpty) {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  content: Text(
+                                      "Please enter quantity and description."),
+                                  actions: [
+                                    Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "OK",
+                                                  style: GoogleFonts.roboto(
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                )),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ));
+                      } else {
+                        qtylist.add(qtycontroller.text);
+                        disclist.add(disccontroller.text);
+                        unitslist.add(dropdownValue.toString());
+                        qtycontroller.clear();
+                        disccontroller.clear();
+                        dropdownValue = 'Small Bag';
+                        Navigator.pop(context, 'Add Item');
+                        print(disclist.toString() +
+                            qtylist.toString() +
+                            unitslist.toString());
+                      }
                     },
                     child: const Text('Add Item'),
                   ),
@@ -410,15 +443,43 @@ class _donateitemsState extends State<donateitems> {
             height: 40.0,
             minWidth: double.infinity,
             onPressed: () {
-              print(unitslist);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => PickupDetails(
-                          Unilist: unitslist,
-                          quanlist: qtylist,
-                          desclist: disclist,
-                          food: food)));
+              if (unitslist.isEmpty || disclist.isEmpty || qtylist.isEmpty) {
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          content: Text("Some of the items are expty."),
+                          actions: [
+                            Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          "OK",
+                                          style: GoogleFonts.roboto(
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                        )),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ],
+                        ));
+              } else
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PickupDetails(
+                            Unilist: unitslist,
+                            quanlist: qtylist,
+                            desclist: disclist,
+                            food: food)));
             },
             child: Container(
               child: Text("Next",
