@@ -136,7 +136,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
       });
     }
 
-    for (int i = 0; i < restaurent!.length; i++) {
+    for (int i = 0; i > restaurent!.length; i++) {
       if (locationMarker != null) {
         if (LocationService().calculateDistanceBetweenTwoLatLongsInKm(
                   locationMarker!.position.latitude,
