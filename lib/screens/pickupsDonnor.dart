@@ -144,7 +144,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
                 } else
                   return data['Status'];
               }
-              if (DateTime.parse(data['enddate']).isAfter(DateTime.now()) == true) {
+              if (DateTime.parse(data['enddate']).isBefore(DateTime.now()) == false) {
                 FirebaseFirestore.instance
                     .collection("old_pickups")
                     .doc(document.id)

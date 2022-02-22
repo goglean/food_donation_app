@@ -177,32 +177,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                     color: Theme.of(context).primaryColor),
               ),
             ),
-            ListTile(
-              leading: Radio<String>(
-                activeColor: Theme.of(context).primaryColor,
-                value: 'Single Date',
-                groupValue: _selecteddetails,
-                onChanged: (value) {
-                  setState(() {
-                    _selecteddetails = value!;
-                  });
-                },
-              ),
-              title: const Text('Single Date'),
-            ),
-            ListTile(
-              leading: Radio<String>(
-                activeColor: Theme.of(context).primaryColor,
-                value: 'Date Range',
-                groupValue: _selecteddetails,
-                onChanged: (value) {
-                  setState(() {
-                    _selecteddetails = value!;
-                  });
-                },
-              ),
-              title: const Text('Date Range'),
-            ),
+
             Row(
               children: [
                 Column(
@@ -259,9 +234,6 @@ class _PickupDetailsState extends State<PickupDetails> {
                           dateLabelText: 'Date',
                           timeLabelText: "Time",
                           selectableDayPredicate: (date) {
-                            if (_selecteddetails == "Single Date") {
-                              return false;
-                            }
                             return true;
                           },
                           onChanged: (val) {

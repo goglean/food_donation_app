@@ -672,6 +672,175 @@ class _SignupDonorState extends State<SignupDonor> {
                         ),
                         child: TextButton(
                           onPressed: () {
+                            if (_nameController.text == null) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid name'),
+                                            content: const Text(
+                                                'name empty'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if (_emailController.text == null || !_emailController.text.contains('@')) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid email'),
+                                            content: const Text(
+                                                'Email entered is invalid or empty'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if (_passwordController.text.length <8) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Password too short'),
+                                            content: const Text(
+                                                'Password should have 8 or more characters'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if (_contactPersonController.text == null) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid name'),
+                                            content: const Text(
+                                                'Contact person details empty'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if (_phoneNoController == null) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid Phone number'),
+                                            content: const Text(
+                                                'Phone number empty'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if (_addressController.text == null) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid address'),
+                                            content: const Text(
+                                                'Address empty'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if (_zipcodeController.text.length != 5) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid zipcode'),
+                                            content: const Text(
+                                                'Zipcode should be 5 digits'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if (_cityController.text == null) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid City name'),
+                                            content: const Text(
+                                                'City name empty'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else{
                             setState(() {
                               FirebaseAuth.instance
                                   .createUserWithEmailAndPassword(
@@ -750,6 +919,7 @@ class _SignupDonorState extends State<SignupDonor> {
                                         );
                                       }));
                             });
+                          }
                           },
                           child: Text(
                             "Submit",
