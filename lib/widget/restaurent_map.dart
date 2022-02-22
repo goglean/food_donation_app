@@ -144,7 +144,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
                   double.parse(restaurent[i].lat),
                   double.parse(restaurent[i].lng),
                 ) >
-                20 &&
+                20 ||
             !TimeCheck().getOpenStatus(
                 restaurent[i].startTime, restaurent[i].startTime)) {
           continue;
