@@ -656,7 +656,6 @@ class _ProfileDonorState extends State<ProfileDonor> {
                                                   onPressed: () {
                                                     Navigator.pop(context);
                                                     _addressController.clear();
-                                                    //Navigator.pop(context);
                                                   },
                                                   child: Text(
                                                     "Cancel",
