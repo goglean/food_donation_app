@@ -98,12 +98,17 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                   double.parse(curRes.lng),
                   double.parse(charity[i].posLat),
                   double.parse(charity[i].posLng)) >
-              20 &&
+              20 ||
           !TimeCheck()
-              .getOpenStatus(charity[i].openTime, charity[i].closeTime) &&
-          charity[i].donationType.contains(curRes.donationType.toLowerCase())) {
+              .getOpenStatus(charity[i].openTime, charity[i].closeTime) ||
+          !charity[i]
+              .donationType
+              .contains(curRes.donationType.toLowerCase())) {
         continue;
       }
+      // if (charity[i].name == 'charity 2') {
+      //   print('\n\n\n\n\n');
+      // }
       // print(curRes.donationType);
 
       pickupMarkers.add(Marker(
