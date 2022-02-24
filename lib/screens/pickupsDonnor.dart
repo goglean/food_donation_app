@@ -103,7 +103,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
                 borderRadius: BorderRadius.circular(15.0),
                 side: BorderSide(color: Theme.of(context).primaryColor)),
             color: Theme.of(context).primaryColor,
-            onPressed: () {
+            onPressed: () {              
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => donateitems()));
             },
