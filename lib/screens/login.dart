@@ -150,7 +150,7 @@ class _loginpageState extends State<signinpage> {
                         color: Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.circular(20)),
                     child: TextButton(
-                        onPressed: () {
+                        onPressed: () async{
                           print(usernamecontroller.text.runtimeType);
                           print(usernamecontroller.text.toString().runtimeType);
                           FirebaseAuth.instance
@@ -202,6 +202,36 @@ class _loginpageState extends State<signinpage> {
                                       Theme.of(context).primaryColor,
                                   textColor: Colors.white);
                             }
+                          }).catchError((error) {
+                            var errormsg = error.message;
+                            showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  content: Text(
+                                      errormsg.toString()),
+                                  actions: [
+                                    Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "OK",
+                                                  style: GoogleFonts.roboto(
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                )),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ));
                           });
                         },
                         child: Text(

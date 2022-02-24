@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,12 +23,16 @@ class _ProfileDonorState extends State<ProfileDonor> {
   String _email = "";
   String _address = "";
   String _restaurant = "";
+  String _latitude = "";
+  String _longitude = "";
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneNoController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
   TextEditingController _restaurantController = TextEditingController();
-
+  List<Location> locations = [];
+  var lati = 0.0;
+  var longi = 0.0;
   void _updateDetails() async {
     FirebaseFirestore.instance
         .collection("donors")
@@ -66,6 +71,8 @@ class _ProfileDonorState extends State<ProfileDonor> {
         _PhoneNo = value.data()!['Phone Number'];
         _email = value.data()!['email'];
         _address = value.data()!['Address'];
+        _latitude = value.data()!['Latitude'];
+        _longitude = value.data()!['Longitude'];
         _restaurant = value.data()!['Name'];
         print('${_name[0]}');
       });
@@ -664,13 +671,38 @@ class _ProfileDonorState extends State<ProfileDonor> {
                                                             .primaryColor),
                                                   )),
                                               TextButton(
-                                                  onPressed: () {
+                                                  onPressed: () async{
+                                                    locations = await locationFromAddress(_addressController.text).catchError((error) {
+                                                        showDialog<String>(
+                                                        barrierDismissible: false,
+                                                        context: context,
+                                                        builder: (BuildContext context) =>
+                                                            AlertDialog(
+                                                          title: const Text(
+                                                              'Invalid location'),
+                                                          content: const Text(
+                                                              'Cannot fetch location with given address'),
+                                                          actions: <Widget>[
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(context, 'OK');
+                                                              },
+                                                              child: const Text('OK'),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    });
+                                                    lati = locations[0].latitude;
+                                                    longi = locations[0].longitude;
                                                     if (_addressController
-                                                        .text.isNotEmpty) {
+                                                        .text.isNotEmpty && locations.isNotEmpty) {
                                                       setState(() {
                                                         _address =
                                                             _addressController
                                                                 .text;
+                                                        _latitude = lati.toString();
+                                                        _longitude = longi.toString();
                                                         print(_addressController
                                                             .toString());
                                                       });

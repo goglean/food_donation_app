@@ -416,6 +416,36 @@ class _donateitemsState extends State<donateitems> {
                                     )
                                   ],
                                 ));
+                      }
+                      else if (int.tryParse(qtycontroller.text.trim()) == null) {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  content: Text(
+                                      "Quantity should be integer"),
+                                  actions: [
+                                    Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "OK",
+                                                  style: GoogleFonts.roboto(
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                )),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ));
                       } else {
                         qtylist.add(qtycontroller.text);
                         disclist.add(disccontroller.text);
