@@ -129,17 +129,6 @@ class _PickupDetailsState extends State<PickupDetails> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Pick-Up Details",
-                style: GoogleFonts.roboto(
-                    fontWeight: FontWeight.w500,
-                    fontSize: MediaQuery.of(context).size.width * 0.05,
-                    color: Theme.of(context).primaryColor),
-              ),
-            ),
-
             Row(
               children: [
                 Column(
@@ -169,7 +158,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                             start = DateTime.parse(val);
                             startdate = val;
                             endiniti =
-                                DateTime.parse(val).add(Duration(days: 1));
+                                DateTime.parse(val);
                           },
                         )),
                   ],
@@ -189,8 +178,8 @@ class _PickupDetailsState extends State<PickupDetails> {
                         child: DateTimePicker(
                           type: DateTimePickerType.date,
                           dateMask: 'd MMM, yyyy',
-                          initialValue: start.add(Duration(days: 1)).toString(),
-                          firstDate: start.add(Duration(days: 1)),
+                          initialValue: start.toString(),
+                          firstDate: start,
                           lastDate: DateTime(2100),
                           icon: Icon(Icons.event),
                           dateLabelText: 'Date',
@@ -227,9 +216,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                     SizedBox(
                         width: 130,
                         child: DateTimePicker(
-                          initialValue: DateTime.now().hour.toString() +
-                              ":" +
-                              DateTime.now().minute.toString(),
+                          initialValue: "06:00",
                           type: DateTimePickerType.time,
                           icon: Icon(Icons.timer),
                           onChanged: (val) {
@@ -257,18 +244,11 @@ class _PickupDetailsState extends State<PickupDetails> {
                     SizedBox(
                         width: 130,
                         child: DateTimePicker(
-                          initialValue: DateTime.now().hour.toString() +
-                              ":" +
-                              DateTime.now().minute.toString(),
+                          initialValue: "18:00",
                           type: DateTimePickerType.time,
                           icon: Icon(Icons.timer),
                           onChanged: (val) {
-                            print(val);
                             endtime = val;
-                          },
-                          validator: (val) {
-                            print(val);
-                            return null;
                           },
                           onSaved: (val) => print(val),
                         )),

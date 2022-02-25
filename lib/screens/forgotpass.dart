@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/login.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class forgotpassword extends StatefulWidget {
   @override
@@ -63,8 +64,38 @@ class _loginpageState extends State<forgotpassword> {
                       onPressed: () {
                         FirebaseAuth.instance
                             .sendPasswordResetEmail(
-                                email: usernamecontroller.text)
-                            .then((value) => Navigator.pop(context));
+                                email: usernamecontroller.text.trim())
+                            .then((value)  {
+                              showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  content: Text(
+                                      "please check your email for the link for changing password"),
+                                  actions: [
+                                    Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "OK",
+                                                  style: GoogleFonts.roboto(
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                )),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ));
+                              });
                       },
                       child: Text(
                         'Reset Password',
