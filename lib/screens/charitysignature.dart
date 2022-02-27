@@ -65,6 +65,7 @@ class _CharitySignatureState extends State<CharitySignature> {
           print(element.id);
           pCollection.doc(element.id).update({
             "Reciever's name": fullName,
+            "Status": "received",
           });
 
           curPickupDocId!.add(element.id);
@@ -130,6 +131,7 @@ class _CharitySignatureState extends State<CharitySignature> {
         pCollection.doc(element.id).update({
           "Reciever's name": fullName,
           "Reciever's Signature": fileName,
+          "Status": "received",
         });
 
         curPickupDocId!.add(element.id);
