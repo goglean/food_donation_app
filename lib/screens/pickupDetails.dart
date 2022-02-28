@@ -82,6 +82,8 @@ class _PickupDetailsState extends State<PickupDetails> {
         phoneno = value.data()!['Phone Number'].toString();
         contactperson = value.data()!['Contact Person'].toString();
         city = value.data()!['City'].toString();
+        lati = value.data()!['Latitude'].toString();
+        longi = value.data()!['Longitude'].toString();
       }
     });
     FirebaseFirestore.instance
@@ -127,82 +129,6 @@ class _PickupDetailsState extends State<PickupDetails> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Location",
-                style: GoogleFonts.roboto(
-                    fontWeight: FontWeight.w500,
-                    fontSize: MediaQuery.of(context).size.width * 0.05,
-                    color: Theme.of(context).primaryColor),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: TextField(
-                cursorColor: Theme.of(context).primaryColor,
-                style: TextStyle(color: Colors.black),
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                      onPressed: () async {
-                        Position curPos = await _determinePosition();
-                        bool isLocationServiceEnabled =
-                            await Geolocator.isLocationServiceEnabled();
-                        if (isLocationServiceEnabled) {
-                          longi = curPos.longitude;
-                          lati = curPos.latitude;
-                          isfetched = true;
-                        }
-                      },
-                      icon: Icon(Icons.location_on)),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor, width: 1),
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  hintStyle: TextStyle(color: Colors.black),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Pick-Up Details",
-                style: GoogleFonts.roboto(
-                    fontWeight: FontWeight.w500,
-                    fontSize: MediaQuery.of(context).size.width * 0.05,
-                    color: Theme.of(context).primaryColor),
-              ),
-            ),
-            ListTile(
-              leading: Radio<String>(
-                activeColor: Theme.of(context).primaryColor,
-                value: 'Single Date',
-                groupValue: _selecteddetails,
-                onChanged: (value) {
-                  setState(() {
-                    _selecteddetails = value!;
-                  });
-                },
-              ),
-              title: const Text('Single Date'),
-            ),
-            ListTile(
-              leading: Radio<String>(
-                activeColor: Theme.of(context).primaryColor,
-                value: 'Date Range',
-                groupValue: _selecteddetails,
-                onChanged: (value) {
-                  setState(() {
-                    _selecteddetails = value!;
-                  });
-                },
-              ),
-              title: const Text('Date Range'),
-            ),
             Row(
               children: [
                 Column(
@@ -232,7 +158,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                             start = DateTime.parse(val);
                             startdate = val;
                             endiniti =
-                                DateTime.parse(val).add(Duration(days: 1));
+                                DateTime.parse(val);
                           },
                         )),
                   ],
@@ -252,16 +178,13 @@ class _PickupDetailsState extends State<PickupDetails> {
                         child: DateTimePicker(
                           type: DateTimePickerType.date,
                           dateMask: 'd MMM, yyyy',
-                          initialValue: start.add(Duration(days: 1)).toString(),
-                          firstDate: start.add(Duration(days: 1)),
+                          initialValue: start.toString(),
+                          firstDate: start,
                           lastDate: DateTime(2100),
                           icon: Icon(Icons.event),
                           dateLabelText: 'Date',
                           timeLabelText: "Time",
                           selectableDayPredicate: (date) {
-                            if (_selecteddetails == "Single Date") {
-                              return false;
-                            }
                             return true;
                           },
                           onChanged: (val) {
@@ -293,9 +216,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                     SizedBox(
                         width: 130,
                         child: DateTimePicker(
-                          initialValue: DateTime.now().hour.toString() +
-                              ":" +
-                              DateTime.now().minute.toString(),
+                          initialValue: "06:00",
                           type: DateTimePickerType.time,
                           icon: Icon(Icons.timer),
                           onChanged: (val) {
@@ -323,18 +244,11 @@ class _PickupDetailsState extends State<PickupDetails> {
                     SizedBox(
                         width: 130,
                         child: DateTimePicker(
-                          initialValue: DateTime.now().hour.toString() +
-                              ":" +
-                              DateTime.now().minute.toString(),
+                          initialValue: "18:00",
                           type: DateTimePickerType.time,
                           icon: Icon(Icons.timer),
                           onChanged: (val) {
-                            print(val);
                             endtime = val;
-                          },
-                          validator: (val) {
-                            print(val);
-                            return null;
                           },
                           onSaved: (val) => print(val),
                         )),

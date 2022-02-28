@@ -4,6 +4,7 @@ import 'package:food_donating_app/screens/loginpage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geocoding/geocoding.dart';
 
 class SignupDonor extends StatefulWidget {
   const SignupDonor({Key? key}) : super(key: key);
@@ -37,9 +38,9 @@ class _SignupDonorState extends State<SignupDonor> {
   TextEditingController _zipcodeController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
   TextEditingController _contactPersonController = TextEditingController();
-
-  //bool _loginPageState = true;
-
+  List<Location> locations = [];
+  var lati = 0.0;
+  var longi = 0.0;
   submitForm() async {
     final validity = _formKey.currentState?.validate();
     final auth = FirebaseAuth.instance;
@@ -367,9 +368,19 @@ class _SignupDonorState extends State<SignupDonor> {
                               color: Theme.of(context).primaryColor),
                         ),
                       ),
+                      RaisedButton(
+                          child: Text('Fetch location',style: TextStyle(color: Colors.white),),
+                          color: Theme.of(context).primaryColor,
+                          onPressed: ()async{
+                            locations = await locationFromAddress(_addressController.text);
+                            lati = locations[0].latitude;
+                            longi = locations[0].longitude;
+                            print(locations);
+                          }),
                       SizedBox(
                         height: 5,
                       ),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -672,6 +683,196 @@ class _SignupDonorState extends State<SignupDonor> {
                         ),
                         child: TextButton(
                           onPressed: () {
+                            if (_nameController.text == null) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid name'),
+                                            content: const Text(
+                                                'name empty'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if (_emailController.text == null || !_emailController.text.contains('@')) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid email'),
+                                            content: const Text(
+                                                'Email entered is invalid or empty'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if (_passwordController.text.length <8) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Password too short'),
+                                            content: const Text(
+                                                'Password should have 8 or more characters'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if (_contactPersonController.text == null) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid name'),
+                                            content: const Text(
+                                                'Contact person details empty'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if (_phoneNoController == null) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid Phone number'),
+                                            content: const Text(
+                                                'Phone number empty'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if (_addressController.text == null) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid address'),
+                                            content: const Text(
+                                                'Address empty'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if (_zipcodeController.text.length != 5) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid zipcode'),
+                                            content: const Text(
+                                                'Zipcode should be 5 digits'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if (_cityController.text == null) {
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid City name'),
+                                            content: const Text(
+                                                'City name empty'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if(locations.isEmpty){
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'Invalid Address'),
+                                            content: const Text(
+                                                'Unable to fetch location coordinates from the given address please reenter the precise address'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else{
                             setState(() {
                               FirebaseAuth.instance
                                   .createUserWithEmailAndPassword(
@@ -687,6 +888,8 @@ class _SignupDonorState extends State<SignupDonor> {
                                             .set({
                                           'Address': _addressController.text,
                                           'City': _cityController.text,
+                                          'Latitude' : lati,
+                                          'Longitude' : longi,
                                           'Contact Person':
                                               _contactPersonController.text,
                                           'Cuisine': _cuisine,
@@ -750,6 +953,7 @@ class _SignupDonorState extends State<SignupDonor> {
                                         );
                                       }));
                             });
+                          }
                           },
                           child: Text(
                             "Submit",

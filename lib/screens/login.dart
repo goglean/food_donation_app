@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:food_donating_app/screens/forgotpass.dart';
 import 'package:food_donating_app/screens/home.dart';
 import 'package:food_donating_app/screens/homeDonor.dart';
+import 'package:food_donating_app/shared/loading.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class signinpage extends StatefulWidget {
@@ -127,7 +130,13 @@ class _loginpageState extends State<signinpage> {
                   ),
                 ),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => forgotpassword(),
+                        ));
+                    },
                     child: Text('Forgot Password',
                         style: GoogleFonts.roboto(
                             color: Theme.of(context).primaryColor,
@@ -141,13 +150,9 @@ class _loginpageState extends State<signinpage> {
                         color: Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.circular(20)),
                     child: TextButton(
-                        onPressed: () {
+                        onPressed: () async{
                           print(usernamecontroller.text.runtimeType);
                           print(usernamecontroller.text.toString().runtimeType);
-                          // Navigator.push(
-                          //          context,
-                          //          MaterialPageRoute(
-                          //             builder: (context) => HomeDonor()));
                           FirebaseAuth.instance
                               .signInWithEmailAndPassword(
                                   email: usernamecontroller.text.trim(),
@@ -162,6 +167,10 @@ class _loginpageState extends State<signinpage> {
                                   .doc(usernamecontroller.text.trim())
                                   .get()
                                   .then((value) {
+                                    buildShowDialog(context);
+                                Timer(
+                                Duration(seconds: 2),
+                                    () {
                                 if (value.data()!['User Type'].toString() ==
                                     "volunteer") {
                                   Navigator.push(
@@ -169,7 +178,7 @@ class _loginpageState extends State<signinpage> {
                                       MaterialPageRoute(
                                           builder: (context) => Home()));
                                   usernamecontroller.clear();
-                                  passwordcontroller.clear();
+                                  passwordcontroller.clear();Navigator.pop(context);
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                 } else {
@@ -181,7 +190,8 @@ class _loginpageState extends State<signinpage> {
                                   passwordcontroller.clear();
                                   Navigator.pop(context);
                                   Navigator.pop(context);
-                                }
+                                  Navigator.pop(context);
+                                }});
                               });
                             } else {
                               return Fluttertoast.showToast(
@@ -192,6 +202,36 @@ class _loginpageState extends State<signinpage> {
                                       Theme.of(context).primaryColor,
                                   textColor: Colors.white);
                             }
+                          }).catchError((error) {
+                            var errormsg = error.message;
+                            showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  content: Text(
+                                      errormsg.toString()),
+                                  actions: [
+                                    Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "OK",
+                                                  style: GoogleFonts.roboto(
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                )),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ));
                           });
                         },
                         child: Text(
@@ -212,3 +252,13 @@ class _loginpageState extends State<signinpage> {
     );
   }
 }
+buildShowDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+  }
