@@ -98,7 +98,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                   double.parse(curRes.lng),
                   double.parse(charity[i].posLat),
                   double.parse(charity[i].posLng)) >
-              20 ||
+              80.4672 ||
           !TimeCheck()
               .getOpenStatus(charity[i].openTime, charity[i].closeTime) ||
           !charity[i]
@@ -501,7 +501,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                                         curRes.email) {
                                       // print(curCharity!.uniId);
                                       await userRef.doc(element.id).update({
-                                        'Status': 'picked',
+                                        'Status': 'claimed',
                                         'Pickedby': FirebaseAuth
                                             .instance.currentUser!.email,
                                         'PickedCharityUniId': curCharity!.uniId

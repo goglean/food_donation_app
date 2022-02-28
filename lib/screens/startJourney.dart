@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/donor_confirmation.dart';
 import 'package:food_donating_app/screens/journeyfinished.dart';
@@ -53,6 +55,11 @@ class _StartJourneyState extends State<StartJourney> {
             'assets/Pickup_Orange_Marker.png')
         .then((onValue) {
       resIcon = onValue;
+    });
+    final CollectionReference col =
+        FirebaseFirestore.instance.collection('pickup_details');
+    col.snapshots().listen((event) {
+      print(event);
     });
     super.initState();
   }
@@ -194,6 +201,27 @@ class _StartJourneyState extends State<StartJourney> {
                       );
                       return;
                     }
+                    final CollectionReference pCollection =
+                        FirebaseFirestore.instance.collection('pickup_details');
+
+                    QuerySnapshot snapshot = await pCollection.get();
+                    bool found = false;
+
+                    snapshot.docs.forEach((element) {
+                      Map dataMap = element.data() as Map;
+                      if (dataMap['Pickedby'] ==
+                              FirebaseAuth.instance.currentUser!.email &&
+                          !found &&
+                          dataMap['PickedCharityUniId'] ==
+                              widget.curRes['PickedCharityUniId'] &&
+                          widget.curRes['Restaurant Name'] ==
+                              dataMap['Restaurant Name']) {
+                        print(element.id);
+                        pCollection.doc(element.id).update({
+                          "Status": "picked",
+                        });
+                      }
+                    });
 
                     Navigator.pop(context);
                     Navigator.push(

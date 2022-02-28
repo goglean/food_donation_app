@@ -23,25 +23,6 @@ class MapSampleState extends State<MapSample> {
       initialData: [],
       child: Scaffold(
         body: RestaurentMap(),
-        // floatingActionButton: Padding(
-        //   padding: const EdgeInsets.only(bottom: 16),
-        //   child: FloatingActionButton(
-        //     onPressed: () async {
-        //       // Position position = await Location().getGeoLocationPosition();
-
-        //       // CameraPosition? cameraPosition = CameraPosition(
-        //       //   target: LatLng(position.latitude, position.longitude),
-        //       //   zoom: 12,
-        //       // );
-
-        //       // print(position.longitude);
-
-        //       // setState(() => location = cameraPosition);
-        //     },
-        //     child: const Icon(Icons.pin_drop),
-        //   ),
-        // ),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       ),
     );
   }

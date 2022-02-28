@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_donating_app/shared/nearby_res_info.dart';
 import 'package:food_donating_app/widget/directionfiles/directions_model.dart';
 import 'package:food_donating_app/widget/directionfiles/directions_repository.dart';
@@ -79,6 +80,12 @@ class _RestaurentMapState extends State<RestaurentMap> {
         .then((onValue) {
       resIcon = onValue;
     });
+
+    final CollectionReference pickupDetailsCollection =
+        FirebaseFirestore.instance.collection('pickup_details');
+
+    pickupDetailsCollection.snapshots().listen((event) {});
+
     super.initState();
   }
 
@@ -144,9 +151,9 @@ class _RestaurentMapState extends State<RestaurentMap> {
                   double.parse(restaurent[i].lat),
                   double.parse(restaurent[i].lng),
                 ) >
-                20 ||
+                80.4672 ||
             !TimeCheck().getOpenStatus(
-                restaurent[i].startTime, restaurent[i].startTime)) {
+                restaurent[i].startTime, restaurent[i].endTime)) {
           continue;
         }
 

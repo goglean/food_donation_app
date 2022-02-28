@@ -189,8 +189,9 @@ class _WriteReviewState extends State<WriteReview> {
               ),
               FlatButton(
                 onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Home()));
+                  // Navigator.push(
+                  //     context, MaterialPageRoute(builder: (context) => Home()));
+                  Navigator.pop(context);
                 },
                 textColor: Theme.of(context).primaryColor,
                 child: Text('NO, THANK YOU'),
