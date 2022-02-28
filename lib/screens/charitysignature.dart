@@ -144,16 +144,16 @@ class _CharitySignatureState extends State<CharitySignature> {
       }
     });
 
-    Navigator.pop(context);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => JourneyFinished(
-          curChar: widget.curChar,
-          curRes: widget.curRes,
-        ),
-      ),
-    );
+    // Navigator.pop(context);
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => JourneyFinished(
+    //       curChar: widget.curChar,
+    //       curRes: widget.curRes,
+    //     ),
+    //   ),
+    // );
   }
 
   @override
