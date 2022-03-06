@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class NearbyRestaurantInfo extends StatelessWidget {
   String dialogueText;
-  NearbyRestaurantInfo({this.dialogueText = 'Sorry, no nearby Restaurants'});
+  NearbyRestaurantInfo(
+      {this.dialogueText = 'Sorry, no nearby donation avaiable at this time'});
   double padding = 3;
 
   @override

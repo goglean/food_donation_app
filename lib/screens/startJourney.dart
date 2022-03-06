@@ -11,6 +11,7 @@ import 'package:food_donating_app/widget/location_service.dart';
 import 'package:food_donating_app/widget/noInternetScreen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StartJourney extends StatefulWidget {
   Map curChar, curRes;
@@ -21,9 +22,15 @@ class StartJourney extends StatefulWidget {
 }
 
 class _StartJourneyState extends State<StartJourney> {
+  String dis = "";
   Completer<GoogleMapController> _controller = Completer();
   List<LatLng?> directionLineMarker = new List.filled(2, null, growable: false);
   Set<Marker> markersSet = {};
+
+  Future<void> _goToCurrentLocation(CameraPosition curLocation) async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(curLocation));
+  }
 
   void setCurrentDirectionMarker() async {
     if (directionLineMarker[0] == null) {
@@ -47,6 +54,11 @@ class _StartJourneyState extends State<StartJourney> {
     }
   }
 
+  void getCurAddress() async {
+    dis = await LocationService()
+        .GetAddressFromLatLong(widget.curRes['Lat'], widget.curRes['Lng']);
+  }
+
   BitmapDescriptor? resIcon;
 
   @override
@@ -61,6 +73,9 @@ class _StartJourneyState extends State<StartJourney> {
     col.snapshots().listen((event) {
       print(event);
     });
+
+    getCurAddress();
+
     super.initState();
   }
 
@@ -92,15 +107,11 @@ class _StartJourneyState extends State<StartJourney> {
           double.parse(widget.curRes['Lng']));
     }
 
-    Future<void> _goToCurrentLocation(CameraPosition curLocation) async {
-      final GoogleMapController controller = await _controller.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(curLocation));
-    }
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Text('Step 1: Travel to Donor'),
+        centerTitle: true,
       ),
       body: Stack(
         children: [
@@ -131,18 +142,12 @@ class _StartJourneyState extends State<StartJourney> {
                     children: [
                       Icon(Icons.location_on_outlined),
                       SizedBox(width: 3),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.curRes['Address'],
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text('Click for direction'),
-                        ],
+                      Text(
+                        dis,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -152,11 +157,14 @@ class _StartJourneyState extends State<StartJourney> {
                     children: [
                       Icon(Icons.call),
                       SizedBox(width: 3),
-                      Column(
-                        children: [
-                          Text('Bussines number: 1234567890'),
-                        ],
+                      FlatButton(
+                        onPressed: () =>
+                            launch("tel://${widget.curRes['Phone Number']}"),
+                        child: Text(
+                            'Bussines number: ${widget.curRes['Phone Number']}'),
                       ),
+                      // Text(
+                      //     'Bussines number: ${widget.curRes['Phone Number']}'),
                     ],
                   ),
                   SizedBox(height: 10),
@@ -201,29 +209,8 @@ class _StartJourneyState extends State<StartJourney> {
                       );
                       return;
                     }
-                    final CollectionReference pCollection =
-                        FirebaseFirestore.instance.collection('pickup_details');
 
-                    QuerySnapshot snapshot = await pCollection.get();
-                    bool found = false;
-
-                    snapshot.docs.forEach((element) {
-                      Map dataMap = element.data() as Map;
-                      if (dataMap['Pickedby'] ==
-                              FirebaseAuth.instance.currentUser!.email &&
-                          !found &&
-                          dataMap['PickedCharityUniId'] ==
-                              widget.curRes['PickedCharityUniId'] &&
-                          widget.curRes['Restaurant Name'] ==
-                              dataMap['Restaurant Name']) {
-                        print(element.id);
-                        pCollection.doc(element.id).update({
-                          "Status": "picked",
-                        });
-                      }
-                    });
-
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -254,8 +241,9 @@ class _StartJourneyState extends State<StartJourney> {
                     zoom: 14,
                   );
 
-                  // print(position.longitude);
+                  print(position.longitude);
                   _goToCurrentLocation(cameraPosition);
+                  print('object');
 
                   setState(() {
                     markersSet.add(

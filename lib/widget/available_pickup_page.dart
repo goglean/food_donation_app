@@ -93,14 +93,15 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
         charity[i].donationType[j] =
             charity[i].donationType[j].toString().toLowerCase();
       }
+      DateTime now = DateTime.now();
       if (LocationService().calculateDistanceBetweenTwoLatLongsInKm(
                   double.parse(curRes.lat),
                   double.parse(curRes.lng),
                   double.parse(charity[i].posLat),
                   double.parse(charity[i].posLng)) >
               80.4672 ||
-          !TimeCheck()
-              .getOpenStatus(charity[i].openTime, charity[i].closeTime) ||
+          !TimeCheck().getOpenStatus("2022-3-6", charity[i].openTime,
+              "2022-2-12", charity[i].closeTime) ||
           !charity[i]
               .donationType
               .contains(curRes.donationType.toLowerCase())) {
@@ -195,7 +196,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
               ),
               SizedBox(height: 16),
               Text(
-                'You can start your pickup upto one hour before time begins.',
+                'You can start your pickup anytime between start and endtime for the pickup',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black54,
@@ -248,6 +249,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
         Expanded(
           flex: 40,
           child: GoogleMap(
+            mapToolbarEnabled: false,
             polylines: {
               if (directionLineMarker[0] != null &&
                   directionLineMarker[1] != null)
@@ -406,7 +408,10 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                               itemBuilder: (context, index) {
                                 return Text(curRes.quantityList[index] +
                                     "  " +
-                                    curRes.desList[index]);
+                                    curRes.desList[index] +
+                                    " (" +
+                                    curRes.unitList[index] +
+                                    ")");
                               },
                             ),
                             // child: Text('he;;p'),
@@ -423,7 +428,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
                             child: Text(
-                              'What you need to know',
+                              'What you need to know before you go for pickup',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),

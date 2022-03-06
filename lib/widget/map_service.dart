@@ -80,6 +80,7 @@ class MapService {
       openTime: data['openTime'] ?? '',
       closeTime: data['closeTime'] ?? '',
       donationType: data['donationType'] ?? [],
+      phoneNumber: data['Phone Number'] ?? 123456789,
     );
   }
 
@@ -152,6 +153,7 @@ class MapService {
         openTime: doc['openTime'] ?? '',
         closeTime: doc['closeTime'] ?? '',
         donationType: doc['donationType'] ?? [],
+        phoneNumber: doc['Phone Number'] ?? 1234567890,
       );
     }).toList();
   }

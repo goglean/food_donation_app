@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:food_donating_app/screens/home.dart';
 import 'package:food_donating_app/screens/journeyfinished.dart';
 import 'package:food_donating_app/widget/internet_service.dart';
 import 'package:food_donating_app/widget/noInternetScreen.dart';
@@ -65,7 +66,7 @@ class _CharitySignatureState extends State<CharitySignature> {
           print(element.id);
           pCollection.doc(element.id).update({
             "Reciever's name": fullName,
-            "Status": "received",
+            "Status": "finished",
           });
 
           curPickupDocId!.add(element.id);
@@ -77,16 +78,17 @@ class _CharitySignatureState extends State<CharitySignature> {
         }
       });
 
-      Navigator.pop(context);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => JourneyFinished(
-            curChar: widget.curChar,
-            curRes: widget.curRes,
-          ),
-        ),
-      );
+      // Navigator.pop(context);
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => JourneyFinished(
+      //       curChar: widget.curChar,
+      //       curRes: widget.curRes,
+      //       curPickupDocId: curPickupDocId,
+      //     ),
+      //   ),
+      // );
 
       return;
     }
@@ -131,7 +133,7 @@ class _CharitySignatureState extends State<CharitySignature> {
         pCollection.doc(element.id).update({
           "Reciever's name": fullName,
           "Reciever's Signature": fileName,
-          "Status": "received",
+          "Status": "finished",
         });
 
         curPickupDocId!.add(element.id);
@@ -173,7 +175,7 @@ class _CharitySignatureState extends State<CharitySignature> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Reciever's Name",
+                      "Receiver's Name",
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,
@@ -203,7 +205,7 @@ class _CharitySignatureState extends State<CharitySignature> {
                     ),
                     SizedBox(height: 45),
                     Text(
-                      "Reciever's Signature",
+                      "Receiver's Signature",
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,
@@ -306,7 +308,13 @@ class _CharitySignatureState extends State<CharitySignature> {
                   }
                 }
                 uploadImageToFirebase(context, checked);
+
                 Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pop(context);
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(

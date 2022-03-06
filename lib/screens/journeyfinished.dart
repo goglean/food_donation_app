@@ -94,10 +94,6 @@ class _JourneyFinishedState extends State<JourneyFinished> {
                           ),
                         ),
                       );
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => JourneyReview()));
                     },
                   ),
                   child: Text(
