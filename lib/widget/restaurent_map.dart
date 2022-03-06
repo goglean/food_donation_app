@@ -93,6 +93,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
   Widget build(BuildContext context) {
     List<Restaurent2>? restaurent = Provider.of<List<Restaurent2>?>(context);
     Restaurent2? curRestaurent = null;
+    isMarkerWithinRange = false;
     restaurentMarker.clear();
     if (locationMarker != null) restaurentMarker.add(locationMarker!);
 
@@ -143,6 +144,8 @@ class _RestaurentMapState extends State<RestaurentMap> {
       });
     }
 
+    // print(locationMarker!.position.longitude);
+
     for (int i = 0; i < restaurent!.length; i++) {
       if (locationMarker != null) {
         if (LocationService().calculateDistanceBetweenTwoLatLongsInKm(
@@ -153,7 +156,12 @@ class _RestaurentMapState extends State<RestaurentMap> {
                 ) >
                 80.4672 ||
             !TimeCheck().getOpenStatus(
-                restaurent[i].startTime, restaurent[i].endTime)) {
+                restaurent[i].startDate,
+                restaurent[i].startTime,
+                restaurent[i].endDate,
+                restaurent[i].endTime)) {
+          // print(!TimeCheck().getOpenStatus(
+          //     restaurent[i].startTime, restaurent[i].endTime));
           continue;
         }
 
@@ -190,6 +198,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
     return Stack(
       children: [
         GoogleMap(
+          mapToolbarEnabled: false,
           mapType: MapType.normal,
           markers: restaurentMarker,
           initialCameraPosition: defaultCameraPos,
@@ -265,5 +274,16 @@ class _RestaurentMapState extends State<RestaurentMap> {
     controller.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(target: LatLng(lat, lng), zoom: 12),
     ));
+  }
+}
+
+class Value2 {
+  static String? value;
+  static void setString(String? newValue) {
+    value = newValue;
+  }
+
+  static String? getString() {
+    return value;
   }
 }

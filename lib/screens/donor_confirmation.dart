@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/traveltocharity.dart';
 import 'package:food_donating_app/widget/internet_service.dart';
@@ -22,7 +24,7 @@ class DonorConfirmation extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Confirm Food Quatities',
+                    'Confirm Food Quantities',
                     style: TextStyle(
                       fontSize: 24,
                       color: Theme.of(context).primaryColor,
@@ -99,8 +101,28 @@ class DonorConfirmation extends StatelessWidget {
                   );
                   return;
                 }
+                final CollectionReference pCollection =
+                    FirebaseFirestore.instance.collection('pickup_details');
 
-                Navigator.pop(context);
+                QuerySnapshot snapshot = await pCollection.get();
+                bool found = false;
+
+                snapshot.docs.forEach((element) {
+                  Map dataMap = element.data() as Map;
+                  if (dataMap['Pickedby'] ==
+                          FirebaseAuth.instance.currentUser!.email &&
+                      !found &&
+                      dataMap['PickedCharityUniId'] ==
+                          curRes['PickedCharityUniId'] &&
+                      curRes['Restaurant Name'] == dataMap['Restaurant Name']) {
+                    print(element.id);
+                    pCollection.doc(element.id).update({
+                      "Status": "picked",
+                    });
+                  }
+                });
+
+                // Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(

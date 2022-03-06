@@ -6,6 +6,7 @@ import 'package:food_donating_app/shared/loading.dart';
 import 'package:food_donating_app/shared/no_pickups.dart';
 import 'package:food_donating_app/widget/internet_service.dart';
 import 'package:food_donating_app/widget/noInternetScreen.dart';
+import 'package:food_donating_app/widget/restaurent_map.dart';
 
 class MyPickups extends StatefulWidget {
   const MyPickups({Key? key}) : super(key: key);
@@ -151,6 +152,7 @@ class _MyPickupsState extends State<MyPickups> {
                         pCollection.doc(element.id).update({
                           'Pickedby': '',
                           'Status': 'upcoming',
+                          'PickedCharityUniId': '',
                         });
                       }
                     });
@@ -184,6 +186,7 @@ class _MyPickupsState extends State<MyPickups> {
           },
         ),
         title: Text("My Pickups"),
+        centerTitle: true,
       ),
       body: Column(
         children: [
@@ -390,7 +393,7 @@ class _MyPickupsState extends State<MyPickups> {
                                                         }
 
                                                         // print(FirebaseAuth.instance.currentUser!.uid);
-                                                        Navigator.pop(context);
+                                                        // Navigator.pop(context);
                                                         Navigator.push(
                                                           context,
                                                           MaterialPageRoute(

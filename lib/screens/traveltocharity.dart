@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/charitysignature.dart';
 import 'package:food_donating_app/widget/internet_service.dart';
+import 'package:food_donating_app/widget/location_service.dart';
 import 'package:food_donating_app/widget/noInternetScreen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TravelToCharity extends StatefulWidget {
   Map curChar, curRes;
@@ -14,6 +16,12 @@ class TravelToCharity extends StatefulWidget {
 
 class _TravelToCharityState extends State<TravelToCharity> {
   BitmapDescriptor? resIcon, charIcon;
+  String dis = "";
+
+  void getCurAddress() async {
+    dis = await LocationService()
+        .GetAddressFromLatLong(widget.curRes['Lat'], widget.curRes['Lng']);
+  }
 
   @override
   void initState() {
@@ -27,6 +35,9 @@ class _TravelToCharityState extends State<TravelToCharity> {
         .then((onValue) {
       charIcon = onValue;
     });
+
+    getCurAddress();
+
     super.initState();
   }
 
@@ -96,18 +107,12 @@ class _TravelToCharityState extends State<TravelToCharity> {
                 children: [
                   Icon(Icons.location_on_outlined),
                   SizedBox(width: 3),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.curChar['address'],
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text('Click for direction'),
-                    ],
+                  Text(
+                    dis,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -117,11 +122,19 @@ class _TravelToCharityState extends State<TravelToCharity> {
                 children: [
                   Icon(Icons.call),
                   SizedBox(width: 3),
-                  Column(
-                    children: [
-                      Text('Bussines number: Phone'),
-                    ],
+                  FlatButton(
+                    onPressed: () =>
+                        launch("tel://${widget.curRes['Phone Number']}"),
+                    child: Text(
+                        'Bussines number: ${widget.curRes['Phone Number']}'),
                   ),
+                  // Text(
+                  // Column(
+                  //   children: [
+                  //     Text(
+                  //         'Bussines number: ${widget.curChar['Phone Number']}'),
+                  //   ],
+                  // ),
                 ],
               ),
               SizedBox(height: 10),
@@ -166,7 +179,7 @@ class _TravelToCharityState extends State<TravelToCharity> {
                   return;
                 }
 
-                Navigator.pop(context);
+                // Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(

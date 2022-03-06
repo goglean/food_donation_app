@@ -118,9 +118,22 @@ class _RestaurentInfoState extends State<RestaurentInfo> {
                       color: Colors.black54,
                     ),
                   ),
-                  subtitle: Text(
-                    '${widget.curRestaurent!.startDate}, ${widget.curRestaurent!.startTime} - ${widget.curRestaurent!.endTime}\n${distanceBetweenMarker}',
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${widget.curRestaurent!.startDate}, ${widget.curRestaurent!.startTime} - ${widget.curRestaurent!.endTime}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '${distanceBetweenMarker}',
+                      ),
+                    ],
                   ),
+                  // subtitle: Text(
+                  //   '${widget.curRestaurent!.startDate}, ${widget.curRestaurent!.startTime} - ${widget.curRestaurent!.endTime}\n${distanceBetweenMarker}',
+                  //   style: TextStyle(fontWeight: FontWeight.bold),
+                  // ),
                 ),
                 SizedBox(height: 10),
               ],

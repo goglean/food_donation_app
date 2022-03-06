@@ -1,43 +1,30 @@
 class TimeCheck {
-  bool getOpenStatus(String openTime, String closeTime) {
+  bool getOpenStatus(
+      String startDate, String openTime, String endTime, String closeTime) {
     DateTime now = DateTime.now();
-    int nowHour = now.hour;
-    int nowMin = now.minute;
-
-    // print('Now: H$nowHour M$nowMin');
-
     var openTimes = openTime.split(":");
-    int openHour = int.parse(openTimes[0]);
-    int openMin = int.parse(openTimes[1]);
-
-    // print('OpenTimes: H$openHour M$openMin');
+    var openDates = startDate.split("-");
 
     var closeTimes = closeTime.split(":");
-    int closeHour = int.parse(closeTimes[0]);
-    int closeMin = int.parse(closeTimes[1]);
+    var closeDates = startDate.split("-");
 
-    // print('CloseTimes: H$closeHour M$closeMin');
+    // DateTime(2020, 7, 6, 18, 00)
+    DateTime stDate = DateTime(
+        int.parse(openDates[0]),
+        int.parse(openDates[1]),
+        int.parse(openDates[2]),
+        int.parse(openTimes[0]),
+        int.parse(openTimes[1]));
 
-    if (nowHour > openHour && nowHour < closeHour) return true;
-    if (nowHour == openHour && nowHour == closeHour) {
-      if (nowMin >= openMin && nowMin <= closeMin)
-        return true;
-      else
-        return false;
-    }
-    if (nowHour == openHour) {
-      if (nowMin >= openMin)
-        return true;
-      else
-        return false;
-    }
-    if (nowHour == closeHour) {
-      if (nowMin >= closeMin)
-        return true;
-      else
-        return false;
-    }
+    DateTime enDate = DateTime(
+        int.parse(closeDates[0]),
+        int.parse(closeDates[1]),
+        int.parse(closeDates[2]),
+        int.parse(closeTimes[0]),
+        int.parse(closeTimes[1]));
 
-    return false;
+    // print(now.isAfter(stDate) && now.isBefore(enDate));
+
+    return now.isAfter(stDate) && now.isBefore(enDate);
   }
 }

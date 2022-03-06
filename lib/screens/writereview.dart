@@ -169,6 +169,7 @@ class _WriteReviewState extends State<WriteReview> {
 
                     final CollectionReference oldPickups =
                         FirebaseFirestore.instance.collection('old_pickups');
+                    print(widget.curPickupDocId);
                     // oldPickups.doc(widget.curPickupDocId).update({
                     for (int i = 0; i < widget.curPickupDocId.length; i++) {
                       oldPickups.doc(widget.curPickupDocId[i]).update({
