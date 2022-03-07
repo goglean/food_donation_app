@@ -1,12 +1,12 @@
 class TimeCheck {
   bool getOpenStatus(
-      String startDate, String openTime, String endTime, String closeTime) {
+      String startDate, String openTime, String endDate, String closeTime) {
     DateTime now = DateTime.now();
     var openTimes = openTime.split(":");
     var openDates = startDate.split("-");
 
     var closeTimes = closeTime.split(":");
-    var closeDates = startDate.split("-");
+    var closeDates = endDate.split("-");
 
     // DateTime(2020, 7, 6, 18, 00)
     DateTime stDate = DateTime(

@@ -265,16 +265,6 @@ class _RestaurentMapState extends State<RestaurentMap> {
       ],
     );
   }
-
-  Future<void> _goToPlace(Map<String, dynamic> place) async {
-    final double lat = place['geometry']['location']['lat'];
-    final double lng = place['geometry']['location']['lng'];
-
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(target: LatLng(lat, lng), zoom: 12),
-    ));
-  }
 }
 
 class Value2 {

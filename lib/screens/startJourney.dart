@@ -27,11 +27,6 @@ class _StartJourneyState extends State<StartJourney> {
   List<LatLng?> directionLineMarker = new List.filled(2, null, growable: false);
   Set<Marker> markersSet = {};
 
-  Future<void> _goToCurrentLocation(CameraPosition curLocation) async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(curLocation));
-  }
-
   void setCurrentDirectionMarker() async {
     if (directionLineMarker[0] == null) {
       Position position = await LocationService().getGeoLocationPosition();
@@ -82,6 +77,12 @@ class _StartJourneyState extends State<StartJourney> {
   @override
   Widget build(BuildContext context) {
     setCurrentDirectionMarker();
+
+    Future<void> _goToCurrentLocation(CameraPosition curLocation) async {
+      print('object');
+      final GoogleMapController controller = await _controller.future;
+      controller.animateCamera(CameraUpdate.newCameraPosition(curLocation));
+    }
 
     CameraPosition defaultCameraPos = CameraPosition(
       target: LatLng(double.parse(widget.curRes['Lat']),
@@ -176,6 +177,9 @@ class _StartJourneyState extends State<StartJourney> {
               ),
               Expanded(
                 child: GoogleMap(
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                  },
                   initialCameraPosition: defaultCameraPos,
                   markers: markersSet,
                   polylines: {
@@ -241,9 +245,7 @@ class _StartJourneyState extends State<StartJourney> {
                     zoom: 14,
                   );
 
-                  print(position.longitude);
                   _goToCurrentLocation(cameraPosition);
-                  print('object');
 
                   setState(() {
                     markersSet.add(
