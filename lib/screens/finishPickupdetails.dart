@@ -17,15 +17,15 @@ class _FinishPickupDetailsState extends State<FinishPickupDetails> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           //foregroundColor: Colors.white,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+          // leading: IconButton(
+          //   icon: Icon(
+          //     Icons.arrow_back,
+          //     color: Colors.black,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.pop(context);
+          //   },
+          // ),
           title: Text(
             "Finish!",
             style: GoogleFonts.roboto(color: Theme.of(context).primaryColor),
@@ -50,12 +50,12 @@ class _FinishPickupDetailsState extends State<FinishPickupDetails> {
                           fontSize: MediaQuery.of(context).size.width * 0.08,
                           color: Colors.white)),
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  color: Colors.grey,
-                  margin: EdgeInsets.all(20),
-                ),
+                Image.asset(
+              'assets/app_logo.png',
+              width: MediaQuery.of(context).size.height * 0.2,
+              height: MediaQuery.of(context).size.width * 0.45,
+              fit: BoxFit.cover,
+            ),
                 Container(
                   margin: EdgeInsets.all(20),
                   child: Text(
@@ -79,12 +79,12 @@ class _FinishPickupDetailsState extends State<FinishPickupDetails> {
                       color: Colors.white,
                       onPressed: () => setState(() {
                             Navigator.pop(context);
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => HomeDonor()));
+                            // Navigator.pop(context);
+                            // Navigator.pop(context);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeDonor()));
                           }),
                       child: Text(
                         "Close",

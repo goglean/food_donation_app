@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_donating_app/screens/authscreen.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -1224,8 +1225,11 @@ class _ProfileDonorState extends State<ProfileDonor> {
                                     TextButton(
                                         onPressed: () async {
                                           await FirebaseAuth.instance.signOut();
-                                          Navigator.pop(context);
-                                          //Navigator.pop(context);
+                                         Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => AuthScreen()));
+                                          
                                         },
                                         child: Text(
                                           "Yes",

@@ -208,7 +208,7 @@ class _donateitemsState extends State<donateitems> {
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width * 0.15,
-                  height: MediaQuery.of(context).size.height * 0.04,
+                  height: MediaQuery.of(context).size.height * 0.06,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Theme.of(context).primaryColor,
@@ -220,7 +220,7 @@ class _donateitemsState extends State<donateitems> {
                       style: GoogleFonts.roboto(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
-                          fontSize: MediaQuery.of(context).size.height * 0.02),
+                          fontSize: MediaQuery.of(context).size.height * 0.015),
                     ),
                   ),
                   margin:
@@ -228,7 +228,7 @@ class _donateitemsState extends State<donateitems> {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.35,
-                  height: MediaQuery.of(context).size.height * 0.04,
+                  height: MediaQuery.of(context).size.height * 0.06,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Theme.of(context).primaryColor,
@@ -240,7 +240,7 @@ class _donateitemsState extends State<donateitems> {
                       style: GoogleFonts.roboto(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
-                          fontSize: MediaQuery.of(context).size.height * 0.02),
+                          fontSize: MediaQuery.of(context).size.height * 0.015),
                     ),
                   ),
                   margin:
@@ -248,7 +248,7 @@ class _donateitemsState extends State<donateitems> {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.25,
-                  height: MediaQuery.of(context).size.height * 0.04,
+                  height: MediaQuery.of(context).size.height * 0.06,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Theme.of(context).primaryColor,
@@ -260,7 +260,7 @@ class _donateitemsState extends State<donateitems> {
                       style: GoogleFonts.roboto(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
-                          fontSize: MediaQuery.of(context).size.height * 0.02),
+                          fontSize: MediaQuery.of(context).size.height * 0.015),
                     ),
                   ),
                   margin:
@@ -268,7 +268,7 @@ class _donateitemsState extends State<donateitems> {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.1,
-                  height: MediaQuery.of(context).size.height * 0.04,
+                  height: MediaQuery.of(context).size.height * 0.06,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Theme.of(context).primaryColor,

@@ -457,37 +457,37 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                           ),
                         ),
                       ),
-                      TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        key: ValueKey('isParticipant'),
-                        validator: (value) {
-                          // if (value == null || !value.contains('@')) {
-                          //   return "Incorrect email";
-                          // }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _isParticipant = value;
-                        },
-                        decoration: InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Theme.of(context).primaryColor,
-                                width: 1),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          border: UnderlineInputBorder(
-                            //borderRadius: new BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).primaryColor),
-                            borderRadius: new BorderRadius.circular(20),
-                          ),
-                          labelText:
-                              "are you a part of any other organization? if yes state below",
-                          labelStyle: GoogleFonts.roboto(
-                              color: Theme.of(context).primaryColor),
-                        ),
-                      ),
+                      // TextFormField(
+                      //   keyboardType: TextInputType.emailAddress,
+                      //   key: ValueKey('isParticipant'),
+                      //   validator: (value) {
+                      //     // if (value == null || !value.contains('@')) {
+                      //     //   return "Incorrect email";
+                      //     // }
+                      //     return null;
+                      //   },
+                      //   onSaved: (value) {
+                      //     _isParticipant = value;
+                      //   },
+                      //   decoration: InputDecoration(
+                      //     focusedBorder: UnderlineInputBorder(
+                      //       borderSide: BorderSide(
+                      //           color: Theme.of(context).primaryColor,
+                      //           width: 1),
+                      //       borderRadius: BorderRadius.all(Radius.circular(20)),
+                      //     ),
+                      //     border: UnderlineInputBorder(
+                      //       //borderRadius: new BorderRadius.circular(8),
+                      //       borderSide: BorderSide(
+                      //           color: Theme.of(context).primaryColor),
+                      //       borderRadius: new BorderRadius.circular(20),
+                      //     ),
+                      //     labelText:
+                      //         "are you a part of any other organization? if yes state below",
+                      //     labelStyle: GoogleFonts.roboto(
+                      //         color: Theme.of(context).primaryColor),
+                      //   ),
+                      // ),
                       SizedBox(
                         height: 5,
                       ),

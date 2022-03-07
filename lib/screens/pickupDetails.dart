@@ -32,10 +32,8 @@ class _PickupDetailsState extends State<PickupDetails> {
   String location = "";
   String startdate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   String enddate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  String starttime =
-      DateTime.now().hour.toString() + ":" + DateTime.now().minute.toString();
-  String endtime =
-      DateTime.now().hour.toString() + ":" + DateTime.now().minute.toString();
+  String starttime = "06:00";
+  String endtime = "18:00";
   String pickup = "";
   String lat = "";
   String long = "";
@@ -227,7 +225,11 @@ class _PickupDetailsState extends State<PickupDetails> {
                             print(val);
                             return null;
                           },
-                          onSaved: (val) => print(val),
+                          // onSaved: (val) => 
+                          // {
+                          //   starttime = val.toString(),
+                          //   print(val)
+                          // },
                         )),
                   ],
                 ),
@@ -249,8 +251,12 @@ class _PickupDetailsState extends State<PickupDetails> {
                           icon: Icon(Icons.timer),
                           onChanged: (val) {
                             endtime = val;
+                            print(val);
                           },
-                          onSaved: (val) => print(val),
+                          // onSaved: (val) => {
+                          //   endtime = val.toString(),
+                          //   print(val)
+                          //   },
                         )),
                   ],
                 )
@@ -314,7 +320,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                     color: Colors.black),
               ),
             ),
-          ],
+            ],
         )),
       ),
       bottomNavigationBar: Container(
@@ -335,7 +341,7 @@ class _PickupDetailsState extends State<PickupDetails> {
           onPressed: () async {
             fetchdetails();
             Timer(Duration(seconds: 1), () {
-              if (lati != null) {
+                if ((DateTime.parse(enddate + " "+ endtime).isAfter(DateTime.parse(startdate + " "+starttime)))) {
                 FirebaseFirestore.instance
                     .collection("pickup_details")
                     .doc(DateTime.now().toString())
@@ -343,9 +349,9 @@ class _PickupDetailsState extends State<PickupDetails> {
                   "days": _selecteddetails,
                   "details": myController.text,
                   "enddate": enddate,
-                  "endtime": endtime,
+                  "endtime": enddate+ " "+endtime,
                   "startdate": startdate,
-                  "starttime": starttime,
+                  "starttime": startdate + " " +starttime,
                   "quantitylist": widget.quanlist.toList(),
                   "descriptionlist": widget.desclist.toList(),
                   "unitlist": widget.Unilist.toList(),
@@ -390,17 +396,34 @@ class _PickupDetailsState extends State<PickupDetails> {
                   "Small Bag": Small_Bag,
                   "Tray": Tray
                 });
-                Navigator.push(
+                Navigator.pop(context);
+                Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (context) => FinishPickupDetails()));
                 widget.quanlist.clear();
                 widget.desclist.clear();
                 widget.Unilist.clear();
-              } else {
-                Fluttertoast.showToast(
-                    msg: "Please select your location",
-                    gravity: ToastGravity.BOTTOM);
+              }
+              else {
+                print('error');
+                showDialog<String>(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('End time is before start time'),
+                              content: const Text(
+                                  'End time should be after start time when the donation is same day'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context, 'OK');
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          ); 
               }
             });
           },
