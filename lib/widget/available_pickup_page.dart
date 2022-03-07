@@ -86,7 +86,6 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
       double.parse(curRes.lat),
       double.parse(curRes.lng),
     );
-
     for (int i = 0; i < charity!.length; i++) {
       // making all the values of donationType list to lowercase
       for (var j = 0; j < charity[i].donationType.length; j++) {
@@ -101,7 +100,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                   double.parse(charity[i].posLng)) >
               80.4672 ||
           !TimeCheck().getOpenStatus("2022-3-6", charity[i].openTime,
-              "2022-2-12", charity[i].closeTime) ||
+              "2022-6-12", charity[i].closeTime) ||
           !charity[i]
               .donationType
               .contains(curRes.donationType.toLowerCase())) {
