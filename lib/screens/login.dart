@@ -66,7 +66,7 @@ class _loginpageState extends State<signinpage> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      'SignIn',
+                      'Sign In',
                       style: GoogleFonts.roboto(
                           color: Theme.of(context).primaryColor,
                           fontSize: 20,
@@ -235,7 +235,7 @@ class _loginpageState extends State<signinpage> {
                           });
                         },
                         child: Text(
-                          'Signin',
+                          'Sign in',
                           style: GoogleFonts.roboto(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,

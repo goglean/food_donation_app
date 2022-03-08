@@ -330,48 +330,81 @@ class _ContactUsVolunteerState extends State<ContactUsVolunteer> {
                         ),
                       ),
                     ),
-                    Container(
-                      child: _imageFile == null
-                          ? IconButton(
-                              icon: Icon(
-                                Icons.add_a_photo,
-                                size: 50,
-                              ),
-                              onPressed: pickImage,
-                            )
-                          : Column(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image.file(
-                                    _imageFile!,
-                                    width: 360,
-                                    height: 360,
-                                    fit: BoxFit.cover,
-                                  ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        child: _imageFile == null
+                            ? IconButton(
+                                icon: Icon(
+                                  Icons.add_a_photo,
+                                  size: 50,
                                 ),
-                                SizedBox(height: 25),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    //border: BoxBorder(),
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                  width: double.infinity,
-                                  child: MaterialButton(
-                                    onPressed: pickImage,
-                                    textColor: Colors.white,
-                                    child: Text(
-                                      'Click Again',
-                                      style: TextStyle(
-                                          fontSize:
-                                              MediaQuery.of(context).size.width *
-                                                  0.05),
+                                onPressed: pickImage,
+                              )
+                            : Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Image.file(
+                                      _imageFile!,
+                                      width: 360,
+                                      height: 360,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                  SizedBox(height: 25),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      //border: BoxBorder(),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    width: double.infinity,
+                                    child: MaterialButton(
+                                      onPressed: pickImage,
+                                      textColor: Colors.white,
+                                      child: Text(
+                                        'Click Again',
+                                        style: TextStyle(
+                                            fontSize:
+                                                MediaQuery.of(context).size.width *
+                                                    0.05),
+                                      ),
+                                    ),
+                                  ),
+                                  //
+                                  Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(
+                            0,
+                            MediaQuery.of(context).size.height * 0.01,
+                            0,
+                            MediaQuery.of(context).size.height * 0.01),
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.0),
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        child: TextButton(
+                          onPressed: () {
+                            submitQuery();
+                            _queryController.clear();
+                            _nameController.clear();
+                            imagePicked = false;
+                          },
+                          child: Text("Submit",
+                              style: GoogleFonts.roboto(
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.06,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white)),
+                        ),
+                      ),
+                    ),
+                                ],
+                              ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),

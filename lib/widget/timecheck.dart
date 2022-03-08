@@ -4,7 +4,6 @@ class TimeCheck {
     DateTime now = DateTime.now();
     var openTimes = openTime.split(":");
     var openDates = startDate.split("-");
-
     var closeTimes = closeTime.split(":");
     var closeDates = endDate.split("-");
 
