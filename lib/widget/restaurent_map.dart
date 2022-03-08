@@ -164,7 +164,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
           //     restaurent[i].startTime, restaurent[i].endTime));
           continue;
         }
-
+        print(restaurentMarker);
         isMarkerWithinRange = true;
 
         restaurentMarker.add(Marker(
