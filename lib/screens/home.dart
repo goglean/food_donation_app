@@ -77,7 +77,7 @@ class _HomeState extends State<Home> {
                           Theme.of(context).scaffoldBackgroundColor,
                       radius: 50,
                       child: Text(
-                        '${_userName [0]}',
+                        '${_userName[0]}',
                         style: GoogleFonts.roboto(
                             fontSize: MediaQuery.of(context).size.width * 0.1,
                             color: Theme.of(context).primaryColor,
