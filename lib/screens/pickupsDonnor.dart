@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_donating_app/screens/donateitems.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +18,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
   var curemail = FirebaseAuth.instance.currentUser?.email.toString();
   String _donationtype = "Upcoming";
   bool pressAttention = true;
+  var noofdon = 0;
   bool press = false;
   int num = 0;
   var discriptlist = [];
@@ -103,9 +105,15 @@ class _PickupsDonorState extends State<PickupsDonor> {
                 borderRadius: BorderRadius.circular(15.0),
                 side: BorderSide(color: Theme.of(context).primaryColor)),
             color: Theme.of(context).primaryColor,
-            onPressed: () {              
+            onPressed: () {
+              print(noofdon);
+              if (noofdon == 0) {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => donateitems()));
+                  MaterialPageRoute(builder: (context) => donateitems())); 
+              }
+              else{
+                Fluttertoast.showToast(msg: "You already have an existing donation");
+              }
             },
             child: Text(
               "Add a donation",
@@ -144,6 +152,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
                 } else
                   return data['Status'];
               }
+              noofdon = 0;
               final now = DateTime.now();
               final today = DateTime(now.year, now.month, now.day);
               final dateToCheck = DateTime.parse(data['enddate']); 
@@ -176,6 +185,7 @@ class _PickupsDonorState extends State<PickupsDonor> {
                 FirebaseFirestore.instance.collection('pickup_details').doc(document.id).delete();
               }
               if (data['email'] == curemail) {
+                noofdon++;
                 discriptlist = data['descriptionlist'];
                 quantilist = data['quantitylist'];
                 unitslist = data['unitlist'];

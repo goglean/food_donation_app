@@ -172,24 +172,24 @@ class _loginpageState extends State<signinpage> {
                                     () {
                                 if (value.data()!['User Type'].toString() ==
                                     "volunteer") {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => Home()));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()));
                                   usernamecontroller.clear();
                                   passwordcontroller.clear();
                                   Navigator.pop(context);
                                   Navigator.pop(context);
-                                  // Navigator.pop(context);
+                                  Navigator.pop(context);
                                   // Navigator.pop(context);
                                 } else {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => HomeDonor()));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomeDonor()));
                                   usernamecontroller.clear();
                                   passwordcontroller.clear();
-                                  // Navigator.pop(context);
+                                  Navigator.pop(context);
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                 }});
