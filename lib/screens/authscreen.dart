@@ -71,7 +71,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             width: MediaQuery.of(context).size.width * 0.3,
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: AssetImage('assets/app_logo.png'),
+                                image: AssetImage('assets/GG_Logo_without_bg.png'),
                                 fit: BoxFit.fill,
                               ),
                               shape: BoxShape.circle,
