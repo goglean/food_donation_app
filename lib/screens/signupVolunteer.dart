@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food_donating_app/screens/home.dart';
 import 'package:food_donating_app/screens/login.dart';
 import 'package:food_donating_app/screens/loginpage.dart';
@@ -25,6 +26,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
   String? _isParticipant = "";
   String? _state = "Alabama";
   String _userType = "volunteer";
+  bool userexists = false;
   TextEditingController _cityController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -83,7 +85,25 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
       // print('else');
     }
   }
-
+  Future<bool> checkIfEmailInUse(String emailAddress) async {
+  try {
+    final list = await FirebaseAuth.instance.fetchSignInMethodsForEmail(emailAddress);
+    if (list.isNotEmpty) {
+      userexists = true;
+      // Return true because there is an existing
+      // user using the email address
+      return true;
+    } else {
+      userexists = false;
+      // Return false because email adress is not in use
+      return false;
+    }
+  } catch (error) {
+    // Handle error
+    // ...
+    return true;
+  }
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -491,6 +511,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                       SizedBox(
                         height: 5,
                       ),
+                      
                       Container(
                         margin: EdgeInsets.fromLTRB(
                             0,
@@ -503,7 +524,8 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                           color: Theme.of(context).primaryColor,
                         ),
                         child: TextButton(
-                          onPressed: () {
+                          onPressed: () async{
+                            await checkIfEmailInUse(_emailController.text.trim());
                             if (_nameController.text == null) {
                               showDialog<String>(
                                           barrierDismissible: false,
@@ -567,7 +589,7 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                                           ),
                                         );
                             }
-                            else if (_phoneNoController == null) {
+                            else if (_phoneNoController.text == null) {
                               showDialog<String>(
                                           barrierDismissible: false,
                                           context: context,
@@ -651,9 +673,31 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                                           ),
                                         );
                             }
-                             else {
+                            else if(userexists = true){
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'User already exists'),
+                                            content: const Text(
+                                                'Account already exists with given email address. Please login using the credentials or try using forgot password if you have forgotten the password'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else {
                             setState(() {
-                              FirebaseAuth.instance
+                                try {
+                                  FirebaseAuth.instance
                                   .createUserWithEmailAndPassword(
                                       email: _emailController.text.trim(),
                                       password: _passwordController.text)
@@ -720,6 +764,10 @@ class _SignupVolunteerState extends State<SignupVolunteer> {
                                           ),
                                         );
                                       }));
+                              
+                                } catch (error) {
+                                  print(error.toString());
+                                }
                             });}
                           },
                           child: Text(

@@ -767,7 +767,7 @@ class _SignupDonorState extends State<SignupDonor> {
                                           ),
                                         );
                             }
-                            else if (_phoneNoController == null) {
+                            else if (_phoneNoController.text == null) {
                               showDialog<String>(
                                           barrierDismissible: false,
                                           context: context,
