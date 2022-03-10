@@ -139,8 +139,28 @@ class _SignupDonorState extends State<SignupDonor> {
   Future<bool> checkIfEmailInUse(String emailAddress) async {
   try {
     final list = await FirebaseAuth.instance.fetchSignInMethodsForEmail(emailAddress);
+    print(list);
     if (list.isNotEmpty) {
       userexists = true;
+      showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'User already exists'),
+                                            content: const Text(
+                                                'Account already exists with given email address. Please login using the credentials or try using forgot password if you have forgotten the password'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
       // Return true because there is an existing
       // user using the email address
       return true;
@@ -892,27 +912,7 @@ class _SignupDonorState extends State<SignupDonor> {
                                           ),
                                         );
                             }
-                            else if(userexists = true){
-                              showDialog<String>(
-                                          barrierDismissible: false,
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              AlertDialog(
-                                            title: const Text(
-                                                'User already exists'),
-                                            content: const Text(
-                                                'Account already exists with given email address. Please login using the credentials or try using forgot password if you have forgotten the password'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context, 'OK');
-                                                },
-                                                child: const Text('OK'),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                            }
+                            
                             else{
                             setState(() {
                               FirebaseAuth.instance
@@ -942,7 +942,6 @@ class _SignupDonorState extends State<SignupDonor> {
                                           'User Type': 'donor',
                                           'Zipcode': _zipcodeController.text,
                                           'email': _emailController.text,
-                                          'password': _passwordController.text
                                         });
                                         FirebaseFirestore.instance
                                             .collection('donors')
@@ -961,7 +960,6 @@ class _SignupDonorState extends State<SignupDonor> {
                                           'User Type': 'donor',
                                           'Zipcode': _zipcodeController.text,
                                           'email': _emailController.text,
-                                          'password': _passwordController.text
                                         });
                                         _cityController.clear();
                                         _addressController.clear();

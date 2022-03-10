@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_donating_app/screens/donateitems.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -9,6 +12,10 @@ class DonatePage extends StatefulWidget {
 }
 
 class _DonatePageState extends State<DonatePage> {
+  var curemail = FirebaseAuth.instance.currentUser?.email.toString();
+  final Stream<QuerySnapshot> _mydonationsstream =
+      FirebaseFirestore.instance.collection('pickup_details').snapshots();
+  var noofdon = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -77,10 +84,13 @@ class _DonatePageState extends State<DonatePage> {
                     side: BorderSide(color: Theme.of(context).primaryColor)),
                 color: Theme.of(context).primaryColor,
                 onPressed: () => setState(() {
-                      Navigator.push(
+                      if(noofdon == 0){Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => donateitems()));
+                              builder: (context) => donateitems()));}
+                      else{
+                        Fluttertoast.showToast(msg: 'You already have an existing donation');
+                      }
                     }),
                 child: Text(
                   "Get Started",
@@ -90,9 +100,40 @@ class _DonatePageState extends State<DonatePage> {
                       fontWeight: FontWeight.w600,
                       fontSize: MediaQuery.of(context).size.height * 0.04),
                 )),
+          ),
+          Container(
+            height: 0,
+            child: historystre(),
           )
         ],
       ),
     );
+  }
+  StreamBuilder<QuerySnapshot<Object?>> historystre() {
+    return StreamBuilder<QuerySnapshot>(
+        stream: _mydonationsstream,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Something went wrong'));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+                child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ));
+          }
+          return ListView(
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              noofdon = 0;
+              Map<String, dynamic> data =
+                  document.data()! as Map<String, dynamic>;
+              
+              if (data['email'] == curemail) {
+                noofdon++;
+              }
+              return Container();
+            }).toList(),
+          );
+        });
   }
 }
