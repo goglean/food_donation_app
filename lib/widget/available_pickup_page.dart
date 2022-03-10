@@ -39,6 +39,17 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
 
   BitmapDescriptor? resIcon, charIcon;
 
+  String? dis = '10';
+
+  void getDistanceFromFirebase() async {
+    final CollectionReference utils =
+        FirebaseFirestore.instance.collection('utils');
+    await utils.doc('Distance').get().then((DocumentSnapshot snap) {
+      Map dataMap = snap.data() as Map;
+      dis = dataMap['Distance'];
+    });
+  }
+
   @override
   void initState() {
     BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(128, 128)),
@@ -46,11 +57,15 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
         .then((onValue) {
       resIcon = onValue;
     });
+
     BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(128, 128)),
             'assets/Drop-off_Orange_Marker.png')
         .then((onValue) {
       charIcon = onValue;
     });
+
+    getDistanceFromFirebase();
+
     super.initState();
   }
 
@@ -98,7 +113,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                   double.parse(curRes.lng),
                   double.parse(charity[i].posLat),
                   double.parse(charity[i].posLng)) >
-              80.4672 ||
+              double.parse(dis!) ||
           !TimeCheck().getOpenStatus("2022-3-6", charity[i].openTime,
               "2022-6-12", charity[i].closeTime) ||
           !charity[i]

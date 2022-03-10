@@ -27,6 +27,17 @@ class _RestaurentMapState extends State<RestaurentMap> {
   Marker? locationMarker = null;
   bool isMarkerWithinRange = false;
 
+  String? dis = '10';
+
+  void getDistanceFromFirebase() async {
+    final CollectionReference utils =
+        FirebaseFirestore.instance.collection('utils');
+    await utils.doc('Distance').get().then((DocumentSnapshot snap) {
+      Map dataMap = snap.data() as Map;
+      dis = dataMap['Distance'];
+    });
+  }
+
   // 0th position show LatLng of current location 1st shows LatLng of tepped restaurent
   List<LatLng?> directionLineMarker = new List.filled(2, null, growable: false);
 
@@ -84,7 +95,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
     final CollectionReference pickupDetailsCollection =
         FirebaseFirestore.instance.collection('pickup_details');
 
-    pickupDetailsCollection.snapshots().listen((event) {});
+    getDistanceFromFirebase();
 
     super.initState();
   }
@@ -154,7 +165,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
                   double.parse(restaurent[i].lat),
                   double.parse(restaurent[i].lng),
                 ) >
-                80.4672 ||
+                double.parse(dis!) ||
             !TimeCheck().getOpenStatus(
                 restaurent[i].startDate,
                 restaurent[i].startTime,
@@ -164,7 +175,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
           //     restaurent[i].startTime, restaurent[i].endTime));
           continue;
         }
-        print(restaurentMarker);
+        // print(restaurentMarker);
         isMarkerWithinRange = true;
 
         restaurentMarker.add(Marker(

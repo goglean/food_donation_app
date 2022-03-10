@@ -56,9 +56,10 @@ class _JourneyFinishedState extends State<JourneyFinished> {
                         color: Colors.white)),
               ),
               Container(
+                child: Image.asset('assets/app_logo.png'),
                 width: MediaQuery.of(context).size.width * 0.4,
                 height: MediaQuery.of(context).size.height * 0.2,
-                color: Colors.grey,
+                // color: Colors.grey,
                 margin: EdgeInsets.all(20),
               ),
               Container(
