@@ -23,11 +23,12 @@ class _HelpPageDonorState extends State<HelpPageDonor> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  width: MediaQuery.of(context).size.width * 0.35,
-                  color: Colors.grey[400],
-                )
+                 Image.asset(
+              'assets/GG_Logo_without_bg.png',
+              width: MediaQuery.of(context).size.height * 0.2,
+              height: MediaQuery.of(context).size.width * 0.45,
+              fit: BoxFit.cover,
+            )
               ],
             ),
           ),

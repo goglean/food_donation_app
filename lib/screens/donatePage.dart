@@ -45,7 +45,7 @@ class _DonatePageState extends State<DonatePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-              'assets/app_logo.png',
+              'assets/GG_Logo_without_bg.png',
               width: MediaQuery.of(context).size.height * 0.2,
               height: MediaQuery.of(context).size.width * 0.45,
               fit: BoxFit.cover,
