@@ -51,5 +51,7 @@
 		<false/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>CFBundleName</key>
+		<string>Go Glean</string>
 	</dict>
 </plist>

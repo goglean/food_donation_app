@@ -60,7 +60,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-    
+
 flutter_native_splash:
   background_image: "assets/Splash_Screen_Design.png"
   fullscreen: false
