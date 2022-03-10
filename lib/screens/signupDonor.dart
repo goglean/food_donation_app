@@ -28,6 +28,7 @@ class _SignupDonorState extends State<SignupDonor> {
   String _cuisine = "All";
   String _donorType = "Restaurant";
   String _userType = "donor";
+  bool userexists = false;
   List<String> cuisine = [];
   List<String> donorType = [];
   TextEditingController _cityController = TextEditingController();
@@ -135,7 +136,25 @@ class _SignupDonorState extends State<SignupDonor> {
   void dispose() {
     super.dispose();
   }
-
+  Future<bool> checkIfEmailInUse(String emailAddress) async {
+  try {
+    final list = await FirebaseAuth.instance.fetchSignInMethodsForEmail(emailAddress);
+    if (list.isNotEmpty) {
+      userexists = true;
+      // Return true because there is an existing
+      // user using the email address
+      return true;
+    } else {
+      userexists = false;
+      // Return false because email adress is not in use
+      return false;
+    }
+  } catch (error) {
+    // Handle error
+    // ...
+    return true;
+  }
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -682,7 +701,8 @@ class _SignupDonorState extends State<SignupDonor> {
                           color: Theme.of(context).primaryColor,
                         ),
                         child: TextButton(
-                          onPressed: () {
+                          onPressed: () async{
+                            await checkIfEmailInUse(_emailController.text.trim());
                             if (_nameController.text == null) {
                               showDialog<String>(
                                           barrierDismissible: false,
@@ -767,7 +787,7 @@ class _SignupDonorState extends State<SignupDonor> {
                                           ),
                                         );
                             }
-                            else if (_phoneNoController == null) {
+                            else if (_phoneNoController.text == null) {
                               showDialog<String>(
                                           barrierDismissible: false,
                                           context: context,
@@ -861,6 +881,27 @@ class _SignupDonorState extends State<SignupDonor> {
                                                 'Invalid Address'),
                                             content: const Text(
                                                 'Unable to fetch location coordinates from the given address please reenter the precise address'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, 'OK');
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                            }
+                            else if(userexists = true){
+                              showDialog<String>(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text(
+                                                'User already exists'),
+                                            content: const Text(
+                                                'Account already exists with given email address. Please login using the credentials or try using forgot password if you have forgotten the password'),
                                             actions: <Widget>[
                                               TextButton(
                                                 onPressed: () {
