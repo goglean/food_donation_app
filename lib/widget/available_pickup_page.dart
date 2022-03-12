@@ -28,6 +28,8 @@ class AvaiablePickups extends StatefulWidget {
 class _AvaiablePickupsState extends State<AvaiablePickups> {
   Completer<GoogleMapController> _controller = Completer();
 
+  DateTime now = DateTime.now();
+
   bool charityClicked = false;
   bool recievedCharityData = false;
   Charity? curCharity = null;
@@ -114,8 +116,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                   double.parse(charity[i].posLat),
                   double.parse(charity[i].posLng)) >
               double.parse(dis!) ||
-          !TimeCheck().getOpenStatus("2022-3-6", charity[i].openTime,
-              "2022-6-12", charity[i].closeTime) ||
+          !TimeCheck().getCharOpenStatus(charity[i]) ||
           !charity[i]
               .donationType
               .contains(curRes.donationType.toLowerCase())) {
@@ -298,6 +299,8 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                             ),
                           ),
 
+                          SizedBox(height: 8),
+
                           // location details
                           ListTile(
                             visualDensity:
@@ -307,11 +310,26 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                               Icons.access_time,
                               size: 20,
                             ),
-                            title: Text(
-                              '${curCharity?.openTime} - ${curCharity?.closeTime}',
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Pickup available between ${curRes.startTime} and ${curRes.endTime}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                Text(
+                                  'Drop off available between ${curCharity?.openCloseTime[(now.weekday - 1) * 2]} and ${curCharity?.openCloseTime[(now.weekday - 1) * 2 + 1]}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           ListTile(
@@ -451,29 +469,6 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(24, 8, 0, 8),
                             child: Text(curRes.details),
-                          ),
-                          SizedBox(
-                            height: 2,
-                            child: const DecoratedBox(
-                              decoration:
-                                  const BoxDecoration(color: Colors.grey),
-                            ),
-                          ),
-
-                          //Food donor pickup details
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
-                            child: Text(
-                              "Food Donor's Pick-Up Details",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(24, 8, 0, 8),
-                            child: Text(
-                                'Come to the back door. Call us when you are near'),
                           ),
                           SizedBox(
                             height: 2,

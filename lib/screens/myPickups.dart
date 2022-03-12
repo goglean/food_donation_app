@@ -19,6 +19,7 @@ class _MyPickupsState extends State<MyPickups> {
   bool _pressAttention = true, _dataLoaded = false, _pickUpAvailable = false;
   List pickUpList = [];
   List pickUpCharityList = [];
+  DateTime now = DateTime.now();
   void getPickUps(bool _pressAttention) async {
     bool connected = await InternetService().checkInternetConnection();
     if (!connected) {
@@ -70,6 +71,7 @@ class _MyPickupsState extends State<MyPickups> {
         }
 
         if (check) continue;
+        // print(pList2[i]['PickedCharityUniId']);
 
         DocumentSnapshot snapshot =
             await charityCollection.doc(pList2[i]['PickedCharityUniId']).get();
@@ -80,15 +82,17 @@ class _MyPickupsState extends State<MyPickups> {
       }
     }
 
-    pickUpList = pList;
-    print(pickUpList.length);
-    for (var i = 0; i < pickUpList.length; i++) {
-      print(pickUpList[i]);
-      print('\n\n');
-    }
+    // print('\n\n\n');
+    // print(pickUpList.length);
+    // print('\n\n\n');
+    // for (var i = 0; i < pickUpList.length; i++) {
+    //   print(pickUpList[i]);
+    //   print('\n\n');
+    // }
 
     if (!_dataLoaded)
       setState(() {
+        pickUpList = pList;
         _dataLoaded = true;
         if (pickUpList.length != 0)
           _pickUpAvailable = true;
@@ -148,7 +152,7 @@ class _MyPickupsState extends State<MyPickups> {
                               dataMap['PickedCharityUniId'] &&
                           pickUpList[index]['Restaurant Name'] ==
                               dataMap['Restaurant Name']) {
-                        print(element.id);
+                        // print(element.id);
                         pCollection.doc(element.id).update({
                           'Pickedby': '',
                           'Status': 'upcoming',
@@ -174,6 +178,8 @@ class _MyPickupsState extends State<MyPickups> {
         ),
       );
     }
+
+    // print(pickUpList.length);
 
     return Scaffold(
       appBar: AppBar(
@@ -211,7 +217,7 @@ class _MyPickupsState extends State<MyPickups> {
                       _dataLoaded = false;
                     });
                     getPickUps(_pressAttention);
-                    print('upcoming');
+                    // print('upcoming');
                   },
                   child: Text(
                     'Upcoming',
@@ -239,8 +245,8 @@ class _MyPickupsState extends State<MyPickups> {
                       _pressAttention = false;
                       _dataLoaded = false;
                     });
-                    print('history');
-                    print(_pressAttention);
+                    // print('history');
+                    // print(_pressAttention);
                     getPickUps(_pressAttention);
                   },
                   child: Text(
@@ -288,13 +294,22 @@ class _MyPickupsState extends State<MyPickups> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "${pickUpList[index]['startdate']}, ${pickUpCharityList[index]['openTime']} - ${pickUpCharityList[index]['closeTime']}",
+                                              "${pickUpList[index]['startdate']}",
                                               style: TextStyle(
-                                                fontSize: 18,
+                                                fontSize: 17,
                                                 fontWeight: FontWeight.bold,
                                                 decoration:
                                                     TextDecoration.underline,
                                                 color: Colors.black,
+                                              ),
+                                            ),
+                                            SizedBox(height: 8),
+                                            Text(
+                                              'Drop off available between ${pickUpCharityList[index]['OpenCloseTime'][(now.weekday - 1) * 2]} and ${pickUpCharityList[index]['OpenCloseTime'][(now.weekday - 1) * 2 + 1]}',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black87,
                                               ),
                                             ),
                                             SizedBox(height: 8),

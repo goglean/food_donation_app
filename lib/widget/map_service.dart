@@ -20,25 +20,25 @@ class MapService {
   final CollectionReference pickupDetailsCollection =
       FirebaseFirestore.instance.collection('pickup_details');
 
-  void getAndUpdatePickupDetails(Charity? curCharity, Restaurent curRes) async {
-    DocumentSnapshot pickUpSnapshot =
-        await volunteerCollection.doc(uniqueId).get();
-    List pickUpList = (pickUpSnapshot.data() as Map)['PickUps'];
+  // void _getAndUpdatePickupDetails(Charity? curCharity, Restaurent curRes) async {
+  //   DocumentSnapshot pickUpSnapshot =
+  //       await volunteerCollection.doc(uniqueId).get();
+  //   List pickUpList = (pickUpSnapshot.data() as Map)['PickUps'];
 
-    pickUpList.add({
-      'charityOpenTime': curCharity!.openTime,
-      'charityCloseTime': curCharity.closeTime,
-      'from': curRes.name,
-      'to': curCharity.name,
-      'resUid': curRes.uniId,
-      'charityUid': curCharity.uniId,
-    });
-    // for (var i = 0; i < pickUpList.length; i++) {
-    //   print(pickUpList[i].toString());
-    // }
-    // List<String> a = ['s', 'e', 'f'];
-    await volunteerCollection.doc(uniqueId).update({'PickUps': pickUpList});
-  }
+  //   pickUpList.add({
+  //     // 'charityOpenTime': curCharity!.openTime,
+  //     // 'charityCloseTime': curCharity.closeTime,
+  //     'from': curRes.name,
+  //     'to': curCharity.name,
+  //     'resUid': curRes.uniId,
+  //     'charityUid': curCharity.uniId,
+  //   });
+  //   // for (var i = 0; i < pickUpList.length; i++) {
+  //   //   print(pickUpList[i].toString());
+  //   // }
+  //   // List<String> a = ['s', 'e', 'f'];
+  //   await volunteerCollection.doc(uniqueId).update({'PickUps': pickUpList});
+  // }
 
   Future updateResClaimedCondition(Restaurent res) async {
     return await restaurentCollection.doc(uniqueId).set({
@@ -77,10 +77,11 @@ class MapService {
       posLat: data['posLat'] ?? '',
       posLng: data['posLng'] ?? '',
       uniId: data['uniId'] ?? '',
-      openTime: data['openTime'] ?? '',
-      closeTime: data['closeTime'] ?? '',
+      // openTime: data['openTime'] ?? '',
+      // closeTime: data['closeTime'] ?? '',
       donationType: data['donationType'] ?? [],
       phoneNumber: data['Phone Number'] ?? 123456789,
+      openCloseTime: data['OpenCloseTime'] ?? [],
     );
   }
 
@@ -105,9 +106,9 @@ class MapService {
           details: data[i]['details'] ?? '',
           email: data[i]['email'] ?? '',
           endDate: data[i]['enddate'] ?? '',
-          endTime: data[i]['endtime']?? '',
+          endTime: data[i]['endtime'] ?? '',
           startDate: data[i]['startdate'] ?? '',
-          startTime: data[i]['starttime']?? '',
+          startTime: data[i]['starttime'] ?? '',
           desList: data[i]['descriptionlist'] ?? [],
           quantityList: data[i]['quantitylist'] ?? [],
           unitList: data[i]['unitlist'] ?? [],
@@ -150,10 +151,11 @@ class MapService {
         posLat: doc['posLat'] ?? '',
         posLng: doc['posLng'] ?? '',
         uniId: doc['uniId'] ?? '',
-        openTime: doc['openTime'] ?? '',
-        closeTime: doc['closeTime'] ?? '',
+        // openTime: doc['openTime'] ?? '',
+        // closeTime: doc['closeTime'] ?? '',
         donationType: doc['donationType'] ?? [],
         phoneNumber: doc['Phone Number'] ?? 1234567890,
+        openCloseTime: doc['OpenCloseTime'] ?? [],
       );
     }).toList();
   }

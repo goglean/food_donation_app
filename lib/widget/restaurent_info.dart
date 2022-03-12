@@ -115,15 +115,18 @@ class _RestaurentInfoState extends State<RestaurentInfo> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black54,
+                      color: Colors.black87,
                     ),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${widget.curRestaurent!.startDate}, ${widget.curRestaurent!.startTime} - ${widget.curRestaurent!.endTime}',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        '${widget.curRestaurent!.startDate}\nPickup available between ${widget.curRestaurent!.startTime} and ${widget.curRestaurent!.endTime}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                        ),
                       ),
                       Text(
                         '${distanceBetweenMarker}',

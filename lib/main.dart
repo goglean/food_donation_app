@@ -7,6 +7,9 @@ import 'package:food_donating_app/screens/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:food_donating_app/screens/homeDonor.dart';
+import 'package:food_donating_app/widget/restaurent_map.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +56,10 @@ class _MyAppState extends State<MyApp> {
                   print("error" + e.toString());
                 }
                 if (_userType == "volunteer") {
-                  return Home();
+                  return ChangeNotifierProvider(
+                    create: (BuildContext context) => DirectionLines(),
+                    child: Home(),
+                  );
                 } else
                   return HomeDonor();
               } else

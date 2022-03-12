@@ -39,7 +39,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
   }
 
   // 0th position show LatLng of current location 1st shows LatLng of tepped restaurent
-  List<LatLng?> directionLineMarker = new List.filled(2, null, growable: false);
+  // List<LatLng?> directionLineMarker = new List.filled(2, null, growable: false);
 
   CameraPosition defaultCameraPos = CameraPosition(
     // target: LatLng(13.5566036, 80.0251352),
@@ -58,7 +58,9 @@ class _RestaurentMapState extends State<RestaurentMap> {
   void initializeWithCurrentLocation() async {
     Position position = await LocationService().getGeoLocationPosition();
 
-    directionLineMarker[0] = LatLng(position.latitude, position.longitude);
+    // directionLineMarker[0] = LatLng(position.latitude, position.longitude);
+    Provider.of<DirectionLines>(context, listen: false).yourPos =
+        LatLng(position.latitude, position.longitude);
 
     CameraPosition? cameraPosition = CameraPosition(
       target: LatLng(position.latitude, position.longitude),
@@ -166,7 +168,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
                   double.parse(restaurent[i].lng),
                 ) >
                 double.parse(dis!) ||
-            !TimeCheck().getOpenStatus(
+            !TimeCheck().getResOpenStatus(
                 restaurent[i].startDate,
                 restaurent[i].startTime,
                 restaurent[i].endDate,
@@ -197,8 +199,12 @@ class _RestaurentMapState extends State<RestaurentMap> {
               );
               return;
             }
+            // Provider.of<DirectionLines>(context).resPos = LatLng(2, 2);
 
-            directionLineMarker[1] = LatLng(double.parse(restaurent[i].lat),
+            // directionLineMarker[1] = LatLng(double.parse(restaurent[i].lat),
+            //     double.parse(restaurent[i].lng));
+            Provider.of<DirectionLines>(context, listen: false).resPos = LatLng(
+                double.parse(restaurent[i].lat),
                 double.parse(restaurent[i].lng));
             _showRestaurentPanel(restaurent[i].email);
           },
@@ -217,13 +223,16 @@ class _RestaurentMapState extends State<RestaurentMap> {
             _controller.complete(controller);
           },
           polylines: {
-            if (directionLineMarker[0] != null &&
-                directionLineMarker[1] != null)
+            if (Provider.of<DirectionLines>(context).yourPos != null &&
+                Provider.of<DirectionLines>(context).resPos != null)
               Polyline(
                 polylineId: const PolylineId('overview_polyline'),
                 color: Colors.blue,
                 width: 5,
-                points: [directionLineMarker[0]!, directionLineMarker[1]!],
+                points: [
+                  Provider.of<DirectionLines>(context, listen: false).yourPos!,
+                  Provider.of<DirectionLines>(context, listen: false).resPos!
+                ],
               ),
           },
         ),
@@ -256,9 +265,12 @@ class _RestaurentMapState extends State<RestaurentMap> {
 
                 setState(() {
                   restaurentMarker.add(locationMarker!);
-                  directionLineMarker[0] = LatLng(
-                      locationMarker!.position.latitude,
-                      locationMarker!.position.longitude);
+                  // directionLineMarker[0] = LatLng(
+                  //     locationMarker!.position.latitude,
+                  //     locationMarker!.position.longitude);
+                  Provider.of<DirectionLines>(context, listen: false).yourPos =
+                      LatLng(locationMarker!.position.latitude,
+                          locationMarker!.position.longitude);
                 });
               },
               child: const Icon(Icons.pin_drop),
@@ -278,13 +290,13 @@ class _RestaurentMapState extends State<RestaurentMap> {
   }
 }
 
-class Value2 {
-  static String? value;
-  static void setString(String? newValue) {
-    value = newValue;
-  }
+class DirectionLines extends ChangeNotifier {
+  LatLng? yourPos, resPos;
 
-  static String? getString() {
-    return value;
+  DirectionLines({this.yourPos, this.resPos});
+
+  void makePosNull() {
+    resPos = null;
+    notifyListeners();
   }
 }
