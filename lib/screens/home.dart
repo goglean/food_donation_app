@@ -6,7 +6,10 @@ import 'package:food_donating_app/screens/impacts.dart';
 import 'package:food_donating_app/screens/myPickups.dart';
 import 'package:food_donating_app/screens/profileVolunteer.dart';
 import 'package:food_donating_app/widget/map.dart';
+import 'package:food_donating_app/widget/restaurent_map.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -140,6 +143,8 @@ class _HomeState extends State<Home> {
                   context,
                   MaterialPageRoute(builder: (context) => MyPickups()),
                 );
+                Provider.of<DirectionLines>(context, listen: false).resPos =
+                    null;
               },
             ),
             ListTile(

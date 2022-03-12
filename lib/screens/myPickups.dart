@@ -71,7 +71,7 @@ class _MyPickupsState extends State<MyPickups> {
         }
 
         if (check) continue;
-        print(pList2[i]['PickedCharityUniId']);
+        // print(pList2[i]['PickedCharityUniId']);
 
         DocumentSnapshot snapshot =
             await charityCollection.doc(pList2[i]['PickedCharityUniId']).get();
@@ -82,15 +82,17 @@ class _MyPickupsState extends State<MyPickups> {
       }
     }
 
-    pickUpList = pList;
-    print(pickUpList.length);
-    for (var i = 0; i < pickUpList.length; i++) {
-      print(pickUpList[i]);
-      print('\n\n');
-    }
+    // print('\n\n\n');
+    // print(pickUpList.length);
+    // print('\n\n\n');
+    // for (var i = 0; i < pickUpList.length; i++) {
+    //   print(pickUpList[i]);
+    //   print('\n\n');
+    // }
 
     if (!_dataLoaded)
       setState(() {
+        pickUpList = pList;
         _dataLoaded = true;
         if (pickUpList.length != 0)
           _pickUpAvailable = true;
@@ -150,7 +152,7 @@ class _MyPickupsState extends State<MyPickups> {
                               dataMap['PickedCharityUniId'] &&
                           pickUpList[index]['Restaurant Name'] ==
                               dataMap['Restaurant Name']) {
-                        print(element.id);
+                        // print(element.id);
                         pCollection.doc(element.id).update({
                           'Pickedby': '',
                           'Status': 'upcoming',
@@ -176,6 +178,8 @@ class _MyPickupsState extends State<MyPickups> {
         ),
       );
     }
+
+    // print(pickUpList.length);
 
     return Scaffold(
       appBar: AppBar(
@@ -213,7 +217,7 @@ class _MyPickupsState extends State<MyPickups> {
                       _dataLoaded = false;
                     });
                     getPickUps(_pressAttention);
-                    print('upcoming');
+                    // print('upcoming');
                   },
                   child: Text(
                     'Upcoming',
@@ -241,8 +245,8 @@ class _MyPickupsState extends State<MyPickups> {
                       _pressAttention = false;
                       _dataLoaded = false;
                     });
-                    print('history');
-                    print(_pressAttention);
+                    // print('history');
+                    // print(_pressAttention);
                     getPickUps(_pressAttention);
                   },
                   child: Text(
