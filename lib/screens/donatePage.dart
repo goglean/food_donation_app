@@ -22,7 +22,7 @@ class _DonatePageState extends State<DonatePage> {
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
         children: [
-          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.03),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -60,7 +60,7 @@ class _DonatePageState extends State<DonatePage> {
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),
           Container(
               width: MediaQuery.of(context).size.width * 0.8,
-              height: MediaQuery.of(context).size.height * 0.30,
+              height: MediaQuery.of(context).size.height * 0.32,
               //color: Colors.red,
               child: SingleChildScrollView(
                 child: Text(

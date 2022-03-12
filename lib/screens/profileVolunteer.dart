@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_donating_app/screens/authscreen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -632,7 +633,10 @@ class _ProfileVolunteerState extends State<ProfileVolunteer> {
                                             onPressed: () async {
                                               await FirebaseAuth.instance
                                                   .signOut();
-                                              Navigator.pop(context);
+                                               Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => AuthScreen()));
                                               //Navigator.pop(context);
                                             },
                                             child: Text(

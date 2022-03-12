@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_donating_app/screens/authscreen.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,11 +29,13 @@ class _ProfileDonorState extends State<ProfileDonor> {
   String _longitude = "";
   String _city = "";
   String _state = "";
+  String _zipcode = "";
   String _statetemp = "";
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneNoController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
+  TextEditingController _zipcodeController = TextEditingController();
   TextEditingController _restaurantController = TextEditingController();
   TextEditingController _citycontroller = TextEditingController();
   List<Location> locations = [];
@@ -49,6 +52,7 @@ class _ProfileDonorState extends State<ProfileDonor> {
       "Address": _address,
       "Contact Person": _name,
       "City" : _city,
+      "Zipcode" : _zipcode,
       "State" : _state,
     });
 
@@ -62,6 +66,7 @@ class _ProfileDonorState extends State<ProfileDonor> {
       "Address": _address,
       "Contact Person": _name,
       "City" : _city,
+      "Zipcode" : _zipcode,
       "State" : _state,
     });
 
@@ -84,6 +89,7 @@ class _ProfileDonorState extends State<ProfileDonor> {
         _longitude = value.data()!['Longitude'];
         _restaurant = value.data()!['Name'];
         _city = value.data()!['City'];
+        _zipcode = value.data()!['Zipcode'];
         _state = value.data()!['State'];
         print('${_name[0]}');
       });
@@ -721,6 +727,142 @@ class _ProfileDonorState extends State<ProfileDonor> {
                                                       _addressController
                                                           .clear();
                                                     }
+                                                  },
+                                                  child: Text(
+                                                    "OK",
+                                                    style: GoogleFonts.roboto(
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                  ))
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ));
+                        },
+                        icon: Icon(
+                          Icons.keyboard_arrow_right,
+                          color: Colors.grey[500],
+                        ))
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  bottom: BorderSide(width: 1),
+                )),
+            padding: EdgeInsets.fromLTRB(20, 0, 5, 0),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.06,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Zipcode",
+                  style: GoogleFonts.roboto(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      "$_zipcode",
+                      style: GoogleFonts.roboto(
+                          color: Colors.grey[500],
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    content: Text(
+                                        "Do you want to change your Zipcode?"),
+                                    actions: [
+                                      Column(
+                                        children: [
+                                          Container(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: TextField(
+                                                cursorColor: Theme.of(context)
+                                                    .primaryColor,
+                                                controller: _zipcodeController,
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                decoration: InputDecoration(
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                        width: 1),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20)),
+                                                  ),
+                                                  border: OutlineInputBorder(
+                                                    //borderRadius: new BorderRadius.circular(8),
+                                                    borderSide: BorderSide(
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                    borderRadius:
+                                                        new BorderRadius
+                                                            .circular(20),
+                                                  ),
+                                                  labelText:
+                                                      "Enter new zipcode here",
+                                                  labelStyle:
+                                                      GoogleFonts.roboto(
+                                                          color:
+                                                              Colors.black87),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    _zipcodeController.clear();
+                                                  },
+                                                  child: Text(
+                                                    "Cancel",
+                                                    style: GoogleFonts.roboto(
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                  )),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    if (_zipcodeController
+                                                        .text.length == 5) {
+                                                      setState(() {
+                                                        _zipcode =
+                                                            _zipcodeController
+                                                                .text;
+                                                        print(_citycontroller
+                                                            .toString());
+                                                      });
+                                                      Navigator.pop(context);
+                                                      _citycontroller
+                                                          .clear();
+                                                    }
+                                                  else{
+                                                    Fluttertoast.showToast(msg: 'Enter a valid zipcode');
+                                                  }
                                                   },
                                                   child: Text(
                                                     "OK",

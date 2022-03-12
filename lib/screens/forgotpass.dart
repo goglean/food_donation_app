@@ -70,7 +70,7 @@ class _loginpageState extends State<forgotpassword> {
                             context: context,
                             builder: (context) => AlertDialog(
                                   content: Text(
-                                      "please check your email for the link for changing password"),
+                                      "please check your email for the reset password link"),
                                   actions: [
                                     Column(
                                       children: [

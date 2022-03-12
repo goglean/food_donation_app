@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_donating_app/screens/authscreen.dart';
 import 'package:food_donating_app/screens/contactUsVolunteer.dart';
 import 'package:food_donating_app/screens/impacts.dart';
 import 'package:food_donating_app/screens/myPickups.dart';
@@ -211,6 +212,10 @@ class _HomeState extends State<Home> {
                                     onPressed: () async {
                                       await FirebaseAuth.instance.signOut();
                                       Navigator.pop(context);
+                                      Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => AuthScreen()));
                                       //Navigator.pop(context);
                                     },
                                     child: Text(
