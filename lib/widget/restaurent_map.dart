@@ -166,7 +166,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
                   double.parse(restaurent[i].lng),
                 ) >
                 double.parse(dis!) ||
-            !TimeCheck().getOpenStatus(
+            !TimeCheck().getResOpenStatus(
                 restaurent[i].startDate,
                 restaurent[i].startTime,
                 restaurent[i].endDate,

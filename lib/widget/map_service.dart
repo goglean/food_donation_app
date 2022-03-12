@@ -81,6 +81,7 @@ class MapService {
       closeTime: data['closeTime'] ?? '',
       donationType: data['donationType'] ?? [],
       phoneNumber: data['Phone Number'] ?? 123456789,
+      openCloseTime: data['OpenCloseTime'] ?? [],
     );
   }
 
@@ -105,9 +106,9 @@ class MapService {
           details: data[i]['details'] ?? '',
           email: data[i]['email'] ?? '',
           endDate: data[i]['enddate'] ?? '',
-          endTime: data[i]['endtime']?? '',
+          endTime: data[i]['endtime'] ?? '',
           startDate: data[i]['startdate'] ?? '',
-          startTime: data[i]['starttime']?? '',
+          startTime: data[i]['starttime'] ?? '',
           desList: data[i]['descriptionlist'] ?? [],
           quantityList: data[i]['quantitylist'] ?? [],
           unitList: data[i]['unitlist'] ?? [],
@@ -154,6 +155,7 @@ class MapService {
         closeTime: doc['closeTime'] ?? '',
         donationType: doc['donationType'] ?? [],
         phoneNumber: doc['Phone Number'] ?? 1234567890,
+        openCloseTime: doc['OpenCloseTime'] ?? [],
       );
     }).toList();
   }

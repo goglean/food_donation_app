@@ -4,6 +4,7 @@ class Charity {
   final String openTime, closeTime;
   final String phoneNumber;
   List donationType;
+  List openCloseTime;
 
   Charity({
     required this.name,
@@ -14,5 +15,6 @@ class Charity {
     required this.openTime,
     required this.closeTime,
     required this.donationType,
+    required this.openCloseTime,
   });
 }

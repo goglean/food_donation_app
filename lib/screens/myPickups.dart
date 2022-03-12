@@ -19,6 +19,7 @@ class _MyPickupsState extends State<MyPickups> {
   bool _pressAttention = true, _dataLoaded = false, _pickUpAvailable = false;
   List pickUpList = [];
   List pickUpCharityList = [];
+  DateTime now = DateTime.now();
   void getPickUps(bool _pressAttention) async {
     bool connected = await InternetService().checkInternetConnection();
     if (!connected) {
@@ -70,6 +71,7 @@ class _MyPickupsState extends State<MyPickups> {
         }
 
         if (check) continue;
+        print(pList2[i]['PickedCharityUniId']);
 
         DocumentSnapshot snapshot =
             await charityCollection.doc(pList2[i]['PickedCharityUniId']).get();
@@ -288,13 +290,22 @@ class _MyPickupsState extends State<MyPickups> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "${pickUpList[index]['startdate']}, ${pickUpCharityList[index]['openTime']} - ${pickUpCharityList[index]['closeTime']}",
+                                              "${pickUpList[index]['startdate']}",
                                               style: TextStyle(
-                                                fontSize: 18,
+                                                fontSize: 17,
                                                 fontWeight: FontWeight.bold,
                                                 decoration:
                                                     TextDecoration.underline,
                                                 color: Colors.black,
+                                              ),
+                                            ),
+                                            SizedBox(height: 8),
+                                            Text(
+                                              'Drop off available between ${pickUpCharityList[index]['OpenCloseTime'][(now.weekday - 1) * 2]} and ${pickUpCharityList[index]['OpenCloseTime'][(now.weekday - 1) * 2 + 1]}',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black87,
                                               ),
                                             ),
                                             SizedBox(height: 8),
