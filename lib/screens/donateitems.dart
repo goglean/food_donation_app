@@ -162,11 +162,12 @@ class _donateitemsState extends State<donateitems> {
                   style: GoogleFonts.roboto(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
-                      fontSize: MediaQuery.of(context).size.height * 0.02),
+                      fontSize: MediaQuery.of(context).size.width * 0.04),
                 ),
               ),
               margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
             ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.015,),
             Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: MediaQuery.of(context).size.height * 0.06,
@@ -307,71 +308,73 @@ class _donateitemsState extends State<donateitems> {
               context: context,
               builder: (BuildContext context) => AlertDialog(
                 title: const Text('Add Item'),
-                content: Column(
-                  children: [
-                    TextField(
-                      keyboardType: TextInputType.number,
-                      controller: qtycontroller,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "Qty",
-                        hintStyle: GoogleFonts.roboto(color: Colors.black),
+                content: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        controller: qtycontroller,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Qty",
+                          hintStyle: GoogleFonts.roboto(color: Colors.black),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    TextField(
-                      keyboardType: TextInputType.multiline,
-                      minLines: 4,
-                      maxLines: 5,
-                      controller: disccontroller,
-                      decoration: InputDecoration(
-                        hintMaxLines: 7,
-                        border: OutlineInputBorder(),
-                        hintText: "Description",
-                        hintStyle: GoogleFonts.roboto(color: Colors.black),
+                      SizedBox(
+                        height: 20,
                       ),
-                    ),
-                    Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        height: MediaQuery.of(context).size.height * 0.08,
-                        margin: EdgeInsets.all(
-                            MediaQuery.of(context).size.width * 0.01),
-                        decoration: BoxDecoration(
-                            border: Border.all(width: 1, color: Colors.grey),
-                            borderRadius: BorderRadius.circular(20.0)
-                            //)
-                            ),
-                        child: Padding(
-                            padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: dropdownValue,
-                                icon: const Icon(Icons.arrow_drop_down),
-                                elevation: 16,
-                                style:
-                                    const TextStyle(color: Color(0xFFFF6E40)),
-                                underline: Container(
-                                  height: 2,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    dropdownValue = newValue!;
-                                    changed = true;
-                                  });
-                                },
-                                items: units.map<DropdownMenuItem<String>>(
-                                    (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
+                      TextField(
+                        keyboardType: TextInputType.multiline,
+                        minLines: 4,
+                        maxLines: 5,
+                        controller: disccontroller,
+                        decoration: InputDecoration(
+                          hintMaxLines: 7,
+                          border: OutlineInputBorder(),
+                          hintText: "Description",
+                          hintStyle: GoogleFonts.roboto(color: Colors.black),
+                        ),
+                      ),
+                      Container(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          height: MediaQuery.of(context).size.height * 0.08,
+                          margin: EdgeInsets.all(
+                              MediaQuery.of(context).size.width * 0.01),
+                          decoration: BoxDecoration(
+                              border: Border.all(width: 1, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(20.0)
+                              //)
                               ),
-                            )))
-                  ],
+                          child: Padding(
+                              padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  value: dropdownValue,
+                                  icon: const Icon(Icons.arrow_drop_down),
+                                  elevation: 16,
+                                  style:
+                                      const TextStyle(color: Color(0xFFFF6E40)),
+                                  underline: Container(
+                                    height: 2,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      dropdownValue = newValue!;
+                                      changed = true;
+                                    });
+                                  },
+                                  items: units.map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
+                              )))
+                    ],
+                  ),
                 ),
                 actions: <Widget>[
                   TextButton(
@@ -477,7 +480,7 @@ class _donateitemsState extends State<donateitems> {
                 showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                          content: Text("Some of the items are expty."),
+                          content: Text("Please add at least one donation item"),
                           actions: [
                             Column(
                               children: [

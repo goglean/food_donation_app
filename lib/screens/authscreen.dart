@@ -114,13 +114,13 @@ class _AuthScreenState extends State<AuthScreen> {
                         ],
                       ),
                     ),
-                    // SizedBox(
-                    //   height: MediaQuery.of(context).size.height * 0.01,
-                    // ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.13,
                       child: Text(
-                        "Go Glean is a registered nonprofit that provides a web based \" marketplace \" allowing excess food to be donated from the food to be donated from the food service industry to qualified charities that work with the needy.",
+                        "Go Glean is a nonprofit that facilitates excess food to be donated to qualified charities that work with the needy",
                         style: GoogleFonts.roboto(
                           fontSize: MediaQuery.of(context).size.height * 0.02,
                           fontWeight: FontWeight.w500,

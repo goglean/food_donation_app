@@ -151,8 +151,8 @@ class _loginpageState extends State<signinpage> {
                         borderRadius: BorderRadius.circular(20)),
                     child: TextButton(
                         onPressed: () async{
-                          print(usernamecontroller.text.runtimeType);
-                          print(usernamecontroller.text.toString().runtimeType);
+                          // print(usernamecontroller.text.runtimeType);
+                          // print(usernamecontroller.text.toString().runtimeType);
                           FirebaseAuth.instance
                               .signInWithEmailAndPassword(
                                   email: usernamecontroller.text.trim(),
@@ -172,27 +172,29 @@ class _loginpageState extends State<signinpage> {
                                     () {
                                 if (value.data()!['User Type'].toString() ==
                                     "volunteer") {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Home()));
                                   usernamecontroller.clear();
                                   passwordcontroller.clear();
-                                  Navigator.pop(context);
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                   // Navigator.pop(context);
-                                } else {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => HomeDonor()));
+                                          builder: (context) => Home()));
+                                  // Navigator.pop(context);
+                                } else {
                                   usernamecontroller.clear();
                                   passwordcontroller.clear();
                                   Navigator.pop(context);
                                   Navigator.pop(context);
-                                  Navigator.pop(context);
-                                }});
+                                  // Navigator.pop(context);
+                                  // Navigator.pop(context);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomeDonor()));
+                                  // Navigator.pop(context);
+                                  }});
                               });
                             } else {
                               return Fluttertoast.showToast(
@@ -205,11 +207,13 @@ class _loginpageState extends State<signinpage> {
                             }
                           }).catchError((error) {
                             var errormsg = error.message;
-                            showDialog(
+                            if (errormsg.toString() == "Given String is empty or null") {
+                              showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                                  content: Text(
-                                      errormsg.toString()),
+                                  content: 
+                                  Text(
+                                      "Please enter valid email and password"),
                                   actions: [
                                     Column(
                                       children: [
@@ -233,7 +237,71 @@ class _loginpageState extends State<signinpage> {
                                     )
                                   ],
                                 ));
+                            } 
+                            else if (errormsg.toString() == 'The email address is badly formatted.') {
+                              showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  content: 
+                                  Text(
+                                      "Please enter a valid email"),
+                                  actions: [
+                                    Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "OK",
+                                                  style: GoogleFonts.roboto(
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                )),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ));
+                            }
+                            else if (errormsg.toString() == 'There is no user record corresponding to this identifier. The user may have been deleted.') {
+                              showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  content: 
+                                  Text(
+                                      "Sorry, we can't find an account with this email address and password. Please try again or create a new account."),
+                                  actions: [
+                                    Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "OK",
+                                                  style: GoogleFonts.roboto(
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                )),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ));
+                            }
                           });
+                          
                         },
                         child: Text(
                           'Sign in',
