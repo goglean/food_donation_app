@@ -213,9 +213,10 @@ class _HomeState extends State<Home> {
                                       await FirebaseAuth.instance.signOut();
                                       Navigator.pop(context);
                                       Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => AuthScreen()));
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AuthScreen()));
                                       //Navigator.pop(context);
                                     },
                                     child: Text(
