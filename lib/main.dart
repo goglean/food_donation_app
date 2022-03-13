@@ -14,7 +14,10 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (BuildContext context) => DirectionLines(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -56,10 +59,7 @@ class _MyAppState extends State<MyApp> {
                   print("error" + e.toString());
                 }
                 if (_userType == "volunteer") {
-                  return ChangeNotifierProvider(
-                    create: (BuildContext context) => DirectionLines(),
-                    child: Home(),
-                  );
+                  return Home();
                 } else
                   return HomeDonor();
               } else
