@@ -116,7 +116,7 @@ class _AvaiablePickupsState extends State<AvaiablePickups> {
                   double.parse(charity[i].posLat),
                   double.parse(charity[i].posLng)) >
               double.parse(dis!) ||
-          !TimeCheck().getCharOpenStatus(charity[i]) ||
+          // !TimeCheck().getCharOpenStatus(charity[i]) ||
           !charity[i]
               .donationType
               .contains(curRes.donationType.toLowerCase())) {

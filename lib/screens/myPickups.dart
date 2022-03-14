@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_donating_app/screens/startJourney.dart';
 import 'package:food_donating_app/shared/loading.dart';
 import 'package:food_donating_app/shared/no_pickups.dart';
+import 'package:food_donating_app/widget/charity.dart';
 import 'package:food_donating_app/widget/internet_service.dart';
 import 'package:food_donating_app/widget/noInternetScreen.dart';
 import 'package:food_donating_app/widget/restaurent_map.dart';
+import 'package:food_donating_app/widget/timecheck.dart';
 
 class MyPickups extends StatefulWidget {
   const MyPickups({Key? key}) : super(key: key);
@@ -305,6 +308,15 @@ class _MyPickupsState extends State<MyPickups> {
                                             ),
                                             SizedBox(height: 8),
                                             Text(
+                                              'PickUp available between ${pickUpList[index]['starttime']} and ${pickUpList[index]['endtime']}',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                            SizedBox(height: 8),
+                                            Text(
                                               'Drop off available between ${pickUpCharityList[index]['OpenCloseTime'][(now.weekday - 1) * 2]} and ${pickUpCharityList[index]['OpenCloseTime'][(now.weekday - 1) * 2 + 1]}',
                                               style: TextStyle(
                                                 fontSize: 16,
@@ -406,6 +418,76 @@ class _MyPickupsState extends State<MyPickups> {
                                                           );
                                                           return;
                                                         }
+
+                                                        if (!TimeCheck()
+                                                            .getResOpenStatus(
+                                                                pickUpList[
+                                                                        index][
+                                                                    'startdate'],
+                                                                pickUpList[
+                                                                        index][
+                                                                    'starttime'],
+                                                                pickUpList[
+                                                                        index]
+                                                                    ['enddate'],
+                                                                pickUpList[
+                                                                        index][
+                                                                    'endtime'])) {
+                                                          Fluttertoast.showToast(
+                                                              msg:
+                                                                  "Restaurant is closed now",
+                                                              toastLength: Toast
+                                                                  .LENGTH_SHORT,
+                                                              gravity:
+                                                                  ToastGravity
+                                                                      .BOTTOM,
+                                                              timeInSecForIosWeb:
+                                                                  1,
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .black45,
+                                                              fontSize: 16.0);
+                                                          return;
+                                                        }
+                                                        print(
+                                                            pickUpList[index]);
+
+                                                        if (!TimeCheck()
+                                                            .getCharOpenStatus(
+                                                                Charity(
+                                                          name: '',
+                                                          posLat: '',
+                                                          posLng: '',
+                                                          uniId: '',
+                                                          // openTime: doc['openTime'] ?? '',
+                                                          // closeTime: doc['closeTime'] ?? '',
+                                                          donationType: [],
+                                                          phoneNumber:
+                                                              '1234567890',
+                                                          openCloseTime:
+                                                              pickUpCharityList[
+                                                                      index][
+                                                                  'OpenCloseTime'],
+                                                        ))) {
+                                                          Fluttertoast.showToast(
+                                                              msg:
+                                                                  "Charity is closed now",
+                                                              toastLength: Toast
+                                                                  .LENGTH_SHORT,
+                                                              gravity:
+                                                                  ToastGravity
+                                                                      .BOTTOM,
+                                                              timeInSecForIosWeb:
+                                                                  1,
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .black45,
+                                                              fontSize: 16.0);
+                                                          return;
+                                                        }
+
+                                                        print(
+                                                            pickUpList[index]);
 
                                                         // print(FirebaseAuth.instance.currentUser!.uid);
                                                         // Navigator.pop(context);
