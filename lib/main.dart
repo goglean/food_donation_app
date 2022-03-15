@@ -1,5 +1,7 @@
 import 'dart:async';
-
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/authscreen.dart';
@@ -14,10 +16,14 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+    .then((_) {
+      
   runApp(ChangeNotifierProvider(
     create: (BuildContext context) => DirectionLines(),
     child: MyApp(),
   ));
+    });
 }
 
 class MyApp extends StatefulWidget {
@@ -58,10 +64,19 @@ class _MyAppState extends State<MyApp> {
                 } catch (e) {
                   print("error" + e.toString());
                 }
-                if (_userType == "volunteer") {
-                  return Home();
+                Timer(Duration(seconds: 2),() {
+                  if (_userType == "volunteer") {
+                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()));
                 } else
-                  return HomeDonor();
+                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomeDonor()));
+                });
+                return Loading();
               } else
                 return AuthScreen();
             },
@@ -69,3 +84,21 @@ class _MyAppState extends State<MyApp> {
         ));
   }
 }
+
+class Loading extends StatelessWidget {
+  const Loading({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 150,
+      child: Center(
+        child: SpinKitChasingDots(
+          color: Theme.of(context).primaryColor,
+          size: 50,
+        ),
+      ),
+    );
+  }
+}
+
