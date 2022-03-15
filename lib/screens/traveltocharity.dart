@@ -19,8 +19,8 @@ class _TravelToCharityState extends State<TravelToCharity> {
   String dis = "";
 
   void getCurAddress() async {
-    dis = await LocationService()
-        .GetAddressFromLatLong(widget.curRes['Lat'], widget.curRes['Lng']);
+    dis = await LocationService().GetAddressFromLatLong(
+        widget.curChar['posLat'], widget.curChar['posLng']);
   }
 
   @override

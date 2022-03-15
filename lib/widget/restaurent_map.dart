@@ -39,7 +39,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
   }
 
   // 0th position show LatLng of current location 1st shows LatLng of tepped restaurent
-  // List<LatLng?> directionLineMarker = new List.filled(2, null, growable: false);
+  List<LatLng?> directionLineMarker = new List.filled(2, null, growable: false);
 
   CameraPosition defaultCameraPos = CameraPosition(
     // target: LatLng(13.5566036, 80.0251352),
@@ -58,9 +58,12 @@ class _RestaurentMapState extends State<RestaurentMap> {
   void initializeWithCurrentLocation() async {
     Position position = await LocationService().getGeoLocationPosition();
 
-    // directionLineMarker[0] = LatLng(position.latitude, position.longitude);
-    Provider.of<DirectionLines>(context, listen: false).yourPos =
-        LatLng(position.latitude, position.longitude);
+    directionLineMarker[0] = LatLng(position.latitude, position.longitude);
+    // Provider.of<DirectionLines>(context, listen: false).yourPos =
+    //     LatLng(position.latitude, position.longitude);
+
+    // Provider.of<DirectionLines>(context, listen: false)
+    //     .setYourPos(LatLng(position.latitude, position.longitude));
 
     CameraPosition? cameraPosition = CameraPosition(
       target: LatLng(position.latitude, position.longitude),
@@ -201,11 +204,14 @@ class _RestaurentMapState extends State<RestaurentMap> {
             }
             // Provider.of<DirectionLines>(context).resPos = LatLng(2, 2);
 
-            // directionLineMarker[1] = LatLng(double.parse(restaurent[i].lat),
-            //     double.parse(restaurent[i].lng));
-            Provider.of<DirectionLines>(context, listen: false).resPos = LatLng(
-                double.parse(restaurent[i].lat),
+            directionLineMarker[1] = LatLng(double.parse(restaurent[i].lat),
                 double.parse(restaurent[i].lng));
+            // Provider.of<DirectionLines>(context, listen: false).resPos = LatLng(
+            //     double.parse(restaurent[i].lat),
+            //     double.parse(restaurent[i].lng));
+            // Provider.of<DirectionLines>(context, listen: false).setResPos(
+            //     LatLng(double.parse(restaurent[i].lat),
+            //         double.parse(restaurent[i].lng)));
             _showRestaurentPanel(restaurent[i].email);
           },
         ));
@@ -223,16 +229,13 @@ class _RestaurentMapState extends State<RestaurentMap> {
             _controller.complete(controller);
           },
           polylines: {
-            if (Provider.of<DirectionLines>(context).yourPos != null &&
-                Provider.of<DirectionLines>(context).resPos != null)
+            if (directionLineMarker[0] != null &&
+                directionLineMarker[1] != null)
               Polyline(
                 polylineId: const PolylineId('overview_polyline'),
                 color: Colors.blue,
                 width: 5,
-                points: [
-                  Provider.of<DirectionLines>(context, listen: false).yourPos!,
-                  Provider.of<DirectionLines>(context, listen: false).resPos!
-                ],
+                points: [directionLineMarker[0]!, directionLineMarker[1]!],
               ),
           },
         ),
@@ -265,12 +268,16 @@ class _RestaurentMapState extends State<RestaurentMap> {
 
                 setState(() {
                   restaurentMarker.add(locationMarker!);
-                  // directionLineMarker[0] = LatLng(
-                  //     locationMarker!.position.latitude,
-                  //     locationMarker!.position.longitude);
-                  Provider.of<DirectionLines>(context, listen: false).yourPos =
-                      LatLng(locationMarker!.position.latitude,
-                          locationMarker!.position.longitude);
+                  directionLineMarker[0] = LatLng(
+                      locationMarker!.position.latitude,
+                      locationMarker!.position.longitude);
+                  // Provider.of<DirectionLines>(context, listen: false).yourPos =
+                  //     LatLng(locationMarker!.position.latitude,
+                  //         locationMarker!.position.longitude);
+
+                  // Provider.of<DirectionLines>(context, listen: false)
+                  //     .setYourPos(LatLng(locationMarker!.position.latitude,
+                  //         locationMarker!.position.longitude));
                 });
               },
               child: const Icon(Icons.pin_drop),
@@ -290,13 +297,22 @@ class _RestaurentMapState extends State<RestaurentMap> {
   }
 }
 
-class DirectionLines extends ChangeNotifier {
-  LatLng? yourPos, resPos;
+// class DirectionLines extends ChangeNotifier {
+//   LatLng? yourPos, resPos;
+//   String check = "";
 
-  DirectionLines({this.yourPos, this.resPos});
+//   DirectionLines({this.yourPos, this.resPos});
 
-  void makePosNull() {
-    resPos = null;
-    notifyListeners();
-  }
-}
+//   void setResPos(LatLng? value) {
+//     resPos = value;
+//     notifyListeners();
+//   }
+
+//   void setYourPos(LatLng? value) {
+//     yourPos = value;
+//     notifyListeners();
+//   }
+
+//   LatLng? get getYourPos => yourPos;
+//   LatLng? get getResPos => resPos;
+// }
