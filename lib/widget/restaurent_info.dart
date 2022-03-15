@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_donating_app/widget/internet_service.dart';
+import 'package:food_donating_app/widget/location_service.dart';
 import 'package:food_donating_app/widget/noInternetScreen.dart';
 import 'package:food_donating_app/widget/restaurents.dart';
 import 'package:food_donating_app/widget/transition_screen.dart';
@@ -17,6 +20,17 @@ class RestaurentInfo extends StatefulWidget {
 }
 
 class _RestaurentInfoState extends State<RestaurentInfo> {
+  String? dis = '10';
+
+  void getDistanceFromFirebase() async {
+    final CollectionReference utils =
+        FirebaseFirestore.instance.collection('utils');
+    await utils.doc('Distance').get().then((DocumentSnapshot snap) {
+      Map dataMap = snap.data() as Map;
+      dis = dataMap['Distance'];
+    });
+  }
+
   String distanceBetweenMarker = 'Please choose your current location';
   @override
   Widget build(BuildContext context) {
@@ -56,6 +70,35 @@ class _RestaurentInfoState extends State<RestaurentInfo> {
             }
 
             if (widget.curRestaurent!.status != 'upcoming') return;
+
+            bool charityInRange = false;
+
+            final CollectionReference charityCollection =
+                FirebaseFirestore.instance.collection('charity');
+
+            QuerySnapshot snapshot = await charityCollection.get();
+            snapshot.docs.forEach((element) {
+              Map dataMap = element.data() as Map;
+
+              if (LocationService().calculateDistanceBetweenTwoLatLongsInKm(
+                      double.parse(widget.curRestaurent!.lat),
+                      double.parse(widget.curRestaurent!.lng),
+                      double.parse(dataMap['posLat']),
+                      double.parse(dataMap['posLng'])) <
+                  double.parse(dis!)) charityInRange = true;
+            });
+
+            if (!charityInRange) {
+              Fluttertoast.showToast(
+                  msg: "Sorry, no charity available nearby",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.black45,
+                  fontSize: 16.0);
+              return;
+            }
+
             Navigator.of(context).pop();
             Navigator.push(
               context,
