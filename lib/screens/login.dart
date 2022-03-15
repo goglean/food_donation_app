@@ -196,7 +196,16 @@ class _loginpageState extends State<signinpage> {
                                   // Navigator.pop(context);
                                   }});
                               });
-                            } else {
+                            }
+                            else if (usernamecontroller.text.contains('@')) {
+                              Fluttertoast.showToast( msg: 'Enter a valid email address',
+                                  gravity: ToastGravity.BOTTOM,
+                                  fontSize: 18,
+                                  backgroundColor:
+                                      Theme.of(context).primaryColor,
+                                  textColor: Colors.white);
+                            }
+                             else {
                               return Fluttertoast.showToast(
                                   msg: 'User not verified',
                                   gravity: ToastGravity.BOTTOM,
@@ -207,6 +216,7 @@ class _loginpageState extends State<signinpage> {
                             }
                           }).catchError((error) {
                             var errormsg = error.message;
+                            print(errormsg.toString());
                             if (errormsg.toString() == "Given String is empty or null") {
                               showDialog(
                             context: context,
@@ -276,6 +286,37 @@ class _loginpageState extends State<signinpage> {
                                   content: 
                                   Text(
                                       "Sorry, we can't find an account with this email address and password. Please try again or create a new account."),
+                                  actions: [
+                                    Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "OK",
+                                                  style: GoogleFonts.roboto(
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                )),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ));
+                            }
+                            else if(errormsg.toString() == "The password is invalid or the user does not have a password."){
+                              showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  content: 
+                                  Text(
+                                      "Wrong Password"),
                                   actions: [
                                     Column(
                                       children: [

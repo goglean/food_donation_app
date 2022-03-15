@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_donating_app/screens/contactUs.dart';
+import 'package:food_donating_app/screens/contactusdonor.dart';
 import 'package:food_donating_app/screens/faq.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -80,7 +81,7 @@ class _HelpPageDonorState extends State<HelpPageDonor> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ContactUs()));
+                                builder: (context) => ContactUsDonor()));
                       }),
                   child: Row(children: [
                     Padding(

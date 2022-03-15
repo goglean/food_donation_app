@@ -408,7 +408,7 @@ class _SignupDonorState extends State<SignupDonor> {
                         ),
                       ),
                       RaisedButton(
-                          child: Text('Fetch location',style: TextStyle(color: Colors.white),),
+                          child: Text('Locate me',style: TextStyle(color: Colors.white),),
                           color: Theme.of(context).primaryColor,
                           onPressed: ()async{
                             locations = await locationFromAddress(_addressController.text);
