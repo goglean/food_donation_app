@@ -88,10 +88,18 @@ class _MyPickupsState extends State<MyPickups> {
     // print('\n\n\n');
     // print(pickUpList.length);
     // print('\n\n\n');
-    // for (var i = 0; i < pickUpList.length; i++) {
-    //   print(pickUpList[i]);
-    //   print('\n\n');
-    // }
+    for (var i = 0; i < pList.length; i++) {
+      List stDate = pList[i]['startdate'].split('-');
+      DateTime sDate = DateTime.utc(
+          int.parse(stDate[0]), int.parse(stDate[1]), int.parse(stDate[2]));
+      if (sDate.compareTo(now) <= 0) {
+        pList[i]['frstartdate'] = "Today";
+      } else {
+        pList[i]['frstartdate'] = pList[i]['startdate'];
+      }
+      // print(pList[i]['']);
+      // print('\n\n');
+    }
 
     if (!_dataLoaded)
       setState(() {
@@ -103,6 +111,8 @@ class _MyPickupsState extends State<MyPickups> {
           _pickUpAvailable = false;
       });
   }
+
+  void checkDate(String date) {}
 
   @override
   void initState() {
@@ -297,7 +307,7 @@ class _MyPickupsState extends State<MyPickups> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "${pickUpList[index]['startdate']}",
+                                              "${pickUpList[index]['frstartdate']} to ${pickUpList[index]['enddate']}",
                                               style: TextStyle(
                                                 fontSize: 17,
                                                 fontWeight: FontWeight.bold,

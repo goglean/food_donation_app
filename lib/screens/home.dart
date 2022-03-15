@@ -144,8 +144,8 @@ class _HomeState extends State<Home> {
                   context,
                   MaterialPageRoute(builder: (context) => MyPickups()),
                 );
-                Provider.of<DirectionLines>(context, listen: false).resPos =
-                    null;
+                // Provider.of<DirectionLines>(context, listen: false)
+                //     .setResPos(null);
               },
             ),
             ListTile(

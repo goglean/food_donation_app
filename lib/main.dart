@@ -16,14 +16,7 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-    .then((_) {
-      
-  runApp(ChangeNotifierProvider(
-    create: (BuildContext context) => DirectionLines(),
-    child: MyApp(),
-  ));
-    });
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
