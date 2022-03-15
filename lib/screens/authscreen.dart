@@ -104,8 +104,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w500,
                                         fontSize:
-                                            MediaQuery.of(context).size.height *
-                                                0.02),
+                                            MediaQuery.of(context).size.width *
+                                                0.03),
                                   ),
                                 )
                               ],
@@ -144,7 +144,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               style: GoogleFonts.roboto(
                                   fontWeight: FontWeight.w800,
                                   fontSize:
-                                      MediaQuery.of(context).size.height * 0.03,
+                                      MediaQuery.of(context).size.width * 0.05,
                                   color: Theme.of(context).primaryColor),
                             ),
                           ),
