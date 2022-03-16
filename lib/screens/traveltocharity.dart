@@ -19,19 +19,21 @@ class _TravelToCharityState extends State<TravelToCharity> {
   String dis = "";
 
   void getCurAddress() async {
-    dis = await LocationService().GetAddressFromLatLong(
+    String val = await LocationService().GetAddressFromLatLong(
         widget.curChar['posLat'], widget.curChar['posLng']);
+
+    setState(() => dis = val);
   }
 
   @override
   void initState() {
     BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(128, 128)),
-            'assets/Pickup_Orange_Marker.png')
+            'assets/Final_Pickup_Map_Marker.png')
         .then((onValue) {
       resIcon = onValue;
     });
     BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(128, 128)),
-            'assets/Drop-off_Orange_Marker.png')
+            'assets/Final_Dropoff_Map_Marker.png')
         .then((onValue) {
       charIcon = onValue;
     });
