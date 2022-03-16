@@ -131,7 +131,7 @@ class _RestaurentMapState extends State<RestaurentMap> {
       position: LatLng(37.43296265331129, -122.08832357078792),
     );
 
-    void getRestaurentInfo(String email) async {
+    Future getRestaurentInfo(String email) async {
       Restaurent2? restaurentData =
           await MapService().getRestaurent2DataFromFirebase(email);
       // print(restaurentData);
@@ -139,13 +139,14 @@ class _RestaurentMapState extends State<RestaurentMap> {
       setState(() {
         curRestaurent = restaurentData;
       });
-      print(curRestaurent);
-      print('\n\n\n\n');
     }
 
     // curLocation();
 
-    void _showRestaurentPanel(String email) {
+    void _showRestaurentPanel(String email) async {
+      await getRestaurentInfo(email);
+      print(curRestaurent);
+      print('\n\n\n\n');
       showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
@@ -204,7 +205,6 @@ class _RestaurentMapState extends State<RestaurentMap> {
               );
               return;
             }
-            getRestaurentInfo(restaurent[i].email);
             // Provider.of<DirectionLines>(context).resPos = LatLng(2, 2);
 
             directionLineMarker[1] = LatLng(double.parse(restaurent[i].lat),
