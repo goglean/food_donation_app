@@ -59,9 +59,11 @@ class _StartJourneyState extends State<StartJourney> {
   @override
   void initState() {
     BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(128, 128)),
-            'assets/Pickup_Orange_Marker.png')
+            'assets/Final_Pickup_Map_Marker.png')
         .then((onValue) {
-      resIcon = onValue;
+      setState(() {
+        resIcon = onValue;
+      });
     });
     final CollectionReference col =
         FirebaseFirestore.instance.collection('pickup_details');
